@@ -16,19 +16,23 @@ export function PreviewPanel() {
   // Defer expensive template re-renders so typing stays snappy
   const deferredData = useDeferredValue(data);
 
-  // Measure the hidden off-screen render to know how many pages we have
+  // Track exact content height so page cards are sized precisely
   const printRef = useRef<HTMLDivElement>(null);
-  const [pageCount, setPageCount] = useState(1);
+  const [contentHeight, setContentHeight] = useState(PAGE_HEIGHT);
 
   useEffect(() => {
     const el = printRef.current;
     if (!el) return;
     const observer = new ResizeObserver(() => {
-      setPageCount(Math.max(1, Math.ceil(el.scrollHeight / PAGE_HEIGHT)));
+      // Use getBoundingClientRect for the most accurate rendered height
+      const h = el.getBoundingClientRect().height || el.scrollHeight;
+      setContentHeight(Math.max(PAGE_HEIGHT, h));
     });
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  const pageCount = Math.ceil(contentHeight / PAGE_HEIGHT);
 
   const TemplateComponent =
     deferredData.template === "modern"
@@ -54,13 +58,11 @@ export function PreviewPanel() {
       </div>
 
       {/*
-        Hidden off-screen render:
-        - Width is fixed at 794px (A4 at 96dpi) so scrollHeight accurately
-          reflects how many print pages the content fills
-        - ResizeObserver watches it to update pageCount
-        - In @media print the CSS brings it to (0, 0) and makes it the only
-          visible element — this is what gets printed
-        - The parent wrapper is 0-height so it doesn't shift visible layout
+        Hidden off-screen render — fixed 794px wide (A4 at 96dpi) so
+        getBoundingClientRect().height exactly matches the print layout.
+        ResizeObserver fires whenever content changes height.
+        In @media print this element is repositioned to (0,0) and
+        becomes the only visible thing — this is what gets printed.
       */}
       <div id="resume-preview-wrapper" className="relative h-0 overflow-visible">
         <div id="resume-preview" ref={printRef} aria-hidden="true">
@@ -68,30 +70,38 @@ export function PreviewPanel() {
         </div>
       </div>
 
-      {/* Visual per-page cards — one clipped card per A4 page, hidden in print */}
+      {/* Visual per-page cards — hidden in print */}
       <div className="space-y-3 print:hidden">
-        {Array.from({ length: pageCount }, (_, i) => (
-          <div key={i}>
-            {i > 0 && (
-              <div className="py-2 flex items-center gap-3">
-                <div className="flex-1 h-px bg-slate-300" />
-                <span className="text-xs text-slate-400 bg-slate-200 px-2.5 py-1 rounded-full font-medium">
-                  Page {i + 1}
-                </span>
-                <div className="flex-1 h-px bg-slate-300" />
-              </div>
-            )}
-            {/* Clipped to one page height; inner div translated up to show correct page */}
-            <div
-              className="bg-white shadow-lg rounded-sm overflow-hidden"
-              style={{ height: `${PAGE_HEIGHT}px` }}
-            >
-              <div style={{ transform: `translateY(${-i * PAGE_HEIGHT}px)` }}>
-                <TemplateComponent data={deferredData} />
+        {Array.from({ length: pageCount }, (_, i) => {
+          // The last page is only as tall as the remaining content, not a full blank A4
+          const isLastPage = i === pageCount - 1;
+          const cardHeight = isLastPage
+            ? contentHeight - i * PAGE_HEIGHT
+            : PAGE_HEIGHT;
+
+          return (
+            <div key={i}>
+              {i > 0 && (
+                <div className="py-2 flex items-center gap-3">
+                  <div className="flex-1 h-px bg-slate-300" />
+                  <span className="text-xs text-slate-400 bg-slate-200 px-2.5 py-1 rounded-full font-medium">
+                    Page {i + 1}
+                  </span>
+                  <div className="flex-1 h-px bg-slate-300" />
+                </div>
+              )}
+              {/* Clipped to this page's height; inner div slides up to show the right slice */}
+              <div
+                className="bg-white shadow-lg rounded-sm overflow-hidden"
+                style={{ height: `${cardHeight}px` }}
+              >
+                <div style={{ transform: `translateY(${-i * PAGE_HEIGHT}px)` }}>
+                  <TemplateComponent data={deferredData} />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
