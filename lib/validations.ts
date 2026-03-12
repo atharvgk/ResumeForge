@@ -75,15 +75,47 @@ export const resumeTitleSchema = z.object({
 });
 
 export const aiSuggestionSchema = z.object({
-  section: z.string().min(1),
-  content: z.string().min(1),
-  jobDescription: z.string().optional(),
+  section: z.string().min(1).max(100),
+  content: z.string().min(1).max(5000),
+  jobDescription: z.string().max(3000).optional(),
 });
 
 export const aiEnhanceSchema = z.object({
-  section: z.string().min(1),
-  content: z.string().min(1),
-  jobDescription: z.string().optional(),
+  section: z.string().min(1).max(100),
+  content: z.string().min(1).max(5000),
+  jobDescription: z.string().max(3000).optional(),
+});
+
+const experienceItemSchema = z.object({
+  position: z.string().max(100),
+  company: z.string().max(100),
+  description: z.string().max(2000).optional().default(''),
+  bullets: z.array(z.string().max(500)).max(20).default([]),
+});
+
+const projectItemSchema = z.object({
+  name: z.string().max(100),
+  description: z.string().max(1000).optional().default(''),
+  technologies: z.array(z.string().max(50)).max(30).default([]),
+});
+
+export const aiSkillsSchema = z.object({
+  experiences: z.array(experienceItemSchema).max(20).default([]),
+  projects: z.array(projectItemSchema).max(20).default([]),
+  existingSkills: z.array(z.string().max(50)).max(100).default([]),
+});
+
+export const aiSummarySchema = z.object({
+  name: z.string().max(100).optional().default(''),
+  experiences: z.array(
+    z.object({
+      position: z.string().max(100),
+      company: z.string().max(100),
+      bullets: z.array(z.string().max(500)).max(20).default([]),
+    })
+  ).max(20).default([]),
+  skills: z.array(z.string().max(50)).max(100).default([]),
+  projects: z.array(projectItemSchema).max(20).default([]),
 });
 
 export type PersonalInfoFormValues = z.infer<typeof personalInfoSchema>;
@@ -93,3 +125,5 @@ export type SkillFormValues = z.infer<typeof skillSchema>;
 export type ProjectFormValues = z.infer<typeof projectSchema>;
 export type CertificationFormValues = z.infer<typeof certificationSchema>;
 export type LanguageFormValues = z.infer<typeof languageSchema>;
+export type AISkillsInput = z.infer<typeof aiSkillsSchema>;
+export type AISummaryInput = z.infer<typeof aiSummarySchema>;

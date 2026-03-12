@@ -31,6 +31,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# stale legacy directory
+resume-builder/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

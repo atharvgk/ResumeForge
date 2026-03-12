@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { generateSummary } from '@/lib/ai';
+import { aiSummarySchema } from '@/lib/validations';
 
 export async function POST(request: Request) {
   try {
@@ -13,19 +14,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const body = await request.json() as {
-      name?: string;
-      experiences?: { position: string; company: string; bullets: string[] }[];
-      skills?: string[];
-      projects?: { name: string; description: string; technologies: string[] }[];
-    };
+    const body = await request.json();
+    const parsed = aiSummarySchema.safeParse(body);
 
-    const summary = await generateSummary(
-      body.name ?? '',
-      body.experiences ?? [],
-      body.skills ?? [],
-      body.projects ?? [],
-    );
+    if (!parsed.success) {
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
+    }
+
+    const { name, experiences, skills, projects } = parsed.data;
+    const summary = await generateSummary(name, experiences, skills, projects);
 
     return NextResponse.json({ summary });
   } catch (error: unknown) {

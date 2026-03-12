@@ -2,6 +2,19 @@
 const MODEL = 'llama-3.1-8b-instant';
 
 /**
+ * Strips null bytes and ASCII control characters from user-supplied text
+ * before it is embedded into AI prompts, reducing prompt-injection surface.
+ */
+function sanitizeInput(text: string): string {
+  // Remove null bytes, ASCII control chars (except tab/newline/CR), and common
+  // prompt-injection delimiters that could break out of instructional framing.
+  return text
+    .replace(/\0/g, '')                // null bytes
+    .replace(/[\x01-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '') // ASCII control chars
+    .trim();
+}
+
+/**
  * Strips common AI preamble lines that models add before the actual content,
  * e.g. "Here's a summary for John:", "Sure! Here is the enhanced version:", etc.
  */
@@ -54,14 +67,18 @@ export async function getAISuggestions(
   content: string,
   jobDescription?: string
 ): Promise<string[]> {
+  const safeSection = sanitizeInput(section);
+  const safeContent = sanitizeInput(content);
+  const safeJobDesc = jobDescription ? sanitizeInput(jobDescription) : undefined;
+
   const prompt = `You are a senior recruiter and ATS optimization expert at a top-tier tech company. Your goal is to help candidates get past automated screening systems AND impress human recruiters.
 
-Analyze the following resume ${section} section and provide exactly 3 highly specific, actionable improvement suggestions.
+Analyze the following resume ${safeSection} section and provide exactly 3 highly specific, actionable improvement suggestions.
 
-Resume ${section}:
-${content}
+Resume ${safeSection}:
+${safeContent}
 
-${jobDescription ? `Target Job Description:\n${jobDescription}\n` : ''}
+${safeJobDesc ? `Target Job Description:\n${safeJobDesc}\n` : ''}
 
 Your suggestions must:
 - Target ATS keyword gaps: identify missing industry-standard keywords, tools, or technologies that ATS systems scan for
@@ -89,12 +106,16 @@ export async function enhanceContent(
   content: string,
   jobDescription?: string
 ): Promise<string> {
-  const prompt = `You are a senior technical resume writer and ATS optimization specialist who has helped thousands of candidates land roles at FAANG and top startups. Rewrite the following resume ${section} content to maximize both ATS score and recruiter impact.
+  const safeSection = sanitizeInput(section);
+  const safeContent = sanitizeInput(content);
+  const safeJobDesc = jobDescription ? sanitizeInput(jobDescription) : undefined;
+
+  const prompt = `You are a senior technical resume writer and ATS optimization specialist who has helped thousands of candidates land roles at FAANG and top startups. Rewrite the following resume ${safeSection} content to maximize both ATS score and recruiter impact.
 
 Original content:
-${content}
+${safeContent}
 
-${jobDescription ? `Target Job Description:\n${jobDescription}\n` : ''}
+${safeJobDesc ? `Target Job Description:\n${safeJobDesc}\n` : ''}
 
 Rewriting rules — follow ALL of these:
 - Voice: write as the person proudly owning their achievements — use direct ownership language (Built, Designed, Delivered, Achieved, Grew, Led, Shipped). The reader should feel this person is confidently claiming credit for real impact, not just listing duties
@@ -117,15 +138,16 @@ export async function generateSummary(
   skills: string[],
   projects: { name: string; description: string; technologies: string[] }[],
 ): Promise<string> {
+  const safeName = sanitizeInput(name);
   const expLines = experiences.map(e =>
-    `${e.position} at ${e.company}${e.bullets.length ? ': ' + e.bullets.slice(0, 2).join('; ') : ''}`
+    `${sanitizeInput(e.position)} at ${sanitizeInput(e.company)}${e.bullets.length ? ': ' + e.bullets.slice(0, 2).map(sanitizeInput).join('; ') : ''}`
   ).join('\n');
 
   const projLines = projects.map(p =>
-    `${p.name} (${p.technologies.join(', ')}): ${p.description}`
+    `${sanitizeInput(p.name)} (${p.technologies.map(sanitizeInput).join(', ')}): ${sanitizeInput(p.description)}`
   ).join('\n');
 
-  const prompt = `You are a senior technical recruiter and resume branding expert who has reviewed 10,000+ resumes at top tech companies. Write a powerful 2-3 sentence professional summary for ${name || 'this candidate'} that will instantly hook both ATS systems and human recruiters.
+  const prompt = `You are a senior technical recruiter and resume branding expert who has reviewed 10,000+ resumes at top tech companies. Write a powerful 2-3 sentence professional summary for ${safeName || 'this candidate'} that will instantly hook both ATS systems and human recruiters.
 
 Work Experience:
 ${expLines || 'None'}
@@ -133,7 +155,7 @@ ${expLines || 'None'}
 Projects:
 ${projLines || 'None'}
 
-Skills: ${skills.join(', ')}
+Skills: ${skills.map(sanitizeInput).join(', ')}
 
 Rules for the perfect summary:
 - Voice: write as the person confidently owning and showcasing their achievements — the tone should feel like someone who knows their worth and is proud of what they have built and delivered, not a bland third-party bio
@@ -182,16 +204,17 @@ export async function suggestSkills(
   existingSkills: string[],
 ): Promise<string[]> {
   const expLines = experiences.map(e => {
-    const details = [e.description, ...e.bullets].filter(Boolean).join(' ');
-    return `Role: ${e.position} at ${e.company}. ${details}`;
+    const details = [e.description, ...e.bullets].filter(Boolean).map(sanitizeInput).join(' ');
+    return `Role: ${sanitizeInput(e.position)} at ${sanitizeInput(e.company)}. ${details}`;
   }).join('\n');
 
   const projLines = projects.map(p =>
-    `Project: ${p.name}. Tech stack: ${p.technologies.join(', ')}. Description: ${p.description}`
+    `Project: ${sanitizeInput(p.name)}. Tech stack: ${p.technologies.map(sanitizeInput).join(', ')}. Description: ${sanitizeInput(p.description)}`
   ).join('\n');
 
-  const existing = existingSkills.length > 0
-    ? `Already listed skills (DO NOT include these): ${existingSkills.join(', ')}`
+  const safeExisting = existingSkills.map(sanitizeInput);
+  const existing = safeExisting.length > 0
+    ? `Already listed skills (DO NOT include these): ${safeExisting.join(', ')}`
     : 'No existing skills yet.';
 
   const prompt = `You are a technical resume expert and ATS specialist. Analyze the work experiences and projects below and suggest the most impactful technical skills to add to this resume.
@@ -223,7 +246,7 @@ Rules:
     const parsed = JSON.parse(match ? match[0] : text) as string[];
     if (Array.isArray(parsed)) {
       // Final dedup against existing skills (case-insensitive safety net)
-      const existingLower = new Set(existingSkills.map(s => s.toLowerCase()));
+      const existingLower = new Set(safeExisting.map(s => s.toLowerCase()));
       return parsed
         .filter(s => typeof s === 'string' && s.trim().length > 0)
         .filter(s => !existingLower.has(s.trim().toLowerCase()))
