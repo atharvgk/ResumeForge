@@ -1,9 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { useResumeStore } from "@/store/resume-store";
 import { TEMPLATES, COLOR_PRESETS, FONT_OPTIONS } from "@/lib/templates";
 import { type TemplateId } from "@/types/resume";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -12,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { Lock, Crown, Check } from "lucide-react";
 
 export function TemplateSelector() {
   const template = useResumeStore((s) => s.data.template);
@@ -20,40 +31,139 @@ export function TemplateSelector() {
   const updateTemplateSettings = useResumeStore(
     (s) => s.updateTemplateSettings,
   );
+  const isPro = useResumeStore((s) => s.isPro);
+  const setIsPro = useResumeStore((s) => s.setIsPro);
+
+  const [upgradeTarget, setUpgradeTarget] = useState<TemplateId | null>(null);
+
+  function handleTemplateClick(id: string, isPaid?: boolean) {
+    if (isPaid && !isPro) {
+      setUpgradeTarget(id as TemplateId);
+    } else {
+      setTemplate(id as TemplateId);
+    }
+  }
+
+  function handleUpgrade() {
+    setIsPro(true);
+    if (upgradeTarget) setTemplate(upgradeTarget);
+    setUpgradeTarget(null);
+  }
 
   return (
     <div className="space-y-6">
+      {/* Pro badge */}
+      {isPro && (
+        <div className="flex items-center gap-1.5 text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded-md px-2.5 py-1.5">
+          <Crown className="h-3.5 w-3.5" />
+          Pro Plan Active
+        </div>
+      )}
+
       {/* Template Picker */}
       <div>
         <Label className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2 block">
           Template
         </Label>
         <div className="grid grid-cols-3 gap-2">
-          {TEMPLATES.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setTemplate(t.id as TemplateId)}
-              className={cn(
-                "rounded-lg border-2 p-2 text-center text-xs transition-all",
-                template === t.id
-                  ? "border-blue-600 bg-blue-50"
-                  : "border-slate-200 hover:border-slate-300",
-              )}
-            >
-              <div
-                className="h-12 rounded mb-1.5 flex items-end justify-center pb-1"
-                style={{ backgroundColor: `${t.primaryColor}20` }}
+          {TEMPLATES.map((t) => {
+            const locked = t.isPaid && !isPro;
+            return (
+              <button
+                key={t.id}
+                onClick={() => handleTemplateClick(t.id, t.isPaid)}
+                className={cn(
+                  "relative rounded-lg border-2 p-2 text-center text-xs transition-all",
+                  template === t.id
+                    ? "border-blue-600 bg-blue-50"
+                    : locked
+                      ? "border-slate-200 hover:border-amber-300 opacity-80"
+                      : "border-slate-200 hover:border-slate-300",
+                )}
               >
+                {/* Badge */}
+                {t.isPaid ? (
+                  <span className="absolute top-1 right-1 text-[9px] font-bold px-1 rounded bg-amber-100 text-amber-700 leading-4">
+                    PRO
+                  </span>
+                ) : (
+                  <span className="absolute top-1 right-1 text-[9px] font-bold px-1 rounded bg-green-100 text-green-700 leading-4">
+                    FREE
+                  </span>
+                )}
+
                 <div
-                  className="h-1.5 w-8 rounded-full"
-                  style={{ backgroundColor: t.primaryColor }}
-                />
-              </div>
-              {t.name}
-            </button>
-          ))}
+                  className="h-12 rounded mb-1.5 flex items-center justify-center"
+                  style={{ backgroundColor: `${t.primaryColor}20` }}
+                >
+                  {locked ? (
+                    <Lock className="h-4 w-4 text-amber-500" />
+                  ) : (
+                    <div
+                      className="h-1.5 w-8 rounded-full"
+                      style={{ backgroundColor: t.primaryColor }}
+                    />
+                  )}
+                </div>
+                {t.name}
+              </button>
+            );
+          })}
         </div>
       </div>
+
+      {/* Upgrade Dialog */}
+      <Dialog
+        open={upgradeTarget !== null}
+        onOpenChange={(open) => !open && setUpgradeTarget(null)}
+      >
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Crown className="h-5 w-5 text-amber-500" />
+              Unlock Pro Templates
+            </DialogTitle>
+            <DialogDescription>
+              Get access to premium templates and future pro features.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-3 py-2">
+            <div className="text-center">
+              <span className="text-3xl font-bold">$9.99</span>
+              <span className="text-slate-500 text-sm">/month</span>
+            </div>
+            <ul className="space-y-1.5 text-sm">
+              {[
+                "All premium templates",
+                "Priority support",
+                "Advanced customization",
+                "Unlimited exports",
+              ].map((f) => (
+                <li key={f} className="flex items-center gap-2 text-slate-700">
+                  <Check className="h-4 w-4 text-green-500 shrink-0" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <DialogFooter className="flex-col gap-2 sm:flex-col">
+            <Button onClick={handleUpgrade} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
+              <Crown className="h-4 w-4 mr-2" />
+              Upgrade to Pro (Simulated)
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full text-slate-500"
+              onClick={() => setUpgradeTarget(null)}
+            >
+              Maybe later
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Color Presets */}
       <div>

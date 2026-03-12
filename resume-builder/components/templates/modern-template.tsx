@@ -23,6 +23,8 @@ export function ModernTemplate({ data }: TemplateProps) {
   const sm = SPACING_MULTIPLIER[templateSettings.spacing] ?? 1;
   const sidePad = Math.round(24 * sm);
 
+  const visibleSections = sectionOrder.filter((s) => s.visible).map((s) => s.id);
+
   // Sections rendered in the main column (skills/languages live in the sidebar)
   const mainSections = ["experience", "education", "projects", "certifications"];
 

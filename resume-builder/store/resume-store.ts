@@ -24,6 +24,7 @@ interface ResumeStore {
   isDirty: boolean;
   isSaving: boolean;
   lastSaved: Date | null;
+  isPro: boolean;
 
   // Actions
   setResumeId: (id: string | null) => void;
@@ -33,6 +34,7 @@ interface ResumeStore {
   setIsDirty: (dirty: boolean) => void;
   setIsSaving: (saving: boolean) => void;
   setLastSaved: (date: Date | null) => void;
+  setIsPro: (isPro: boolean) => void;
   resetResume: () => void;
 
   // Personal Info
@@ -95,6 +97,7 @@ export const useResumeStore = create<ResumeStore>()(
       isDirty: false,
       isSaving: false,
       lastSaved: null,
+      isPro: false,
 
       setResumeId: (id) => set({ resumeId: id }),
       setTitle: (title) => set({ title, isDirty: true }),
@@ -103,6 +106,7 @@ export const useResumeStore = create<ResumeStore>()(
       setIsDirty: (isDirty) => set({ isDirty }),
       setIsSaving: (isSaving) => set({ isSaving }),
       setLastSaved: (lastSaved) => set({ lastSaved }),
+      setIsPro: (isPro) => set({ isPro }),
       resetResume: () =>
         set({
           resumeId: null,
@@ -439,6 +443,7 @@ export const useResumeStore = create<ResumeStore>()(
       // to avoid showing stale content when opening a different resume
       partialize: (state) => ({
         resumeId: state.resumeId,
+        isPro: state.isPro,
       }),
     }
   )

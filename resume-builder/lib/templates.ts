@@ -9,6 +9,7 @@ export interface TemplateConfig {
   secondaryColor: string;
   fontFamily: string;
   features: string[];
+  isPaid?: boolean;
 }
 
 export const TEMPLATES: TemplateConfig[] = [
@@ -30,6 +31,7 @@ export const TEMPLATES: TemplateConfig[] = [
     primaryColor: '#0f172a',
     secondaryColor: '#6366f1',
     fontFamily: 'Inter, sans-serif',
+    isPaid: true,
     features: ['Two-column layout', 'Color accents', 'Skills visualization', 'Modern typography'],
   },
   {
