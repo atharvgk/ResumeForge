@@ -22,7 +22,7 @@ export function SkillsForm() {
   const [aiError, setAiError] = useState<string | null>(null);
 
   const hasEnoughData =
-    (resumeData.experiences?.length ?? 0) > 0 ||
+    (resumeData.experience?.length ?? 0) > 0 ||
     (resumeData.projects?.length ?? 0) > 0;
 
   const handleAdd = () => {
@@ -69,7 +69,7 @@ export function SkillsForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          experiences: (resumeData.experiences ?? []).map((e) => ({
+          experiences: (resumeData.experience ?? []).map((e: import('@/types/resume').Experience) => ({
             position: e.position,
             company: e.company,
             description: e.description,

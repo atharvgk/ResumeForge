@@ -14,23 +14,23 @@ export async function Navbar() {
     <NavbarWrapper>
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center transition-all duration-300 group-hover:bg-orange-400 group-hover:scale-110 group-hover:rotate-6 shadow-lg shadow-orange-500/30">
+          <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center transition-all duration-300 group-hover:bg-orange-400 group-hover:scale-110 group-hover:rotate-6 shadow-lg shadow-orange-200">
             <FileText className="h-4 w-4 text-white transition-transform duration-300" />
           </div>
-          <span className="text-lg font-bold text-white drop-shadow-sm">ResumeForge</span>
+          <span className="text-lg font-bold text-gray-900">ResumeForge</span>
         </Link>
 
         <div className="flex items-center gap-2">
           {user ? (
             <>
-              <span className="text-sm text-white/60 hidden sm:block truncate max-w-[180px]">
+              <span className="text-sm text-gray-500 hidden sm:block truncate max-w-[180px]">
                 {user.email}
               </span>
               <Link href="/dashboard">
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                  className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
                 >
                   Dashboard
                 </Button>
@@ -40,7 +40,7 @@ export async function Navbar() {
                   variant="outline"
                   size="sm"
                   type="submit"
-                  className="border-white/20 text-white/70 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 transition-colors bg-transparent"
+                  className="border-gray-300 text-gray-500 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 transition-colors bg-transparent"
                 >
                   Sign Out
                 </Button>
@@ -52,7 +52,7 @@ export async function Navbar() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                  className="text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors"
                 >
                   Sign In
                 </Button>
@@ -60,7 +60,7 @@ export async function Navbar() {
               <Link href="/auth/register">
                 <Button
                   size="sm"
-                  className="bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-200 btn-shimmer"
+                  className="bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-200 hover:-translate-y-0.5 transition-all duration-200 btn-shimmer"
                 >
                   Get Started
                 </Button>

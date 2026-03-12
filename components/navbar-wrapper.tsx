@@ -29,8 +29,10 @@ export function NavbarWrapper({ children }: { children: React.ReactNode }) {
       />
       <nav
         className={cn(
-          "border-b border-gray-200 bg-white/95 backdrop-blur-md sticky top-0 z-50 transition-all duration-300",
-          scrolled ? "shadow-lg shadow-gray-200" : "shadow-none",
+          "sticky top-0 z-50 transition-all duration-300",
+          scrolled
+            ? "bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg shadow-gray-200/50"
+            : "bg-transparent border-b border-transparent",
         )}
       >
         {children}

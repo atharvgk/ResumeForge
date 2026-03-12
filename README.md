@@ -31,11 +31,11 @@ cp .env.example .env.local
 
 Fill in the following values in `.env.local`:
 
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
+| Variable                        | Description                   |
+| ------------------------------- | ----------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | Your Supabase project URL     |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon/public key |
-| `GROQ_API_KEY` | Groq AI API key |
+| `GROQ_API_KEY`                  | Groq AI API key               |
 
 ### 3. Set up the database
 

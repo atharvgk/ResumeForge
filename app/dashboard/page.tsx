@@ -1,11 +1,11 @@
-import { redirect } from "next/navigation";
+﻿import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Button } from "@/components/ui/button";
-import { FileText, Plus, LogOut } from "lucide-react";
+import { FileText, Plus, LogOut, LayoutDashboard } from "lucide-react";
 import { DashboardResumeList } from "@/components/dashboard/resume-list";
 
-// Always fetch fresh data — never serve a cached version of this page
+// Always fetch fresh data â€” never serve a cached version of this page
 export const dynamic = "force-dynamic";
 
 export default async function DashboardPage() {
@@ -22,33 +22,40 @@ export default async function DashboardPage() {
     .eq("user_id", user.id)
     .order("updated_at", { ascending: false });
 
+  const resumeCount = resumes?.length ?? 0;
+
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      {/* Sticky header */}
-      <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200">
+    <div className="min-h-screen bg-gray-50 text-gray-900">
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
         <div className="container mx-auto px-6 py-3 flex items-center justify-between">
           <Link
             href="/"
             className="flex items-center gap-2.5 font-bold text-xl group"
           >
             <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center transition-all duration-300 group-hover:bg-orange-400 group-hover:scale-110 group-hover:rotate-6 shadow-lg shadow-orange-200">
-              <FileText className="h-4 w-4 text-white transition-transform duration-300" />
+              <FileText className="h-4 w-4 text-white" />
             </div>
             <span className="text-gray-900">ResumeForge</span>
           </Link>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-500 hidden sm:block truncate max-w-[200px]">
-              {user.email}
-            </span>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 border border-gray-200">
+              <div className="h-5 w-5 rounded-full bg-orange-500 flex items-center justify-center text-[10px] text-white font-bold shrink-0">
+                {user.email?.[0]?.toUpperCase()}
+              </div>
+              <span className="text-sm text-gray-600 truncate max-w-[160px]">
+                {user.email}
+              </span>
+            </div>
             <form action="/auth/signout" method="post">
               <Button
                 variant="ghost"
                 size="sm"
                 type="submit"
-                className="text-gray-500 hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                className="text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors gap-1.5"
               >
-                <LogOut className="h-4 w-4 mr-2" />
-                Sign out
+                <LogOut className="h-4 w-4" />
+                <span className="hidden sm:inline">Sign out</span>
               </Button>
             </form>
           </div>
@@ -56,36 +63,31 @@ export default async function DashboardPage() {
       </header>
 
       {/* Welcome banner */}
-      <div className="border-b border-gray-200 bg-gradient-to-r from-orange-50 via-white to-rose-50 relative overflow-hidden">
-        {/* subtle dot grid */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, #fdba74 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
-        />
+      <div className="bg-white border-b border-gray-100 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-50/80 via-white to-rose-50/50" />
+        <div className="absolute right-0 top-0 w-96 h-full bg-gradient-to-l from-orange-100/20 to-transparent" />
         <div className="container mx-auto px-6 py-8 relative">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fade-in-up fill-both">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 animate-fade-in-up fill-both">
             <div>
-              <p className="text-gray-400 text-sm mb-1 flex items-center gap-1.5">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500" />
+              <div className="flex items-center gap-2 mb-2">
+                <LayoutDashboard className="h-4 w-4 text-orange-500" />
+                <span className="text-sm font-medium text-orange-600 uppercase tracking-wider">
+                  Dashboard
                 </span>
-                Welcome back
-              </p>
-              <h1 className="text-2xl font-bold text-gray-900">My Resumes</h1>
-              <p className="text-gray-500 text-sm mt-1">
-                {resumes?.length ?? 0} resume
-                {(resumes?.length ?? 0) !== 1 ? "s" : ""} in your workspace
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 mb-1">
+                My Resumes
+              </h1>
+              <p className="text-gray-500 text-sm">
+                {resumeCount === 0
+                  ? "No resumes yet â€” create your first one"
+                  : `${resumeCount} resume${resumeCount !== 1 ? "s" : ""} in your workspace`}
               </p>
             </div>
             <Link href="/builder/new">
               <Button
                 size="sm"
-                className="bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-200 hover:-translate-y-0.5 transition-all duration-200 font-medium btn-shimmer"
+                className="bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-200 hover:-translate-y-0.5 transition-all duration-200 font-medium btn-shimmer h-10 px-5"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 New Resume
@@ -96,9 +98,11 @@ export default async function DashboardPage() {
       </div>
 
       {/* Main */}
-      <main className="container mx-auto px-6 py-10 bg-gray-50 min-h-[calc(100vh-200px)]">
+      <main className="container mx-auto px-6 py-10 min-h-[calc(100vh-180px)]">
         <DashboardResumeList resumes={resumes ?? []} />
       </main>
     </div>
   );
 }
+
+

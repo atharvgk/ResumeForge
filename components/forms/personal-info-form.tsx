@@ -52,7 +52,7 @@ export function PersonalInfoForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: resumeData.personalInfo?.fullName ?? "",
-          experiences: (resumeData.experiences ?? []).map((e) => ({
+          experiences: (resumeData.experience ?? []).map((e: import('@/types/resume').Experience) => ({
             position: e.position,
             company: e.company,
             bullets: e.bullets,
