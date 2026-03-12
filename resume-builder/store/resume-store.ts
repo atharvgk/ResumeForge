@@ -29,6 +29,7 @@ interface ResumeStore {
   setResumeId: (id: string | null) => void;
   setTitle: (title: string) => void;
   setData: (data: ResumeData) => void;
+  setDataDirty: (data: ResumeData) => void;
   setIsDirty: (dirty: boolean) => void;
   setIsSaving: (saving: boolean) => void;
   setLastSaved: (date: Date | null) => void;
@@ -97,7 +98,8 @@ export const useResumeStore = create<ResumeStore>()(
 
       setResumeId: (id) => set({ resumeId: id }),
       setTitle: (title) => set({ title, isDirty: true }),
-      setData: (data) => set({ data, isDirty: true }),
+      setData: (data) => set({ data }),
+      setDataDirty: (data) => set({ data, isDirty: true }),
       setIsDirty: (isDirty) => set({ isDirty }),
       setIsSaving: (isSaving) => set({ isSaving }),
       setLastSaved: (lastSaved) => set({ lastSaved }),
@@ -433,10 +435,10 @@ export const useResumeStore = create<ResumeStore>()(
     }),
     {
       name: 'resume-store',
+      // Only persist resumeId — data is always loaded fresh from Supabase
+      // to avoid showing stale content when opening a different resume
       partialize: (state) => ({
         resumeId: state.resumeId,
-        title: state.title,
-        data: state.data,
       }),
     }
   )

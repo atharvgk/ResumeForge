@@ -77,12 +77,13 @@
     visibility: visible;
   }
 
-  /* Position it at the top-left so it fills the printed page */
+  /* Position at top-left and let it flow naturally across multiple pages */
   #resume-preview {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 210mm; /* A4 width */
+    overflow: visible !important;
     box-shadow: none !important;
     border-radius: 0 !important;
   }

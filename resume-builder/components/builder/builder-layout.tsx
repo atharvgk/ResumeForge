@@ -29,6 +29,7 @@ export function BuilderLayout({
   useAutoSave();
 
   useEffect(() => {
+    // Load server data without marking dirty — prevents spurious auto-save on open
     store.setResumeId(resumeId);
     store.setTitle(initialTitle);
     store.setData(initialData);

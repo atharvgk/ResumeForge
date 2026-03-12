@@ -35,7 +35,7 @@ export function PreviewPanel() {
       {/* Visible preview */}
       <div
         id="resume-preview"
-        className="bg-white shadow-lg rounded-sm overflow-hidden"
+        className="bg-white shadow-lg rounded-sm"
         style={{ minHeight: "1056px" }}
       >
         <TemplateComponent data={data} />
