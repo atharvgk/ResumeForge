@@ -2,6 +2,8 @@
 
 A full-stack resume builder with AI-powered content suggestions, multiple professional templates, and one-click PDF export.
 
+Live demo: https://resume-forge-cyan-one.vercel.app/
+
 ---
 
 ## Tech Stack
@@ -10,10 +12,10 @@ A full-stack resume builder with AI-powered content suggestions, multiple profes
 |---|---|
 | Framework | Next.js 14 (App Router, TypeScript) |
 | Styling | Tailwind CSS v3 + shadcn/ui |
-| Auth & Database | Supabase (PostgreSQL + Auth) |
+| Auth and Database | Supabase (PostgreSQL + Auth) |
 | AI | Groq API - Llama 3.1 8B Instant |
 | State Management | Zustand |
-| Forms & Validation | React Hook Form + Zod |
+| Forms and Validation | React Hook Form + Zod |
 | PDF Export | Browser print dialog (window.print with print CSS) |
 
 ---
@@ -68,10 +70,10 @@ Open http://localhost:3000.
 
 ### Resume Templates
 - **3 templates available**: Classic, Modern, Minimal
-- **2 free templates**: Classic and Modern - available to all users
-- **1 paid/locked template**: Minimal - locked behind an "Upgrade" prompt (simulated, no real payment required)
+- **2 free templates**: Classic and Minimal - available to all users
+- **1 paid/locked template**: Modern - locked behind an "Upgrade" prompt (simulated, no real payment required)
 - Each template has a different layout, section order, and visual style
-- Template preview available before applying
+- Template preview available before applying in the Design tab
 
 ### Resume Download
 - Download resume as a pixel-perfect PDF with one click (Export PDF button in the builder)
@@ -98,33 +100,33 @@ Open http://localhost:3000.
 
 ```
 ResumeForge/
-├── app/
-│   ├── api/ai/          # AI endpoints (summary, skills, improve)
-│   ├── api/resumes/     # Resume CRUD endpoints
-│   ├── auth/            # Login, register, callback pages
-│   ├── builder/         # Resume editor
-│   ├── dashboard/       # User's resume list
-│   └── page.tsx         # Landing page
-├── components/
-│   ├── builder/         # Editor panel, preview, toolbar
-│   ├── dashboard/       # Resume list cards
-│   ├── templates/       # Classic, Modern, Minimal renderers
-│   └── ui/              # shadcn/ui base components
-├── database/
-│   └── schema.sql       # Supabase table definitions
-├── lib/
-│   ├── ai.ts            # Groq API integration
-│   ├── supabase/        # Server + client Supabase helpers
-│   └── templates.ts     # Template config and registry
-├── store/               # Zustand resume state
-└── types/               # TypeScript type definitions
+  app/
+    api/ai/          # AI endpoints (summary, skills, enhance, suggestions)
+    api/resumes/     # Resume CRUD endpoints
+    auth/            # Login, register, callback pages
+    builder/         # Resume editor page
+    dashboard/       # User resume list page
+    page.tsx         # Landing page
+  components/
+    builder/         # Editor panel, preview, toolbar, template selector
+    dashboard/       # Resume list cards
+    templates/       # Classic, Modern, Minimal renderers
+    ui/              # shadcn/ui base components
+  database/
+    schema.sql       # Supabase table definitions
+  lib/
+    ai.ts            # Groq API integration
+    supabase/        # Server and client Supabase helpers
+    templates.ts     # Template config and registry
+  store/             # Zustand resume state
+  types/             # TypeScript type definitions
 ```
 
 ---
 
 ## Assumptions Made
 
-- **Paid template simulation**: The "Minimal" template is locked and shows an "Upgrade" modal. No real payment flow is implemented - clicking "Upgrade" unlocks it for the session.
+- **Paid template simulation**: The "Modern" template is locked and shows an "Upgrade" modal. No real payment flow is implemented - clicking "Upgrade to Pro (Simulated)" unlocks it for the current session only.
 - **PDF export**: Uses the browser's native print-to-PDF via `window.print()` with print-specific CSS. No server-side PDF generation library is used, which keeps the stack simpler and works reliably across devices.
 - **AI model**: Groq's free tier with `llama-3.1-8b-instant` is used for all AI features. The model is fast enough for real-time suggestions without noticeable delay.
 - **Auth**: Google OAuth requires a Google Cloud project with the correct redirect URI configured. Email/password auth works out of the box with Supabase.
