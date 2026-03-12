@@ -77,6 +77,11 @@
     visibility: visible;
   }
 
+  /* Cancel wrapper's position so absolute below resolves to the page box */
+  #resume-preview-wrapper {
+    position: static !important;
+  }
+
   /* Position at top-left and let it flow naturally across multiple pages */
   #resume-preview {
     position: absolute;

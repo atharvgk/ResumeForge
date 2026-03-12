@@ -52,7 +52,7 @@ export function PreviewPanel() {
       </div>
 
       {/* Resume preview with page-break overlay */}
-      <div className="relative">
+      <div id="resume-preview-wrapper" className="relative">
         <div
           id="resume-preview"
           ref={previewRef}
