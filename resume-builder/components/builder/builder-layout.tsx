@@ -24,16 +24,23 @@ export function BuilderLayout({
   initialTitle,
   initialData,
 }: BuilderLayoutProps) {
-  const store = useResumeStore();
+  const title = useResumeStore((s) => s.title);
+  const isDirty = useResumeStore((s) => s.isDirty);
+  const lastSaved = useResumeStore((s) => s.lastSaved);
+  const isSaving = useResumeStore((s) => s.isSaving);
+  const setTitle = useResumeStore((s) => s.setTitle);
+  const setResumeId = useResumeStore((s) => s.setResumeId);
+  const setData = useResumeStore((s) => s.setData);
+  const setIsDirty = useResumeStore((s) => s.setIsDirty);
   const { saveResume } = useResume();
   useAutoSave();
 
   useEffect(() => {
     // Load server data without marking dirty — prevents spurious auto-save on open
-    store.setResumeId(resumeId);
-    store.setTitle(initialTitle);
-    store.setData(initialData);
-    store.setIsDirty(false);
+    setResumeId(resumeId);
+    setTitle(initialTitle);
+    setData(initialData);
+    setIsDirty(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -58,16 +65,16 @@ export function BuilderLayout({
         </div>
         <div className="flex-1 flex items-center gap-2">
           <Input
-            value={store.title}
-            onChange={(e) => store.setTitle(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="max-w-xs h-8 text-sm"
           />
-          {store.isDirty && (
+          {isDirty && (
             <span className="text-xs text-slate-400">Unsaved changes</span>
           )}
-          {store.lastSaved && !store.isDirty && (
+          {lastSaved && !isDirty && (
             <span className="text-xs text-slate-400">
-              Saved {format(store.lastSaved, "h:mm a")}
+              Saved {format(lastSaved, "h:mm a")}
             </span>
           )}
         </div>
@@ -76,10 +83,10 @@ export function BuilderLayout({
             variant="outline"
             size="sm"
             onClick={handleSave}
-            disabled={store.isSaving || !store.isDirty}
+            disabled={isSaving || !isDirty}
           >
             <Save className="h-4 w-4 mr-1.5" />
-            {store.isSaving ? "Saving..." : "Save"}
+            {isSaving ? "Saving..." : "Save"}
           </Button>
           <Button
             size="sm"

@@ -1,25 +1,61 @@
 "use client";
 
-import { useState } from "react";
-import { useResumeStore } from "@/store/resume-store";
+import { useState, useCallback } from "react";
+import dynamic from "next/dynamic";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { PersonalInfoForm } from "@/components/forms/personal-info-form";
-import { ExperienceForm } from "@/components/forms/experience-form";
-import { EducationForm } from "@/components/forms/education-form";
-import { SkillsForm } from "@/components/forms/skills-form";
-import { ProjectsForm } from "@/components/forms/projects-form";
-import { CertificationsForm } from "@/components/forms/certifications-form";
-import { LanguagesForm } from "@/components/forms/languages-form";
 import { TemplateSelector } from "@/components/builder/template-selector";
 import { SectionReorder } from "@/components/builder/section-reorder";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+// Lazy-load form components — only downloaded when their section is first opened
+const PersonalInfoForm = dynamic(
+  () => import("@/components/forms/personal-info-form").then((m) => ({ default: m.PersonalInfoForm })),
+  { ssr: false }
+);
+const ExperienceForm = dynamic(
+  () => import("@/components/forms/experience-form").then((m) => ({ default: m.ExperienceForm })),
+  { ssr: false }
+);
+const EducationForm = dynamic(
+  () => import("@/components/forms/education-form").then((m) => ({ default: m.EducationForm })),
+  { ssr: false }
+);
+const SkillsForm = dynamic(
+  () => import("@/components/forms/skills-form").then((m) => ({ default: m.SkillsForm })),
+  { ssr: false }
+);
+const ProjectsForm = dynamic(
+  () => import("@/components/forms/projects-form").then((m) => ({ default: m.ProjectsForm })),
+  { ssr: false }
+);
+const CertificationsForm = dynamic(
+  () => import("@/components/forms/certifications-form").then((m) => ({ default: m.CertificationsForm })),
+  { ssr: false }
+);
+const LanguagesForm = dynamic(
+  () => import("@/components/forms/languages-form").then((m) => ({ default: m.LanguagesForm })),
+  { ssr: false }
+);
+
 export function EditorPanel() {
+  // Track which sections have ever been opened so we only mount them once needed
+  const [openSections, setOpenSections] = useState<string[]>(["personal"]);
+  const [mounted, setMounted] = useState<Set<string>>(new Set(["personal"]));
+
+  const handleValueChange = useCallback((values: string[]) => {
+    setOpenSections(values);
+    setMounted((prev) => {
+      const next = new Set(prev);
+      values.forEach((v) => next.add(v));
+      return next;
+    });
+  }, []);
+
   return (
     <div className="p-4">
       <Tabs defaultValue="content">
@@ -38,7 +74,8 @@ export function EditorPanel() {
         <TabsContent value="content">
           <Accordion
             type="multiple"
-            defaultValue={["personal"]}
+            value={openSections}
+            onValueChange={handleValueChange}
             className="space-y-2"
           >
             <AccordionItem value="personal" className="border rounded-lg px-3">
@@ -46,7 +83,7 @@ export function EditorPanel() {
                 Personal Info
               </AccordionTrigger>
               <AccordionContent>
-                <PersonalInfoForm />
+                {mounted.has("personal") && <PersonalInfoForm />}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem
@@ -57,7 +94,7 @@ export function EditorPanel() {
                 Experience
               </AccordionTrigger>
               <AccordionContent>
-                <ExperienceForm />
+                {mounted.has("experience") && <ExperienceForm />}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="education" className="border rounded-lg px-3">
@@ -65,7 +102,7 @@ export function EditorPanel() {
                 Education
               </AccordionTrigger>
               <AccordionContent>
-                <EducationForm />
+                {mounted.has("education") && <EducationForm />}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="skills" className="border rounded-lg px-3">
@@ -73,7 +110,7 @@ export function EditorPanel() {
                 Skills
               </AccordionTrigger>
               <AccordionContent>
-                <SkillsForm />
+                {mounted.has("skills") && <SkillsForm />}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="projects" className="border rounded-lg px-3">
@@ -81,7 +118,7 @@ export function EditorPanel() {
                 Projects
               </AccordionTrigger>
               <AccordionContent>
-                <ProjectsForm />
+                {mounted.has("projects") && <ProjectsForm />}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem
@@ -92,7 +129,7 @@ export function EditorPanel() {
                 Certifications
               </AccordionTrigger>
               <AccordionContent>
-                <CertificationsForm />
+                {mounted.has("certifications") && <CertificationsForm />}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="languages" className="border rounded-lg px-3">
@@ -100,7 +137,7 @@ export function EditorPanel() {
                 Languages
               </AccordionTrigger>
               <AccordionContent>
-                <LanguagesForm />
+                {mounted.has("languages") && <LanguagesForm />}
               </AccordionContent>
             </AccordionItem>
           </Accordion>
