@@ -22,9 +22,163 @@ export function ClassicTemplate({ data }: TemplateProps) {
   const fontFamily = FONT_MAP[templateSettings.fontFamily] ?? FONT_MAP.inter;
   const sm = SPACING_MULTIPLIER[templateSettings.spacing] ?? 1;
 
-  const visibleSections = sectionOrder
-    .filter((s) => s.visible)
-    .map((s) => s.id);
+  // Render a section block by its id — returns null if hidden / empty
+  const renderSection = (id: string) => {
+    switch (id) {
+      case "experience":
+        return experience.length > 0 ? (
+          <div key="experience" className="mb-5">
+            <SectionHeader title="Experience" color={primaryColor} />
+            {experience.map((exp) => (
+              <div key={exp.id} className="mb-4">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <strong>{exp.position}</strong>
+                    {exp.company && (
+                      <span className="text-slate-500"> · {exp.company}</span>
+                    )}
+                  </div>
+                  <span className="text-slate-400 text-xs">
+                    {exp.startDate}
+                    {exp.startDate && (exp.endDate || exp.current) ? " – " : ""}
+                    {exp.current ? "Present" : exp.endDate}
+                  </span>
+                </div>
+                {exp.location && (
+                  <div className="text-slate-400 text-xs">{exp.location}</div>
+                )}
+                {exp.description && (
+                  <p className="mt-1 text-slate-600">{exp.description}</p>
+                )}
+                {exp.bullets.length > 0 && (
+                  <ul className="mt-1 ml-4 space-y-0.5">
+                    {exp.bullets.map(
+                      (b, i) =>
+                        b && (
+                          <li key={i} className="list-disc text-slate-600">
+                            {b}
+                          </li>
+                        ),
+                    )}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : null;
+
+      case "education":
+        return education.length > 0 ? (
+          <div key="education" className="mb-5">
+            <SectionHeader title="Education" color={primaryColor} />
+            {education.map((edu) => (
+              <div key={edu.id} className="mb-3">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <strong>
+                      {edu.degree}
+                      {edu.field ? ` in ${edu.field}` : ""}
+                    </strong>
+                    {edu.institution && (
+                      <span className="text-slate-500"> · {edu.institution}</span>
+                    )}
+                  </div>
+                  <span className="text-slate-400 text-xs">
+                    {edu.startDate}
+                    {edu.startDate && (edu.endDate || edu.current) ? " – " : ""}
+                    {edu.current ? "Present" : edu.endDate}
+                  </span>
+                </div>
+                {edu.gpa && (
+                  <div className="text-slate-400 text-xs">GPA: {edu.gpa}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : null;
+
+      case "skills":
+        return skills.length > 0 ? (
+          <div key="skills" className="mb-5">
+            <SectionHeader title="Skills" color={primaryColor} />
+            <div className="flex flex-wrap gap-1.5">
+              {skills.map((skill) => (
+                <span
+                  key={skill.id}
+                  className="px-2 py-0.5 rounded text-xs"
+                  style={{
+                    backgroundColor: `${primaryColor}10`,
+                    color: primaryColor,
+                    border: `1px solid ${primaryColor}30`,
+                  }}
+                >
+                  {skill.name}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      case "projects":
+        return projects.length > 0 ? (
+          <div key="projects" className="mb-5">
+            <SectionHeader title="Projects" color={primaryColor} />
+            {projects.map((p) => (
+              <div key={p.id} className="mb-3">
+                <strong>{p.name}</strong>
+                {p.url && (
+                  <span className="text-slate-400 text-xs ml-2">({p.url})</span>
+                )}
+                {p.description && (
+                  <p className="mt-0.5 text-slate-600">{p.description}</p>
+                )}
+                {p.technologies.length > 0 && (
+                  <div className="text-xs text-slate-400 mt-0.5">
+                    Technologies: {p.technologies.join(", ")}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : null;
+
+      case "certifications":
+        return certifications.length > 0 ? (
+          <div key="certifications" className="mb-5">
+            <SectionHeader title="Certifications" color={primaryColor} />
+            {certifications.map((c) => (
+              <div key={c.id} className="mb-2 flex justify-between">
+                <div>
+                  <strong>{c.name}</strong>
+                  {c.issuer && (
+                    <span className="text-slate-500"> · {c.issuer}</span>
+                  )}
+                </div>
+                <span className="text-slate-400 text-xs">{c.date}</span>
+              </div>
+            ))}
+          </div>
+        ) : null;
+
+      case "languages":
+        return languages.length > 0 ? (
+          <div key="languages" className="mb-5">
+            <SectionHeader title="Languages" color={primaryColor} />
+            <div className="flex flex-wrap gap-3">
+              {languages.map((l) => (
+                <span key={l.id} className="text-slate-600">
+                  {l.name}{" "}
+                  <span className="text-slate-400 text-xs">({l.proficiency})</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : null;
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div
@@ -93,153 +247,8 @@ export function ClassicTemplate({ data }: TemplateProps) {
         </div>
       )}
 
-      {/* Dynamic Sections */}
-      {visibleSections.includes("experience") && experience.length > 0 && (
-        <div className="mb-5">
-          <SectionHeader title="Experience" color={primaryColor} />
-          {experience.map((exp) => (
-            <div key={exp.id} className="mb-4">
-              <div className="flex justify-between items-start">
-                <div>
-                  <strong>{exp.position}</strong>
-                  {exp.company && (
-                    <span className="text-slate-500"> · {exp.company}</span>
-                  )}
-                </div>
-                <span className="text-slate-400 text-xs">
-                  {exp.startDate}
-                  {exp.startDate && (exp.endDate || exp.current) ? " – " : ""}
-                  {exp.current ? "Present" : exp.endDate}
-                </span>
-              </div>
-              {exp.location && (
-                <div className="text-slate-400 text-xs">{exp.location}</div>
-              )}
-              {exp.description && (
-                <p className="mt-1 text-slate-600">{exp.description}</p>
-              )}
-              {exp.bullets.length > 0 && (
-                <ul className="mt-1 ml-4 space-y-0.5">
-                  {exp.bullets.map(
-                    (b, i) =>
-                      b && (
-                        <li key={i} className="list-disc text-slate-600">
-                          {b}
-                        </li>
-                      ),
-                  )}
-                </ul>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {visibleSections.includes("education") && education.length > 0 && (
-        <div className="mb-5">
-          <SectionHeader title="Education" color={primaryColor} />
-          {education.map((edu) => (
-            <div key={edu.id} className="mb-3">
-              <div className="flex justify-between items-start">
-                <div>
-                  <strong>
-                    {edu.degree}
-                    {edu.field ? ` in ${edu.field}` : ""}
-                  </strong>
-                  {edu.institution && (
-                    <span className="text-slate-500"> · {edu.institution}</span>
-                  )}
-                </div>
-                <span className="text-slate-400 text-xs">
-                  {edu.startDate}
-                  {edu.startDate && (edu.endDate || edu.current) ? " – " : ""}
-                  {edu.current ? "Present" : edu.endDate}
-                </span>
-              </div>
-              {edu.gpa && (
-                <div className="text-slate-400 text-xs">GPA: {edu.gpa}</div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {visibleSections.includes("skills") && skills.length > 0 && (
-        <div className="mb-5">
-          <SectionHeader title="Skills" color={primaryColor} />
-          <div className="flex flex-wrap gap-1.5">
-            {skills.map((skill) => (
-              <span
-                key={skill.id}
-                className="px-2 py-0.5 rounded text-xs"
-                style={{
-                  backgroundColor: `${primaryColor}10`,
-                  color: primaryColor,
-                  border: `1px solid ${primaryColor}30`,
-                }}
-              >
-                {skill.name}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {visibleSections.includes("projects") && projects.length > 0 && (
-        <div className="mb-5">
-          <SectionHeader title="Projects" color={primaryColor} />
-          {projects.map((p) => (
-            <div key={p.id} className="mb-3">
-              <strong>{p.name}</strong>
-              {p.url && (
-                <span className="text-slate-400 text-xs ml-2">({p.url})</span>
-              )}
-              {p.description && (
-                <p className="mt-0.5 text-slate-600">{p.description}</p>
-              )}
-              {p.technologies.length > 0 && (
-                <div className="text-xs text-slate-400 mt-0.5">
-                  Technologies: {p.technologies.join(", ")}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {visibleSections.includes("certifications") &&
-        certifications.length > 0 && (
-          <div className="mb-5">
-            <SectionHeader title="Certifications" color={primaryColor} />
-            {certifications.map((c) => (
-              <div key={c.id} className="mb-2 flex justify-between">
-                <div>
-                  <strong>{c.name}</strong>
-                  {c.issuer && (
-                    <span className="text-slate-500"> · {c.issuer}</span>
-                  )}
-                </div>
-                <span className="text-slate-400 text-xs">{c.date}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
-      {visibleSections.includes("languages") && languages.length > 0 && (
-        <div className="mb-5">
-          <SectionHeader title="Languages" color={primaryColor} />
-          <div className="flex flex-wrap gap-3">
-            {languages.map((l) => (
-              <span key={l.id} className="text-slate-600">
-                {l.name}{" "}
-                <span className="text-slate-400 text-xs">
-                  ({l.proficiency})
-                </span>
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* Dynamic Sections — rendered in user-defined order */}
+      {sectionOrder.filter((s) => s.visible).map((s) => renderSection(s.id))}
     </div>
   );
 }

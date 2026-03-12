@@ -23,9 +23,123 @@ export function ModernTemplate({ data }: TemplateProps) {
   const sm = SPACING_MULTIPLIER[templateSettings.spacing] ?? 1;
   const sidePad = Math.round(24 * sm);
 
-  const visibleSections = sectionOrder
-    .filter((s) => s.visible)
-    .map((s) => s.id);
+  // Sections rendered in the main column (skills/languages live in the sidebar)
+  const mainSections = ["experience", "education", "projects", "certifications"];
+
+  const renderMainSection = (id: string) => {
+    switch (id) {
+      case "experience":
+        return experience.length > 0 ? (
+          <div key="experience" className="mb-5">
+            <SectionHeader title="Experience" color={primaryColor} />
+            {experience.map((exp) => (
+              <div
+                key={exp.id}
+                className="mb-4 pl-3 border-l-2"
+                style={{ borderColor: `${primaryColor}40` }}
+              >
+                <div className="flex justify-between items-start">
+                  <div>
+                    <strong className="text-slate-900">{exp.position}</strong>
+                    {exp.company && (
+                      <span className="text-slate-500 ml-1">{exp.company}</span>
+                    )}
+                  </div>
+                  <span className="text-slate-400 text-xs shrink-0 ml-2">
+                    {exp.startDate}
+                    {exp.startDate && (exp.endDate || exp.current) ? " – " : ""}
+                    {exp.current ? "Present" : exp.endDate}
+                  </span>
+                </div>
+                {exp.description && (
+                  <p className="mt-1 text-slate-600 text-xs">{exp.description}</p>
+                )}
+                {exp.bullets.length > 0 && (
+                  <ul className="mt-1 ml-3 space-y-0.5">
+                    {exp.bullets.map(
+                      (b, i) =>
+                        b && (
+                          <li key={i} className="list-disc text-slate-600 text-xs">{b}</li>
+                        ),
+                    )}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : null;
+
+      case "education":
+        return education.length > 0 ? (
+          <div key="education" className="mb-5">
+            <SectionHeader title="Education" color={primaryColor} />
+            {education.map((edu) => (
+              <div
+                key={edu.id}
+                className="mb-3 pl-3 border-l-2"
+                style={{ borderColor: `${primaryColor}40` }}
+              >
+                <div className="flex justify-between">
+                  <strong className="text-slate-900">
+                    {edu.degree}{edu.field ? ` in ${edu.field}` : ""}
+                  </strong>
+                  <span className="text-slate-400 text-xs">
+                    {edu.startDate} – {edu.current ? "Present" : edu.endDate}
+                  </span>
+                </div>
+                {edu.institution && (
+                  <div className="text-slate-500 text-xs">{edu.institution}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : null;
+
+      case "projects":
+        return projects.length > 0 ? (
+          <div key="projects" className="mb-5">
+            <SectionHeader title="Projects" color={primaryColor} />
+            {projects.map((p) => (
+              <div key={p.id} className="mb-3">
+                <strong>{p.name}</strong>
+                {p.description && (
+                  <p className="mt-0.5 text-slate-600 text-xs">{p.description}</p>
+                )}
+                {p.technologies.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {p.technologies.map((t, i) => (
+                      <span
+                        key={i}
+                        className="text-xs px-1.5 py-0.5 rounded"
+                        style={{ backgroundColor: `${primaryColor}15`, color: primaryColor }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : null;
+
+      case "certifications":
+        return certifications.length > 0 ? (
+          <div key="certifications" className="mb-5">
+            <SectionHeader title="Certifications" color={primaryColor} />
+            {certifications.map((c) => (
+              <div key={c.id} className="mb-2 flex justify-between text-xs">
+                <span><strong>{c.name}</strong> · {c.issuer}</span>
+                <span className="text-slate-400">{c.date}</span>
+              </div>
+            ))}
+          </div>
+        ) : null;
+
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="flex min-h-full" style={{ fontSize: 13, fontFamily }}>
@@ -129,127 +243,10 @@ export function ModernTemplate({ data }: TemplateProps) {
           </div>
         )}
 
-        {visibleSections.includes("experience") && experience.length > 0 && (
-          <div className="mb-5">
-            <SectionHeader title="Experience" color={primaryColor} />
-            {experience.map((exp) => (
-              <div
-                key={exp.id}
-                className="mb-4 pl-3 border-l-2"
-                style={{ borderColor: `${primaryColor}40` }}
-              >
-                <div className="flex justify-between items-start">
-                  <div>
-                    <strong className="text-slate-900">{exp.position}</strong>
-                    {exp.company && (
-                      <span className="text-slate-500 ml-1">{exp.company}</span>
-                    )}
-                  </div>
-                  <span className="text-slate-400 text-xs shrink-0 ml-2">
-                    {exp.startDate}
-                    {exp.startDate && (exp.endDate || exp.current) ? " – " : ""}
-                    {exp.current ? "Present" : exp.endDate}
-                  </span>
-                </div>
-                {exp.description && (
-                  <p className="mt-1 text-slate-600 text-xs">
-                    {exp.description}
-                  </p>
-                )}
-                {exp.bullets.length > 0 && (
-                  <ul className="mt-1 ml-3 space-y-0.5">
-                    {exp.bullets.map(
-                      (b, i) =>
-                        b && (
-                          <li
-                            key={i}
-                            className="list-disc text-slate-600 text-xs"
-                          >
-                            {b}
-                          </li>
-                        ),
-                    )}
-                  </ul>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {visibleSections.includes("education") && education.length > 0 && (
-          <div className="mb-5">
-            <SectionHeader title="Education" color={primaryColor} />
-            {education.map((edu) => (
-              <div
-                key={edu.id}
-                className="mb-3 pl-3 border-l-2"
-                style={{ borderColor: `${primaryColor}40` }}
-              >
-                <div className="flex justify-between">
-                  <strong className="text-slate-900">
-                    {edu.degree}
-                    {edu.field ? ` in ${edu.field}` : ""}
-                  </strong>
-                  <span className="text-slate-400 text-xs">
-                    {edu.startDate} – {edu.current ? "Present" : edu.endDate}
-                  </span>
-                </div>
-                {edu.institution && (
-                  <div className="text-slate-500 text-xs">
-                    {edu.institution}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {visibleSections.includes("projects") && projects.length > 0 && (
-          <div className="mb-5">
-            <SectionHeader title="Projects" color={primaryColor} />
-            {projects.map((p) => (
-              <div key={p.id} className="mb-3">
-                <strong>{p.name}</strong>
-                {p.description && (
-                  <p className="mt-0.5 text-slate-600 text-xs">
-                    {p.description}
-                  </p>
-                )}
-                {p.technologies.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-1">
-                    {p.technologies.map((t, i) => (
-                      <span
-                        key={i}
-                        className="text-xs px-1.5 py-0.5 rounded"
-                        style={{
-                          backgroundColor: `${primaryColor}15`,
-                          color: primaryColor,
-                        }}
-                      >
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-
-        {visibleSections.includes("certifications") &&
-          certifications.length > 0 && (
-            <div className="mb-5">
-              <SectionHeader title="Certifications" color={primaryColor} />
-              {certifications.map((c) => (
-                <div key={c.id} className="mb-2 flex justify-between text-xs">
-                  <span>
-                    <strong>{c.name}</strong> · {c.issuer}
-                  </span>
-                  <span className="text-slate-400">{c.date}</span>
-                </div>
-              ))}
-            </div>
-          )}
+        {/* Dynamic main sections — rendered in user-defined order */}
+        {sectionOrder
+          .filter((s) => s.visible && mainSections.includes(s.id))
+          .map((s) => renderMainSection(s.id))}
       </div>
     </div>
   );
