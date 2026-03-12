@@ -91,13 +91,22 @@ export default function RegisterPage() {
         {/* Card */}
         <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-2xl shadow-gray-300">
           <div className="mb-6">
-            <h1 className="text-xl font-semibold text-gray-900">Create your account</h1>
-            <p className="text-gray-500 text-sm mt-1">Start building professional resumes today</p>
+            <h1 className="text-xl font-semibold text-gray-900">
+              Create your account
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">
+              Start building professional resumes today
+            </p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1.5">
-              <label htmlFor="fullName" className="text-sm font-medium text-gray-600">Full Name</label>
+              <label
+                htmlFor="fullName"
+                className="text-sm font-medium text-gray-600"
+              >
+                Full Name
+              </label>
               <input
                 id="fullName"
                 type="text"
@@ -106,11 +115,18 @@ export default function RegisterPage() {
                 {...register("fullName")}
               />
               {errors.fullName && (
-                <p className="text-xs text-red-400">{errors.fullName.message}</p>
+                <p className="text-xs text-red-400">
+                  {errors.fullName.message}
+                </p>
               )}
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="email" className="text-sm font-medium text-gray-600">Email</label>
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-600"
+              >
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
@@ -123,7 +139,12 @@ export default function RegisterPage() {
               )}
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="password" className="text-sm font-medium text-gray-600">Password</label>
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-gray-600"
+              >
+                Password
+              </label>
               <input
                 id="password"
                 type="password"
@@ -132,11 +153,18 @@ export default function RegisterPage() {
                 {...register("password")}
               />
               {errors.password && (
-                <p className="text-xs text-red-400">{errors.password.message}</p>
+                <p className="text-xs text-red-400">
+                  {errors.password.message}
+                </p>
               )}
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-600">Confirm Password</label>
+              <label
+                htmlFor="confirmPassword"
+                className="text-sm font-medium text-gray-600"
+              >
+                Confirm Password
+              </label>
               <input
                 id="confirmPassword"
                 type="password"
@@ -145,7 +173,9 @@ export default function RegisterPage() {
                 {...register("confirmPassword")}
               />
               {errors.confirmPassword && (
-                <p className="text-xs text-red-400">{errors.confirmPassword.message}</p>
+                <p className="text-xs text-red-400">
+                  {errors.confirmPassword.message}
+                </p>
               )}
             </div>
             <button
@@ -162,7 +192,9 @@ export default function RegisterPage() {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-2 text-gray-400 uppercase tracking-wider">Or</span>
+              <span className="bg-white px-2 text-gray-400 uppercase tracking-wider">
+                Or
+              </span>
             </div>
           </div>
 
@@ -176,7 +208,10 @@ export default function RegisterPage() {
 
           <p className="text-center text-sm text-gray-400 mt-6">
             Already have an account?{" "}
-            <Link href="/auth/login" className="text-orange-600 hover:text-orange-600 transition-colors">
+            <Link
+              href="/auth/login"
+              className="text-orange-600 hover:text-orange-600 transition-colors"
+            >
               Sign in
             </Link>
           </p>

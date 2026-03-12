@@ -7,12 +7,45 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { type Experience } from "@/types/resume";
-import { Plus, Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  ChevronDown,
+  ChevronUp,
+  Sparkles,
+  Loader2,
+} from "lucide-react";
+
+async function aiImprove(
+  content: string,
+): Promise<{ result: string | null; error: string | null }> {
+  try {
+    const res = await fetch("/api/ai/enhance", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ section: "experience", content }),
+    });
+    const data = await res.json();
+    if (!res.ok)
+      return { result: null, error: data.error ?? "AI request failed" };
+    return { result: data.enhanced ?? null, error: null };
+  } catch {
+    return { result: null, error: "Network error. Please try again." };
+  }
+}
 
 function ExperienceItem({ exp }: { exp: Experience }) {
   const updateExperience = useResumeStore((s) => s.updateExperience);
   const removeExperience = useResumeStore((s) => s.removeExperience);
   const [open, setOpen] = useState(true);
+  const [loadingDesc, setLoadingDesc] = useState(false);
+  const [loadingBullet, setLoadingBullet] = useState<number | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const [pendingDesc, setPendingDesc] = useState<string | null>(null);
+  const [pendingBullet, setPendingBullet] = useState<{
+    index: number;
+    text: string;
+  } | null>(null);
 
   const update = (field: keyof Experience, value: unknown) => {
     updateExperience(exp.id, { [field]: value });
@@ -31,8 +64,30 @@ function ExperienceItem({ exp }: { exp: Experience }) {
       exp.bullets.filter((_, idx) => idx !== i),
     );
 
+  const handleImproveDesc = async () => {
+    if (!exp.description.trim()) return;
+    setAiError(null);
+    setPendingDesc(null);
+    setLoadingDesc(true);
+    const { result, error } = await aiImprove(exp.description);
+    if (result) setPendingDesc(result);
+    else if (error) setAiError(error);
+    setLoadingDesc(false);
+  };
+
+  const handleImproveBullet = async (i: number) => {
+    if (!exp.bullets[i].trim()) return;
+    setAiError(null);
+    setPendingBullet(null);
+    setLoadingBullet(i);
+    const { result, error } = await aiImprove(exp.bullets[i]);
+    if (result) setPendingBullet({ index: i, text: result });
+    else if (error) setAiError(error);
+    setLoadingBullet(null);
+  };
+
   return (
-    <div className="border rounded-lg overflow-hidden mb-3">
+    <div className="border border-gray-200 rounded-lg overflow-hidden mb-3">
       <div
         className="flex items-center justify-between px-3 py-2 bg-gray-50 cursor-pointer"
         onClick={() => setOpen(!open)}
@@ -115,8 +170,68 @@ function ExperienceItem({ exp }: { exp: Experience }) {
               />
             </div>
           </div>
+
+          {/* AI error message */}
+          {aiError && (
+            <div className="flex items-center gap-1.5 text-xs text-red-600 bg-red-50 border border-red-200 rounded-md px-2.5 py-1.5">
+              <span>⚠ {aiError}</span>
+              <button
+                onClick={() => setAiError(null)}
+                className="ml-auto text-red-400 hover:text-red-600"
+              >
+                ✕
+              </button>
+            </div>
+          )}
+
+          {/* Description with AI improve */}
           <div className="space-y-1">
-            <Label className="text-xs">Description</Label>
+            <div className="flex items-center justify-between">
+              <Label className="text-xs">Description</Label>
+              <button
+                type="button"
+                disabled={!exp.description.trim() || loadingDesc}
+                onClick={handleImproveDesc}
+                className="flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200 hover:bg-orange-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {loadingDesc ? (
+                  <Loader2 className="h-2.5 w-2.5 animate-spin" />
+                ) : (
+                  <Sparkles className="h-2.5 w-2.5" />
+                )}
+                {loadingDesc ? "Improving…" : "AI Improve"}
+              </button>
+            </div>
+            {pendingDesc && (
+              <div className="rounded-lg border border-orange-200 bg-orange-50/60 p-2.5 space-y-2">
+                <p className="text-[10px] font-semibold text-orange-700 flex items-center gap-1">
+                  <Sparkles className="h-2.5 w-2.5" />
+                  AI preview — review before applying
+                </p>
+                <p className="text-xs text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  {pendingDesc}
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      update("description", pendingDesc);
+                      setPendingDesc(null);
+                    }}
+                    className="flex-1 rounded-md bg-orange-500 px-2 py-1 text-[10px] font-semibold text-white hover:bg-orange-600 transition-colors"
+                  >
+                    Apply
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPendingDesc(null)}
+                    className="flex-1 rounded-md border border-gray-200 bg-white px-2 py-1 text-[10px] font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+                  >
+                    Discard
+                  </button>
+                </div>
+              </div>
+            )}
             <Textarea
               value={exp.description}
               onChange={(e) => update("description", e.target.value)}
@@ -124,6 +239,8 @@ function ExperienceItem({ exp }: { exp: Experience }) {
               placeholder="Brief description..."
             />
           </div>
+
+          {/* Bullet points with AI improve per bullet */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <Label className="text-xs">Bullet Points</Label>
@@ -138,21 +255,66 @@ function ExperienceItem({ exp }: { exp: Experience }) {
               </Button>
             </div>
             {exp.bullets.map((bullet, i) => (
-              <div key={i} className="flex gap-1">
-                <Input
-                  value={bullet}
-                  onChange={(e) => updateBullet(i, e.target.value)}
-                  className="h-7 text-xs"
-                  placeholder="Bullet point..."
-                />
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 shrink-0"
-                  onClick={() => removeBullet(i)}
-                >
-                  <Trash2 className="h-3 w-3 text-destructive" />
-                </Button>
+              <div key={i} className="space-y-1">
+                <div className="flex gap-1 items-center">
+                  <Input
+                    value={bullet}
+                    onChange={(e) => updateBullet(i, e.target.value)}
+                    className="h-7 text-xs"
+                    placeholder="Bullet point..."
+                  />
+                  <button
+                    type="button"
+                    disabled={!bullet.trim() || loadingBullet === i}
+                    onClick={() => handleImproveBullet(i)}
+                    title="AI Improve"
+                    className="shrink-0 flex items-center justify-center h-7 w-7 rounded-md border border-orange-200 bg-orange-50 text-orange-500 hover:bg-orange-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {loadingBullet === i ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <Sparkles className="h-3 w-3" />
+                    )}
+                  </button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-7 w-7 shrink-0"
+                    onClick={() => removeBullet(i)}
+                  >
+                    <Trash2 className="h-3 w-3 text-destructive" />
+                  </Button>
+                </div>
+                {pendingBullet?.index === i && (
+                  <div className="rounded-lg border border-orange-200 bg-orange-50/60 p-2 space-y-1.5">
+                    <p className="text-[10px] font-semibold text-orange-700 flex items-center gap-1">
+                      <Sparkles className="h-2.5 w-2.5" />
+                      AI preview — review before applying
+                    </p>
+                    <p className="text-xs text-gray-700 leading-relaxed">
+                      {pendingBullet.text}
+                    </p>
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          updateBullet(pendingBullet.index, pendingBullet.text);
+                          setPendingBullet(null);
+                        }}
+                        className="flex-1 rounded-md bg-orange-500 px-2 py-1 text-[10px] font-semibold text-white hover:bg-orange-600 transition-colors"
+                      >
+                        Apply
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPendingBullet(null)}
+                        className="flex-1 rounded-md border border-gray-200 bg-white px-2 py-1 text-[10px] font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+                      >
+                        Discard
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>

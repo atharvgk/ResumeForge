@@ -62,7 +62,9 @@ export function SectionReorder() {
           onDragEnd={handleDragEnd}
           className={cn(
             "flex items-center gap-3 px-3 py-2.5 rounded-lg border text-sm cursor-grab active:cursor-grabbing transition-all select-none",
-            section.visible ? "bg-white border-gray-200 hover:border-orange-200 hover:shadow-sm" : "bg-gray-50 border-gray-200 opacity-60",
+            section.visible
+              ? "bg-white border-gray-200 hover:border-orange-200 hover:shadow-sm"
+              : "bg-gray-50 border-gray-200 opacity-60",
             dragIndex === idx && "opacity-40 scale-95",
             overIndex === idx &&
               dragIndex !== idx &&
@@ -70,7 +72,9 @@ export function SectionReorder() {
           )}
         >
           <GripVertical className="h-4 w-4 text-gray-400 shrink-0" />
-          <span className="flex-1 font-medium text-gray-700">{section.label}</span>
+          <span className="flex-1 font-medium text-gray-700">
+            {section.label}
+          </span>
           <button
             onClick={() => toggleSectionVisibility(section.id)}
             className="text-gray-400 hover:text-orange-500 transition-colors"

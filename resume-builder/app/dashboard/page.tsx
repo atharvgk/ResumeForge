@@ -27,7 +27,10 @@ export default async function DashboardPage() {
       {/* Sticky header */}
       <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200">
         <div className="container mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 font-bold text-xl group">
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 font-bold text-xl group"
+          >
             <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center transition-all duration-300 group-hover:bg-orange-400 group-hover:scale-110 group-hover:rotate-6 shadow-lg shadow-orange-200">
               <FileText className="h-4 w-4 text-white transition-transform duration-300" />
             </div>
@@ -55,7 +58,14 @@ export default async function DashboardPage() {
       {/* Welcome banner */}
       <div className="border-b border-gray-200 bg-gradient-to-r from-orange-50 via-white to-rose-50 relative overflow-hidden">
         {/* subtle dot grid */}
-        <div className="pointer-events-none absolute inset-0 opacity-40" style={{ backgroundImage: 'radial-gradient(circle, #fdba74 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-40"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, #fdba74 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
         <div className="container mx-auto px-6 py-8 relative">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 animate-fade-in-up fill-both">
             <div>

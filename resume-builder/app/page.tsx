@@ -76,7 +76,8 @@ export default async function HomePage() {
                   size="lg"
                   className="group h-12 px-8 text-base bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-200 hover:-translate-y-0.5 transition-all duration-200 btn-shimmer"
                 >
-                  Go to Dashboard <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  Go to Dashboard{" "}
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Button>
               </Link>
               <Link href="/builder/new">
@@ -96,7 +97,8 @@ export default async function HomePage() {
                   size="lg"
                   className="group h-12 px-8 text-base bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-200 hover:-translate-y-0.5 transition-all duration-200 btn-shimmer"
                 >
-                  Start for Free <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  Start for Free{" "}
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Button>
               </Link>
               <Link href="/auth/login">
@@ -123,7 +125,10 @@ export default async function HomePage() {
             "PDF export in seconds",
             "ATS-friendly formats",
           ].map((item) => (
-            <div key={item} className="flex items-center gap-2 text-sm text-gray-500">
+            <div
+              key={item}
+              className="flex items-center gap-2 text-sm text-gray-500"
+            >
               <CheckCircle className="h-4 w-4 text-orange-600 shrink-0" />
               {item}
             </div>
@@ -155,7 +160,8 @@ export default async function HomePage() {
               glow: "hover:shadow-amber-200",
               title: "AI-Powered Suggestions",
               desc: "Smart suggestions powered by Google Gemini to improve every section of your resume.",
-              detail: "Enhance bullet points, summary, and skills with one click.",
+              detail:
+                "Enhance bullet points, summary, and skills with one click.",
             },
             {
               icon: Palette,
@@ -282,7 +288,8 @@ export default async function HomePage() {
                   size="lg"
                   className="group h-12 px-10 text-base bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-2xl shadow-orange-200 hover:-translate-y-0.5 transition-all duration-200 btn-shimmer"
                 >
-                  Create a New Resume <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  Create a New Resume{" "}
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Button>
               </Link>
             ) : (
@@ -297,7 +304,10 @@ export default async function HomePage() {
               </Link>
             )}
           </div>
-          <p className="mt-5 text-sm text-gray-400 flex items-center justify-center gap-1.5 animate-fade-in-up fill-both" style={{ animationDelay: '300ms' }}>
+          <p
+            className="mt-5 text-sm text-gray-400 flex items-center justify-center gap-1.5 animate-fade-in-up fill-both"
+            style={{ animationDelay: "300ms" }}
+          >
             <CheckCircle className="h-3.5 w-3.5 text-emerald-500" />
             No credit card required — free to get started
           </p>

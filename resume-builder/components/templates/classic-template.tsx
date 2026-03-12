@@ -80,7 +80,10 @@ export function ClassicTemplate({ data }: TemplateProps) {
                       {edu.field ? ` in ${edu.field}` : ""}
                     </strong>
                     {edu.institution && (
-                      <span className="text-slate-500"> · {edu.institution}</span>
+                      <span className="text-slate-500">
+                        {" "}
+                        · {edu.institution}
+                      </span>
                     )}
                   </div>
                   <span className="text-slate-400 text-xs">
@@ -168,7 +171,9 @@ export function ClassicTemplate({ data }: TemplateProps) {
               {languages.map((l) => (
                 <span key={l.id} className="text-slate-600">
                   {l.name}{" "}
-                  <span className="text-slate-400 text-xs">({l.proficiency})</span>
+                  <span className="text-slate-400 text-xs">
+                    ({l.proficiency})
+                  </span>
                 </span>
               ))}
             </div>

@@ -149,7 +149,10 @@ export function TemplateSelector() {
           </div>
 
           <DialogFooter className="flex-col gap-2 sm:flex-col">
-            <Button onClick={handleUpgrade} className="w-full bg-orange-500 hover:bg-orange-600 text-white">
+            <Button
+              onClick={handleUpgrade}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+            >
               <Crown className="h-4 w-4 mr-2" />
               Upgrade to Pro (Simulated)
             </Button>

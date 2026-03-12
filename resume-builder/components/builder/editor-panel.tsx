@@ -14,32 +14,53 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Lazy-load form components — only downloaded when their section is first opened
 const PersonalInfoForm = dynamic(
-  () => import("@/components/forms/personal-info-form").then((m) => ({ default: m.PersonalInfoForm })),
-  { ssr: false }
+  () =>
+    import("@/components/forms/personal-info-form").then((m) => ({
+      default: m.PersonalInfoForm,
+    })),
+  { ssr: false },
 );
 const ExperienceForm = dynamic(
-  () => import("@/components/forms/experience-form").then((m) => ({ default: m.ExperienceForm })),
-  { ssr: false }
+  () =>
+    import("@/components/forms/experience-form").then((m) => ({
+      default: m.ExperienceForm,
+    })),
+  { ssr: false },
 );
 const EducationForm = dynamic(
-  () => import("@/components/forms/education-form").then((m) => ({ default: m.EducationForm })),
-  { ssr: false }
+  () =>
+    import("@/components/forms/education-form").then((m) => ({
+      default: m.EducationForm,
+    })),
+  { ssr: false },
 );
 const SkillsForm = dynamic(
-  () => import("@/components/forms/skills-form").then((m) => ({ default: m.SkillsForm })),
-  { ssr: false }
+  () =>
+    import("@/components/forms/skills-form").then((m) => ({
+      default: m.SkillsForm,
+    })),
+  { ssr: false },
 );
 const ProjectsForm = dynamic(
-  () => import("@/components/forms/projects-form").then((m) => ({ default: m.ProjectsForm })),
-  { ssr: false }
+  () =>
+    import("@/components/forms/projects-form").then((m) => ({
+      default: m.ProjectsForm,
+    })),
+  { ssr: false },
 );
 const CertificationsForm = dynamic(
-  () => import("@/components/forms/certifications-form").then((m) => ({ default: m.CertificationsForm })),
-  { ssr: false }
+  () =>
+    import("@/components/forms/certifications-form").then((m) => ({
+      default: m.CertificationsForm,
+    })),
+  { ssr: false },
 );
 const LanguagesForm = dynamic(
-  () => import("@/components/forms/languages-form").then((m) => ({ default: m.LanguagesForm })),
-  { ssr: false }
+  () =>
+    import("@/components/forms/languages-form").then((m) => ({
+      default: m.LanguagesForm,
+    })),
+  { ssr: false },
 );
 
 export function EditorPanel() {
@@ -60,13 +81,22 @@ export function EditorPanel() {
     <div className="p-4">
       <Tabs defaultValue="content">
         <TabsList className="w-full mb-4 bg-gray-100 p-0.5 rounded-lg">
-          <TabsTrigger value="content" className="flex-1 text-xs font-medium data-[state=active]:bg-white data-[state=active]:text-orange-600 data-[state=active]:shadow-sm rounded-md transition-all">
+          <TabsTrigger
+            value="content"
+            className="flex-1 text-xs font-medium data-[state=active]:bg-white data-[state=active]:text-orange-600 data-[state=active]:shadow-sm rounded-md transition-all"
+          >
             Content
           </TabsTrigger>
-          <TabsTrigger value="design" className="flex-1 text-xs font-medium data-[state=active]:bg-white data-[state=active]:text-orange-600 data-[state=active]:shadow-sm rounded-md transition-all">
+          <TabsTrigger
+            value="design"
+            className="flex-1 text-xs font-medium data-[state=active]:bg-white data-[state=active]:text-orange-600 data-[state=active]:shadow-sm rounded-md transition-all"
+          >
             Design
           </TabsTrigger>
-          <TabsTrigger value="sections" className="flex-1 text-xs font-medium data-[state=active]:bg-white data-[state=active]:text-orange-600 data-[state=active]:shadow-sm rounded-md transition-all">
+          <TabsTrigger
+            value="sections"
+            className="flex-1 text-xs font-medium data-[state=active]:bg-white data-[state=active]:text-orange-600 data-[state=active]:shadow-sm rounded-md transition-all"
+          >
             Sections
           </TabsTrigger>
         </TabsList>
@@ -78,7 +108,10 @@ export function EditorPanel() {
             onValueChange={handleValueChange}
             className="space-y-2"
           >
-            <AccordionItem value="personal" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+            <AccordionItem
+              value="personal"
+              className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors"
+            >
               <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Personal Info
               </AccordionTrigger>
@@ -86,7 +119,10 @@ export function EditorPanel() {
                 {mounted.has("personal") && <PersonalInfoForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="experience" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+            <AccordionItem
+              value="experience"
+              className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors"
+            >
               <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Experience
               </AccordionTrigger>
@@ -94,7 +130,10 @@ export function EditorPanel() {
                 {mounted.has("experience") && <ExperienceForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="education" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+            <AccordionItem
+              value="education"
+              className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors"
+            >
               <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Education
               </AccordionTrigger>
@@ -102,7 +141,10 @@ export function EditorPanel() {
                 {mounted.has("education") && <EducationForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="skills" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+            <AccordionItem
+              value="skills"
+              className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors"
+            >
               <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Skills
               </AccordionTrigger>
@@ -110,7 +152,10 @@ export function EditorPanel() {
                 {mounted.has("skills") && <SkillsForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="projects" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+            <AccordionItem
+              value="projects"
+              className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors"
+            >
               <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Projects
               </AccordionTrigger>
@@ -118,7 +163,10 @@ export function EditorPanel() {
                 {mounted.has("projects") && <ProjectsForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="certifications" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+            <AccordionItem
+              value="certifications"
+              className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors"
+            >
               <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Certifications
               </AccordionTrigger>
@@ -126,7 +174,10 @@ export function EditorPanel() {
                 {mounted.has("certifications") && <CertificationsForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="languages" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+            <AccordionItem
+              value="languages"
+              className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors"
+            >
               <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Languages
               </AccordionTrigger>

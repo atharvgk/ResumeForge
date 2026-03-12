@@ -23,10 +23,17 @@ export function ModernTemplate({ data }: TemplateProps) {
   const sm = SPACING_MULTIPLIER[templateSettings.spacing] ?? 1;
   const sidePad = Math.round(24 * sm);
 
-  const visibleSections = sectionOrder.filter((s) => s.visible).map((s) => s.id);
+  const visibleSections = sectionOrder
+    .filter((s) => s.visible)
+    .map((s) => s.id);
 
   // Sections rendered in the main column (skills/languages live in the sidebar)
-  const mainSections = ["experience", "education", "projects", "certifications"];
+  const mainSections = [
+    "experience",
+    "education",
+    "projects",
+    "certifications",
+  ];
 
   const renderMainSection = (id: string) => {
     switch (id) {
@@ -54,14 +61,21 @@ export function ModernTemplate({ data }: TemplateProps) {
                   </span>
                 </div>
                 {exp.description && (
-                  <p className="mt-1 text-slate-600 text-xs">{exp.description}</p>
+                  <p className="mt-1 text-slate-600 text-xs">
+                    {exp.description}
+                  </p>
                 )}
                 {exp.bullets.length > 0 && (
                   <ul className="mt-1 ml-3 space-y-0.5">
                     {exp.bullets.map(
                       (b, i) =>
                         b && (
-                          <li key={i} className="list-disc text-slate-600 text-xs">{b}</li>
+                          <li
+                            key={i}
+                            className="list-disc text-slate-600 text-xs"
+                          >
+                            {b}
+                          </li>
                         ),
                     )}
                   </ul>
@@ -83,14 +97,17 @@ export function ModernTemplate({ data }: TemplateProps) {
               >
                 <div className="flex justify-between">
                   <strong className="text-slate-900">
-                    {edu.degree}{edu.field ? ` in ${edu.field}` : ""}
+                    {edu.degree}
+                    {edu.field ? ` in ${edu.field}` : ""}
                   </strong>
                   <span className="text-slate-400 text-xs">
                     {edu.startDate} – {edu.current ? "Present" : edu.endDate}
                   </span>
                 </div>
                 {edu.institution && (
-                  <div className="text-slate-500 text-xs">{edu.institution}</div>
+                  <div className="text-slate-500 text-xs">
+                    {edu.institution}
+                  </div>
                 )}
               </div>
             ))}
@@ -105,7 +122,9 @@ export function ModernTemplate({ data }: TemplateProps) {
               <div key={p.id} className="mb-3">
                 <strong>{p.name}</strong>
                 {p.description && (
-                  <p className="mt-0.5 text-slate-600 text-xs">{p.description}</p>
+                  <p className="mt-0.5 text-slate-600 text-xs">
+                    {p.description}
+                  </p>
                 )}
                 {p.technologies.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-1">
@@ -113,7 +132,10 @@ export function ModernTemplate({ data }: TemplateProps) {
                       <span
                         key={i}
                         className="text-xs px-1.5 py-0.5 rounded"
-                        style={{ backgroundColor: `${primaryColor}15`, color: primaryColor }}
+                        style={{
+                          backgroundColor: `${primaryColor}15`,
+                          color: primaryColor,
+                        }}
                       >
                         {t}
                       </span>
@@ -131,7 +153,9 @@ export function ModernTemplate({ data }: TemplateProps) {
             <SectionHeader title="Certifications" color={primaryColor} />
             {certifications.map((c) => (
               <div key={c.id} className="mb-2 flex justify-between text-xs">
-                <span><strong>{c.name}</strong> · {c.issuer}</span>
+                <span>
+                  <strong>{c.name}</strong> · {c.issuer}
+                </span>
                 <span className="text-slate-400">{c.date}</span>
               </div>
             ))}

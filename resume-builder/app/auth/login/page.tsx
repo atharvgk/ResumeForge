@@ -107,13 +107,22 @@ function LoginForm() {
         {/* Card */}
         <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-2xl shadow-gray-300">
           <div className="mb-6">
-            <h1 className="text-xl font-semibold text-gray-900">Welcome back</h1>
-            <p className="text-gray-500 text-sm mt-1">Sign in to your account to continue</p>
+            <h1 className="text-xl font-semibold text-gray-900">
+              Welcome back
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">
+              Sign in to your account to continue
+            </p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1.5">
-              <label htmlFor="email" className="text-sm font-medium text-gray-600">Email</label>
+              <label
+                htmlFor="email"
+                className="text-sm font-medium text-gray-600"
+              >
+                Email
+              </label>
               <input
                 id="email"
                 type="email"
@@ -126,7 +135,12 @@ function LoginForm() {
               )}
             </div>
             <div className="space-y-1.5">
-              <label htmlFor="password" className="text-sm font-medium text-gray-600">Password</label>
+              <label
+                htmlFor="password"
+                className="text-sm font-medium text-gray-600"
+              >
+                Password
+              </label>
               <input
                 id="password"
                 type="password"
@@ -135,7 +149,9 @@ function LoginForm() {
                 {...register("password")}
               />
               {errors.password && (
-                <p className="text-xs text-red-400">{errors.password.message}</p>
+                <p className="text-xs text-red-400">
+                  {errors.password.message}
+                </p>
               )}
             </div>
             <button
@@ -152,7 +168,9 @@ function LoginForm() {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-2 text-gray-400 uppercase tracking-wider">Or</span>
+              <span className="bg-white px-2 text-gray-400 uppercase tracking-wider">
+                Or
+              </span>
             </div>
           </div>
 
@@ -166,7 +184,10 @@ function LoginForm() {
 
           <p className="text-center text-sm text-gray-400 mt-6">
             Don&apos;t have an account?{" "}
-            <Link href="/auth/register" className="text-orange-600 hover:text-orange-600 transition-colors">
+            <Link
+              href="/auth/register"
+              className="text-orange-600 hover:text-orange-600 transition-colors"
+            >
               Sign up
             </Link>
           </p>

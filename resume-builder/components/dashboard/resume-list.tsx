@@ -31,7 +31,15 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { createClient } from "@/lib/supabase/client";
-import { FileText, MoreVertical, Edit2, Trash2, Copy, Clock, Plus } from "lucide-react";
+import {
+  FileText,
+  MoreVertical,
+  Edit2,
+  Trash2,
+  Copy,
+  Clock,
+  Plus,
+} from "lucide-react";
 
 interface Resume {
   id: string;
@@ -108,7 +116,9 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
         <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 mx-auto mb-4">
           <FileText className="h-8 w-8 text-gray-400" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-600 mb-2">No resumes yet</h3>
+        <h3 className="text-lg font-semibold text-gray-600 mb-2">
+          No resumes yet
+        </h3>
         <p className="text-gray-400 mb-6 max-w-xs mx-auto text-sm">
           Create your first resume to get started on your job search journey.
         </p>
@@ -148,7 +158,10 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="bg-white border-gray-200">
+                  <DropdownMenuContent
+                    align="end"
+                    className="bg-white border-gray-200"
+                  >
                     <DropdownMenuItem
                       className="text-gray-600 focus:bg-gray-100 focus:text-gray-900"
                       onClick={() => router.push(`/builder/${resume.id}`)}
@@ -193,7 +206,11 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
                   Created {format(new Date(resume.created_at), "MMM d, yyyy")}
                 </span>
                 <Link href={`/builder/${resume.id}`}>
-                  <Button size="sm" variant="outline" className="border-gray-300 text-gray-500 bg-transparent hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 transition-colors">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-gray-300 text-gray-500 bg-transparent hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 transition-colors"
+                  >
                     <Edit2 className="h-3.5 w-3.5 mr-1.5" />
                     Edit
                   </Button>
@@ -210,14 +227,18 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
       >
         <AlertDialogContent className="bg-white border-gray-200">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-gray-900">Delete Resume?</AlertDialogTitle>
+            <AlertDialogTitle className="text-gray-900">
+              Delete Resume?
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-gray-500">
               This action cannot be undone. The resume will be permanently
               deleted.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-gray-300 bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900">Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="border-gray-300 bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900">
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               className="bg-red-600 hover:bg-red-500 text-white border-0"

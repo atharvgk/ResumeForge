@@ -10,8 +10,11 @@ export function NavbarWrapper({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const handler = () => {
       setScrolled(window.scrollY > 8);
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setScrollProgress(docHeight > 0 ? Math.min((window.scrollY / docHeight) * 100, 100) : 0);
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(
+        docHeight > 0 ? Math.min((window.scrollY / docHeight) * 100, 100) : 0,
+      );
     };
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);

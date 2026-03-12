@@ -1,42 +1,86 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+﻿const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const MODEL = 'llama-3.1-8b-instant';
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
+/**
+ * Strips common AI preamble lines that models add before the actual content,
+ * e.g. "Here's a summary for John:", "Sure! Here is the enhanced version:", etc.
+ */
+function stripPreamble(text: string): string {
+  const lines = text.split('\n');
+  const preamblePattern = /^(here'?s?|here is|sure[,!]?|certainly[,!]?|of course[,!]?|below is|i'?ve|i have|the following|this is|please find|as requested)/i;
+
+  // Drop leading lines that look like preamble:
+  // - match common intro phrases, OR
+  // - are a short sentence ending with a colon (label lines like "Professional summary:")
+  let start = 0;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue; // skip blank lines at top
+    if (preamblePattern.test(line) || (line.endsWith(':') && line.split(' ').length <= 12)) {
+      start = i + 1;
+    } else {
+      break;
+    }
+  }
+
+  return lines.slice(start).join('\n').replace(/\*/g, '').trim();
+}
+
+async function chat(prompt: string): Promise<string> {
+  const res = await fetch(GROQ_API_URL, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      messages: [{ role: 'user', content: prompt }],
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({})) as { error?: string };
+    const error = Object.assign(new Error('Groq error'), { status: res.status, body: err });
+    throw error;
+  }
+
+  const data = await res.json() as { choices?: { message?: { content?: string } }[] };
+  return stripPreamble(data.choices?.[0]?.message?.content ?? '');
+}
 
 export async function getAISuggestions(
   section: string,
   content: string,
   jobDescription?: string
 ): Promise<string[]> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+  const prompt = `You are a senior recruiter and ATS optimization expert at a top-tier tech company. Your goal is to help candidates get past automated screening systems AND impress human recruiters.
 
-  const prompt = `You are a professional resume writer. Given the following resume ${section} section content${jobDescription ? ' and job description' : ''}, provide 3 specific improvement suggestions.
+Analyze the following resume ${section} section and provide exactly 3 highly specific, actionable improvement suggestions.
 
 Resume ${section}:
 ${content}
 
-${jobDescription ? `Job Description:\n${jobDescription}\n` : ''}
+${jobDescription ? `Target Job Description:\n${jobDescription}\n` : ''}
 
-Return exactly 3 concise, actionable suggestions as a JSON array of strings. Example format:
-["Suggestion 1", "Suggestion 2", "Suggestion 3"]
+Your suggestions must:
+- Target ATS keyword gaps: identify missing industry-standard keywords, tools, or technologies that ATS systems scan for
+- Apply the CAR framework (Challenge, Action, Result): suggest adding quantifiable outcomes (%, $, time saved, scale)
+- Improve recruiter impact: make the content scannable in 6 seconds, front-load the most impressive details
+- Use strong action verbs (Led, Architected, Scaled, Reduced, Delivered) instead of passive language
+- Be role-specific and avoid generic advice
 
-Only return the JSON array, nothing else.`;
+Return exactly 3 suggestions as a JSON array of strings. Only return the JSON array, nothing else.
+Example: ["Suggestion 1", "Suggestion 2", "Suggestion 3"]`;
 
-  const result = await model.generateContent(prompt);
-  const text = result.response.text().trim();
-
+  const text = await chat(prompt);
   try {
-    const suggestions = JSON.parse(text);
-    if (Array.isArray(suggestions)) {
-      return suggestions.slice(0, 3);
-    }
+    const match = text.match(/\[[\s\S]*\]/);
+    const suggestions = JSON.parse(match ? match[0] : text) as string[];
+    if (Array.isArray(suggestions)) return suggestions.slice(0, 3);
   } catch {
-    // fallback: extract lines
-    return text
-      .split('\n')
-      .filter((line) => line.trim().length > 0)
-      .slice(0, 3);
+    return text.split('\n').filter((l: string) => l.trim().length > 0).slice(0, 3);
   }
-
   return [];
 }
 
@@ -45,46 +89,71 @@ export async function enhanceContent(
   content: string,
   jobDescription?: string
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-
-  const prompt = `You are a professional resume writer. Rewrite and enhance the following resume ${section} content to be more impactful, professional, and ATS-friendly${jobDescription ? ', tailored to the job description' : ''}.
+  const prompt = `You are a senior technical resume writer and ATS optimization specialist who has helped thousands of candidates land roles at FAANG and top startups. Rewrite the following resume ${section} content to maximize both ATS score and recruiter impact.
 
 Original content:
 ${content}
 
-${jobDescription ? `Job Description:\n${jobDescription}\n` : ''}
+${jobDescription ? `Target Job Description:\n${jobDescription}\n` : ''}
 
-Return only the enhanced content, without any explanation or additional text.`;
+Rewriting rules — follow ALL of these:
+- Voice: write as the person proudly owning their achievements — use direct ownership language (Built, Designed, Delivered, Achieved, Grew, Led, Shipped). The reader should feel this person is confidently claiming credit for real impact, not just listing duties
+- No "I" pronoun: start bullets/sentences directly with the action verb (e.g. "Engineered a..." not "I engineered a...")
+- ATS optimization: naturally weave in industry-standard keywords and tools relevant to the role; avoid keyword stuffing
+- Quantify everything possible: add realistic metrics (e.g. "reduced load time by 40%", "served 10k+ users", "cut deployment time from 2 hours to 15 minutes") — if exact numbers are unknown, use plausible ranges that feel authentic
+- Power verbs: start every bullet with a strong action verb (Engineered, Architected, Optimized, Delivered, Spearheaded, Scaled, Automated, Reduced, Increased, Designed)
+- CAR framework: structure bullets as Action + Technology/Method + Measurable Result
+- Brevity: keep each bullet under 2 lines; remove filler words ("responsible for", "helped with", "worked on", "assisted in")
+- No markdown: do not use asterisks (*), hashes (#), or any formatting characters
+- Preserve the original format: if input is a paragraph return a paragraph; if bullets return bullets (one per line, no dashes or dots)
+- Return ONLY the rewritten content, no explanations, no labels, no preamble`;
 
-  const result = await model.generateContent(prompt);
-  return result.response.text().trim();
+  return chat(prompt);
 }
 
 export async function generateSummary(
-  experiences: string[],
+  name: string,
+  experiences: { position: string; company: string; bullets: string[] }[],
   skills: string[],
-  jobTitle?: string
+  projects: { name: string; description: string; technologies: string[] }[],
 ): Promise<string> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+  const expLines = experiences.map(e =>
+    `${e.position} at ${e.company}${e.bullets.length ? ': ' + e.bullets.slice(0, 2).join('; ') : ''}`
+  ).join('\n');
 
-  const prompt = `Write a compelling 2-3 sentence professional summary for a resume.
+  const projLines = projects.map(p =>
+    `${p.name} (${p.technologies.join(', ')}): ${p.description}`
+  ).join('\n');
 
-${jobTitle ? `Target job title: ${jobTitle}` : ''}
-Experience highlights: ${experiences.join('; ')}
-Key skills: ${skills.join(', ')}
+  const prompt = `You are a senior technical recruiter and resume branding expert who has reviewed 10,000+ resumes at top tech companies. Write a powerful 2-3 sentence professional summary for ${name || 'this candidate'} that will instantly hook both ATS systems and human recruiters.
 
-Return only the summary text, without any explanation.`;
+Work Experience:
+${expLines || 'None'}
 
-  const result = await model.generateContent(prompt);
-  return result.response.text().trim();
+Projects:
+${projLines || 'None'}
+
+Skills: ${skills.join(', ')}
+
+Rules for the perfect summary:
+- Voice: write as the person confidently owning and showcasing their achievements — the tone should feel like someone who knows their worth and is proud of what they have built and delivered, not a bland third-party bio
+- No "I" pronoun needed: open directly with their role/identity (e.g. "Full-Stack Engineer who architected..." or "Backend Engineer with a proven track record of...")
+- Hook immediately: lead with their strongest identity + biggest achievement signal (e.g. "Full-Stack Engineer with 3+ years shipping production-grade SaaS platforms serving 50k+ users")
+- Achievement-first: every sentence must highlight something they built, improved, shipped, or delivered — not just responsibilities or buzzwords
+- ATS keywords: include the most in-demand technologies from their stack naturally in the text
+- Quantify impact: mention scale, outcomes, or scope wherever possible (users served, performance gains, systems built, team size)
+- Recruiter magnet: close with their unique value or what they bring to a team
+- Length: 2-3 sentences maximum, tight and punchy — no fluff, no filler
+- No markdown: no asterisks, no bold, no bullet points
+- Return ONLY the summary text, nothing else`;
+
+  return chat(prompt);
 }
 
 export async function calculateATSScore(
   resumeText: string,
   jobDescription: string
 ): Promise<{ score: number; feedback: string[] }> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-
   const prompt = `Analyze this resume against the job description and provide an ATS compatibility score.
 
 Resume:
@@ -98,12 +167,68 @@ Return a JSON object with this exact format:
 
 Only return the JSON object, nothing else.`;
 
-  const result = await model.generateContent(prompt);
-  const text = result.response.text().trim();
-
+  const text = await chat(prompt);
   try {
-    return JSON.parse(text);
+    const match = text.match(/\{[\s\S]*\}/);
+    return JSON.parse(match ? match[0] : text) as { score: number; feedback: string[] };
   } catch {
     return { score: 0, feedback: ['Unable to analyze resume at this time.'] };
   }
+}
+
+export async function suggestSkills(
+  experiences: { position: string; company: string; description: string; bullets: string[] }[],
+  projects: { name: string; description: string; technologies: string[] }[],
+  existingSkills: string[],
+): Promise<string[]> {
+  const expLines = experiences.map(e => {
+    const details = [e.description, ...e.bullets].filter(Boolean).join(' ');
+    return `Role: ${e.position} at ${e.company}. ${details}`;
+  }).join('\n');
+
+  const projLines = projects.map(p =>
+    `Project: ${p.name}. Tech stack: ${p.technologies.join(', ')}. Description: ${p.description}`
+  ).join('\n');
+
+  const existing = existingSkills.length > 0
+    ? `Already listed skills (DO NOT include these): ${existingSkills.join(', ')}`
+    : 'No existing skills yet.';
+
+  const prompt = `You are a technical resume expert and ATS specialist. Analyze the work experiences and projects below and suggest the most impactful technical skills to add to this resume.
+
+Your goal: maximize ATS match rate and signal strong technical depth to recruiters.
+
+Work Experience:
+${expLines || 'None'}
+
+Projects:
+${projLines || 'None'}
+
+${existing}
+
+Rules:
+- Extract ALL explicit technologies mentioned: languages, frameworks, libraries, databases, DevOps tools, cloud platforms, APIs, testing frameworks
+- Infer industry-standard companion skills (e.g. React → JavaScript, TypeScript; Django → Python, REST API; Docker → Kubernetes, CI/CD)
+- Include in-demand ATS keywords that recruiters commonly filter for in this tech stack
+- Add relevant methodologies if implied (e.g. "Agile", "REST API Design", "Microservices", "System Design", "CI/CD")
+- Prioritize skills with the highest job market demand in this domain
+- Do NOT include soft skills like "Problem Solving", "Communication", "Teamwork", "Leadership"
+- Do NOT repeat any already-listed skills
+- Return between 8 and 15 skills, ordered by relevance/demand (most important first)
+- Return ONLY a JSON array of strings, nothing else. Example: ["React", "TypeScript", "Node.js"]`;
+
+  const text = await chat(prompt);
+  try {
+    const match = text.match(/\[[\s\S]*\]/);
+    const parsed = JSON.parse(match ? match[0] : text) as string[];
+    if (Array.isArray(parsed)) {
+      // Final dedup against existing skills (case-insensitive safety net)
+      const existingLower = new Set(existingSkills.map(s => s.toLowerCase()));
+      return parsed
+        .filter(s => typeof s === 'string' && s.trim().length > 0)
+        .filter(s => !existingLower.has(s.trim().toLowerCase()))
+        .slice(0, 15);
+    }
+  } catch { /* fall through */ }
+  return [];
 }

@@ -31,7 +31,9 @@ export function MinimalTemplate({ data }: TemplateProps) {
               <div key={exp.id} className="mb-5">
                 <div className="flex justify-between items-baseline">
                   <div>
-                    <strong style={{ color: primaryColor }}>{exp.position}</strong>
+                    <strong style={{ color: primaryColor }}>
+                      {exp.position}
+                    </strong>
                     {exp.company && (
                       <span style={{ color: "#666" }}> — {exp.company}</span>
                     )}
@@ -43,14 +45,22 @@ export function MinimalTemplate({ data }: TemplateProps) {
                   </span>
                 </div>
                 {exp.description && (
-                  <p className="mt-1" style={{ color: "#555" }}>{exp.description}</p>
+                  <p className="mt-1" style={{ color: "#555" }}>
+                    {exp.description}
+                  </p>
                 )}
                 {exp.bullets.length > 0 && (
                   <ul className="mt-1 ml-4 space-y-0.5">
                     {exp.bullets.map(
                       (b, i) =>
                         b && (
-                          <li key={i} className="list-disc" style={{ color: "#555" }}>{b}</li>
+                          <li
+                            key={i}
+                            className="list-disc"
+                            style={{ color: "#555" }}
+                          >
+                            {b}
+                          </li>
                         ),
                     )}
                   </ul>
@@ -66,12 +76,18 @@ export function MinimalTemplate({ data }: TemplateProps) {
             {education.map((edu) => (
               <div key={edu.id} className="mb-3 flex justify-between">
                 <div>
-                  <strong>{edu.degree}{edu.field ? ` in ${edu.field}` : ""}</strong>
+                  <strong>
+                    {edu.degree}
+                    {edu.field ? ` in ${edu.field}` : ""}
+                  </strong>
                   {edu.institution && (
                     <span style={{ color: "#666" }}> · {edu.institution}</span>
                   )}
                   {edu.gpa && (
-                    <span style={{ color: "#999", fontSize: 12 }}> · GPA: {edu.gpa}</span>
+                    <span style={{ color: "#999", fontSize: 12 }}>
+                      {" "}
+                      · GPA: {edu.gpa}
+                    </span>
                   )}
                 </div>
                 <span style={{ color: "#999", fontSize: 12 }}>
@@ -85,7 +101,9 @@ export function MinimalTemplate({ data }: TemplateProps) {
       case "skills":
         return skills.length > 0 ? (
           <Section key="skills" title="Skills">
-            <p style={{ color: "#555" }}>{skills.map((s) => s.name).join("  ·  ")}</p>
+            <p style={{ color: "#555" }}>
+              {skills.map((s) => s.name).join("  ·  ")}
+            </p>
           </Section>
         ) : null;
 
@@ -96,10 +114,14 @@ export function MinimalTemplate({ data }: TemplateProps) {
               <div key={p.id} className="mb-3">
                 <strong>{p.name}</strong>
                 {p.description && (
-                  <p className="mt-0.5" style={{ color: "#555" }}>{p.description}</p>
+                  <p className="mt-0.5" style={{ color: "#555" }}>
+                    {p.description}
+                  </p>
                 )}
                 {p.technologies.length > 0 && (
-                  <p style={{ color: "#999", fontSize: 11 }}>{p.technologies.join(", ")}</p>
+                  <p style={{ color: "#999", fontSize: 11 }}>
+                    {p.technologies.join(", ")}
+                  </p>
                 )}
               </div>
             ))}
@@ -111,7 +133,9 @@ export function MinimalTemplate({ data }: TemplateProps) {
           <Section key="certifications" title="Certifications">
             {certifications.map((c) => (
               <div key={c.id} className="flex justify-between mb-1.5">
-                <span>{c.name} · <span style={{ color: "#666" }}>{c.issuer}</span></span>
+                <span>
+                  {c.name} · <span style={{ color: "#666" }}>{c.issuer}</span>
+                </span>
                 <span style={{ color: "#999", fontSize: 12 }}>{c.date}</span>
               </div>
             ))}
@@ -122,7 +146,9 @@ export function MinimalTemplate({ data }: TemplateProps) {
         return languages.length > 0 ? (
           <Section key="languages" title="Languages">
             <p style={{ color: "#555" }}>
-              {languages.map((l) => `${l.name} (${l.proficiency})`).join("  ·  ")}
+              {languages
+                .map((l) => `${l.name} (${l.proficiency})`)
+                .join("  ·  ")}
             </p>
           </Section>
         ) : null;
