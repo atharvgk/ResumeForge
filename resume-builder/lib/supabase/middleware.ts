@@ -30,6 +30,7 @@ export async function updateSession(request: NextRequest) {
   const url = request.nextUrl.clone();
   const isAuthPage = url.pathname.startsWith('/auth') || url.pathname.startsWith('/auth/exchange');
   const isExchangePage = url.pathname.startsWith('/auth/exchange');
+  const isSignoutRoute = url.pathname === '/auth/signout';
   const isProtectedPage =
     url.pathname.startsWith('/dashboard') || url.pathname.startsWith('/builder');
 
@@ -39,7 +40,8 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Don't redirect away from the exchange page — it needs to complete the OAuth flow
-  if (user && isAuthPage && !isExchangePage) {
+  // Don't redirect away from signout — it needs to run while the user is still logged in
+  if (user && isAuthPage && !isExchangePage && !isSignoutRoute) {
     url.pathname = '/dashboard';
     return NextResponse.redirect(url);
   }
