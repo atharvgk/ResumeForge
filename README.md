@@ -7,7 +7,7 @@ A full-stack resume builder with AI-powered suggestions, professional templates,
 - **Framework**: Next.js 14.2.5 (App Router, TypeScript)
 - **Styling**: Tailwind CSS v3 + shadcn/ui components
 - **Auth & Database**: Supabase
-- **AI**: Google Generative AI (Gemini Pro)
+- **AI**: Groq AI (Llama 3.1 8B Instant)
 - **State**: Zustand with persistence
 - **Forms**: React Hook Form + Zod
 - **Drag & Drop**: @dnd-kit
@@ -18,8 +18,8 @@ A full-stack resume builder with AI-powered suggestions, professional templates,
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/your-username/resume-forge.git
-cd resume-forge/resume-builder
+git clone https://github.com/atharvgk/ResumeForge.git
+cd ResumeForge
 npm install
 ```
 
@@ -35,7 +35,7 @@ Fill in the following values in `.env.local`:
 |---|---|
 | `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon/public key |
-| `GOOGLE_AI_API_KEY` | Google AI API key (Gemini Pro) |
+| `GROQ_API_KEY` | Groq AI API key |
 
 ### 3. Set up the database
 
@@ -54,7 +54,7 @@ Open http://localhost:3000.
 ## Features
 
 - **3 Resume Templates**: Classic, Modern, Minimal
-- **AI Suggestions**: Powered by Google Gemini — improve any section with one click
+- **AI Suggestions**: Powered by Google Gemini ï¿½ improve any section with one click
 - **Auto-save**: Changes are saved automatically after 3 seconds of inactivity
 - **Real-time Preview**: Side-by-side editor and preview
 - **PDF Export**: Download your resume as PDF via the browser print dialog
@@ -65,30 +65,30 @@ Open http://localhost:3000.
 ## Project Structure
 
 ```
-resume-builder/
+ResumeForge/
 +-- app/                    # Next.js App Router pages
-¦   +-- api/                # API routes
-¦   ¦   +-- ai/             # AI suggestion & enhance endpoints
-¦   ¦   +-- export/         # PDF export endpoint
-¦   ¦   +-- resumes/        # Resume CRUD endpoints
-¦   +-- auth/               # Auth pages (login, register, callback)
-¦   +-- builder/            # Resume editor pages
-¦   +-- dashboard/          # User dashboard
-¦   +-- templates/          # Templates gallery
+ï¿½   +-- api/                # API routes
+ï¿½   ï¿½   +-- ai/             # AI suggestion & enhance endpoints
+ï¿½   ï¿½   +-- export/         # PDF export endpoint
+ï¿½   ï¿½   +-- resumes/        # Resume CRUD endpoints
+ï¿½   +-- auth/               # Auth pages (login, register, callback)
+ï¿½   +-- builder/            # Resume editor pages
+ï¿½   +-- dashboard/          # User dashboard
+ï¿½   +-- templates/          # Templates gallery
 +-- components/
-¦   +-- builder/            # Builder-specific components
-¦   +-- dashboard/          # Dashboard components
-¦   +-- forms/              # Section form components
-¦   +-- templates/          # Resume template renderers
-¦   +-- ui/                 # shadcn/ui components
+ï¿½   +-- builder/            # Builder-specific components
+ï¿½   +-- dashboard/          # Dashboard components
+ï¿½   +-- forms/              # Section form components
+ï¿½   +-- templates/          # Resume template renderers
+ï¿½   +-- ui/                 # shadcn/ui components
 +-- database/               # SQL schema
 +-- hooks/                  # Custom React hooks
 +-- lib/                    # Utilities and integrations
-¦   +-- supabase/           # Supabase clients
-¦   +-- ai.ts               # Google AI integration
-¦   +-- templates.ts        # Template configurations
-¦   +-- utils.ts            # cn() utility
-¦   +-- validations.ts      # Zod schemas
+ï¿½   +-- supabase/           # Supabase clients
+ï¿½   +-- ai.ts               # Google AI integration
+ï¿½   +-- templates.ts        # Template configurations
+ï¿½   +-- utils.ts            # cn() utility
+ï¿½   +-- validations.ts      # Zod schemas
 +-- store/                  # Zustand stores
 +-- types/                  # TypeScript types
 ```
