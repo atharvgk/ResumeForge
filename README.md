@@ -1,21 +1,26 @@
 # ResumeForge
 
-A full-stack resume builder with AI-powered suggestions, professional templates, and one-click PDF export.
+A full-stack resume builder with AI-powered content suggestions, multiple professional templates, and one-click PDF export.
+
+---
 
 ## Tech Stack
 
-- **Framework**: Next.js 14.2.5 (App Router, TypeScript)
-- **Styling**: Tailwind CSS v3 + shadcn/ui components
-- **Auth & Database**: Supabase
-- **AI**: Groq AI (Llama 3.1 8B Instant)
-- **State**: Zustand with persistence
-- **Forms**: React Hook Form + Zod
-- **Drag & Drop**: @dnd-kit
-- **PDF**: @react-pdf/renderer
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (App Router, TypeScript) |
+| Styling | Tailwind CSS v3 + shadcn/ui |
+| Auth & Database | Supabase (PostgreSQL + Auth) |
+| AI | Groq API - Llama 3.1 8B Instant |
+| State Management | Zustand |
+| Forms & Validation | React Hook Form + Zod |
+| PDF Export | Browser print dialog (window.print with print CSS) |
 
-## Setup
+---
 
-### 1. Clone and install
+## Setup Instructions
+
+### 1. Clone and install dependencies
 
 ```bash
 git clone https://github.com/atharvgk/ResumeForge.git
@@ -23,27 +28,27 @@ cd ResumeForge
 npm install
 ```
 
-### 2. Configure environment
+### 2. Configure environment variables
 
 ```bash
 cp .env.example .env.local
 ```
 
-Fill in the following values in `.env.local`:
+Edit `.env.local` with your credentials:
 
-| Variable                        | Description                   |
-| ------------------------------- | ----------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`      | Your Supabase project URL     |
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon/public key |
-| `GROQ_API_KEY`                  | Groq AI API key               |
+| `GROQ_API_KEY` | Groq API key (get one free at console.groq.com) |
 
 ### 3. Set up the database
 
-Run the SQL in `database/schema.sql` in your Supabase SQL editor.
+Open your Supabase project, go to SQL Editor, and run the contents of `database/schema.sql`.
 
-Enable Google OAuth in Supabase Authentication > Providers.
+Optionally enable Google OAuth under Supabase > Authentication > Providers.
 
-### 4. Run the development server
+### 4. Start the development server
 
 ```bash
 npm run dev
@@ -51,57 +56,81 @@ npm run dev
 
 Open http://localhost:3000.
 
-## Features
+---
 
-- **3 Resume Templates**: Classic, Modern, Minimal
-- **AI Suggestions**: Powered by Google Gemini � improve any section with one click
-- **Auto-save**: Changes are saved automatically after 3 seconds of inactivity
-- **Real-time Preview**: Side-by-side editor and preview
-- **PDF Export**: Download your resume as PDF via the browser print dialog
-- **Section Management**: Show/hide and reorder resume sections
-- **Design Customization**: Choose template, color, font, and spacing
-- **Authentication**: Email/password and Google OAuth
+## Features Implemented
+
+### Resume Creation
+- Create a new resume from the dashboard
+- Edit all sections: Personal Info, Summary, Experience, Education, Skills, Projects
+- Changes auto-save every 3 seconds to Supabase (no data loss)
+- Real-time side-by-side preview while editing
+
+### Resume Templates
+- **3 templates available**: Classic, Modern, Minimal
+- **2 free templates**: Classic and Modern - available to all users
+- **1 paid/locked template**: Minimal - locked behind an "Upgrade" prompt (simulated, no real payment required)
+- Each template has a different layout, section order, and visual style
+- Template preview available before applying
+
+### Resume Download
+- Download resume as a pixel-perfect PDF with one click (Export PDF button in the builder)
+- Edit anytime and re-export - the latest version is always downloadable
+
+### AI Assistance (Groq - Llama 3.1)
+- **Improve Experience Bullets**: Rewrites job description bullets in achievement-first, ATS-optimized language
+- **Generate Professional Summary**: Auto-generates a tailored summary based on your name, role, and experience
+- **Suggest Skills**: Recommends relevant skills based on your job title and existing experience
+- All AI suggestions shown in a review panel before applying - nothing is applied without user confirmation
+
+### Authentication
+- Email/password sign up and login
+- Google OAuth support
+- Protected routes - all resume data is scoped per user
+
+### Data Storage
+- All resume data stored in Supabase (PostgreSQL) - not in localStorage
+- Resumes linked to authenticated user accounts
+
+---
 
 ## Project Structure
 
 ```
 ResumeForge/
-+-- app/                    # Next.js App Router pages
-�   +-- api/                # API routes
-�   �   +-- ai/             # AI suggestion & enhance endpoints
-�   �   +-- export/         # PDF export endpoint
-�   �   +-- resumes/        # Resume CRUD endpoints
-�   +-- auth/               # Auth pages (login, register, callback)
-�   +-- builder/            # Resume editor pages
-�   +-- dashboard/          # User dashboard
-�   +-- templates/          # Templates gallery
-+-- components/
-�   +-- builder/            # Builder-specific components
-�   +-- dashboard/          # Dashboard components
-�   +-- forms/              # Section form components
-�   +-- templates/          # Resume template renderers
-�   +-- ui/                 # shadcn/ui components
-+-- database/               # SQL schema
-+-- hooks/                  # Custom React hooks
-+-- lib/                    # Utilities and integrations
-�   +-- supabase/           # Supabase clients
-�   +-- ai.ts               # Google AI integration
-�   +-- templates.ts        # Template configurations
-�   +-- utils.ts            # cn() utility
-�   +-- validations.ts      # Zod schemas
-+-- store/                  # Zustand stores
-+-- types/                  # TypeScript types
+├── app/
+│   ├── api/ai/          # AI endpoints (summary, skills, improve)
+│   ├── api/resumes/     # Resume CRUD endpoints
+│   ├── auth/            # Login, register, callback pages
+│   ├── builder/         # Resume editor
+│   ├── dashboard/       # User's resume list
+│   └── page.tsx         # Landing page
+├── components/
+│   ├── builder/         # Editor panel, preview, toolbar
+│   ├── dashboard/       # Resume list cards
+│   ├── templates/       # Classic, Modern, Minimal renderers
+│   └── ui/              # shadcn/ui base components
+├── database/
+│   └── schema.sql       # Supabase table definitions
+├── lib/
+│   ├── ai.ts            # Groq API integration
+│   ├── supabase/        # Server + client Supabase helpers
+│   └── templates.ts     # Template config and registry
+├── store/               # Zustand resume state
+└── types/               # TypeScript type definitions
 ```
 
-## Deployment
+---
 
-Deploy to Vercel:
+## Assumptions Made
 
-```bash
-npm run build
-```
+- **Paid template simulation**: The "Minimal" template is locked and shows an "Upgrade" modal. No real payment flow is implemented - clicking "Upgrade" unlocks it for the session.
+- **PDF export**: Uses the browser's native print-to-PDF via `window.print()` with print-specific CSS. No server-side PDF generation library is used, which keeps the stack simpler and works reliably across devices.
+- **AI model**: Groq's free tier with `llama-3.1-8b-instant` is used for all AI features. The model is fast enough for real-time suggestions without noticeable delay.
+- **Auth**: Google OAuth requires a Google Cloud project with the correct redirect URI configured. Email/password auth works out of the box with Supabase.
+- **No multi-page resumes**: The current version generates single-page resumes. Overflow is handled with font/spacing adjustments in the Design tab.
 
-Set environment variables in your Vercel project settings.
+---
 
 ## License
 
