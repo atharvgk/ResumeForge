@@ -12,7 +12,6 @@ import { EditorPanel } from "@/components/builder/editor-panel";
 import { PreviewPanel } from "@/components/builder/preview-panel";
 import { FileText, Save, Download, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
-import { toast } from "sonner";
 
 interface BuilderLayoutProps {
   resumeId: string | null;
@@ -83,9 +82,7 @@ export function BuilderLayout({
           </Button>
           <Button
             size="sm"
-            onClick={() =>
-              toast.info("Use the Download PDF button in the preview panel")
-            }
+            onClick={() => window.print()}
           >
             <Download className="h-4 w-4 mr-1.5" />
             Export PDF

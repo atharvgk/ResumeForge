@@ -41,12 +41,6 @@ export function PreviewPanel() {
         <TemplateComponent data={data} />
       </div>
 
-      {/* Print-only root — only this renders when Ctrl+P / Download PDF is triggered */}
-      <div id="resume-print-root" style={{ display: "none" }}>
-        <div id="resume-preview" style={{ minHeight: "1056px", background: "white" }}>
-          <TemplateComponent data={data} />
-        </div>
-      </div>
     </div>
   );
 }
