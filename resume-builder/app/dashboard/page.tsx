@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { FileText, Plus, LogOut } from "lucide-react";
 import { DashboardResumeList } from "@/components/dashboard/resume-list";
 
+// Always fetch fresh data — never serve a cached version of this page
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const supabase = createClient();
   const {

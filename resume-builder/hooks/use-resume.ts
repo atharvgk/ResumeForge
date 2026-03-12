@@ -56,6 +56,8 @@ export function useResume() {
       store.setIsDirty(false);
       store.setLastSaved(new Date());
       toast.success('Resume saved');
+      // Refresh server component cache so dashboard shows the updated timestamp
+      router.refresh();
     } catch (error) {
       console.error('Save error:', error);
       toast.error('Failed to save resume');

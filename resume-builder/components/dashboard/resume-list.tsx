@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -55,6 +55,12 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
   const router = useRouter();
   const [resumes, setResumes] = useState(initialResumes);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  // Tick every 30s so relative times stay accurate without a full page reload
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   const handleDelete = async () => {
     if (!deleteId) return;
@@ -171,19 +177,25 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
                 <FileText className="h-8 w-8 text-slate-300" />
               </div>
             </CardContent>
-            <CardFooter className="flex justify-between items-center">
+            <CardFooter className="flex flex-col items-start gap-1 pt-2">
               <span className="text-xs text-slate-400 flex items-center gap-1">
                 <Clock className="h-3 w-3" />
+                Updated{" "}
                 {formatDistanceToNow(new Date(resume.updated_at), {
                   addSuffix: true,
                 })}
               </span>
-              <Link href={`/builder/${resume.id}`}>
-                <Button size="sm" variant="outline">
-                  <Edit2 className="h-3.5 w-3.5 mr-1.5" />
-                  Edit
-                </Button>
-              </Link>
+              <div className="w-full flex justify-between items-center">
+                <span className="text-xs text-slate-300">
+                  Created {format(new Date(resume.created_at), "MMM d, yyyy")}
+                </span>
+                <Link href={`/builder/${resume.id}`}>
+                  <Button size="sm" variant="outline">
+                    <Edit2 className="h-3.5 w-3.5 mr-1.5" />
+                    Edit
+                  </Button>
+                </Link>
+              </div>
             </CardFooter>
           </Card>
         ))}
