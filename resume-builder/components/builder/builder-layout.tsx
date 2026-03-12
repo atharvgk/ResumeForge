@@ -49,50 +49,69 @@ export function BuilderLayout({
   };
 
   return (
-    <div className="h-screen flex flex-col bg-slate-100 overflow-hidden">
+    <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       {/* Toolbar */}
-      <header className="bg-white border-b h-14 flex items-center px-4 gap-4 shrink-0">
+      <header className="bg-white border-b border-gray-200 h-14 flex items-center px-4 gap-3 shrink-0 shadow-sm">
+        {/* Back */}
         <Link
           href="/dashboard"
-          className="flex items-center gap-1 text-slate-600 hover:text-slate-900 text-sm"
+          className="flex items-center gap-1.5 text-gray-500 hover:text-gray-900 text-sm font-medium transition-colors group"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
           Dashboard
         </Link>
-        <div className="flex items-center gap-2 font-semibold text-sm">
-          <FileText className="h-4 w-4 text-blue-600" />
-          ResumeForge
+
+        {/* Divider */}
+        <div className="h-5 w-px bg-gray-200" />
+
+        {/* Brand */}
+        <div className="flex items-center gap-1.5 font-bold text-sm">
+          <div className="h-6 w-6 rounded-md bg-gradient-to-br from-orange-500 to-rose-500 flex items-center justify-center">
+            <FileText className="h-3.5 w-3.5 text-white" />
+          </div>
+          <span className="text-gray-900">ResumeForge</span>
         </div>
-        <div className="flex-1 flex items-center gap-2">
+
+        {/* Divider */}
+        <div className="h-5 w-px bg-gray-200" />
+
+        {/* Title + save status */}
+        <div className="flex-1 flex items-center gap-2.5">
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="max-w-xs h-8 text-sm"
+            className="max-w-xs h-8 text-sm border-gray-200 focus-visible:ring-orange-500/30 focus-visible:border-orange-400 transition-colors"
           />
           {isDirty && (
-            <span className="text-xs text-slate-400">Unsaved changes</span>
+            <span className="text-xs text-orange-500 font-medium animate-pulse">
+              Unsaved changes
+            </span>
           )}
           {lastSaved && !isDirty && (
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-gray-400">
               Saved {format(lastSaved, "h:mm a")}
             </span>
           )}
         </div>
+
+        {/* Actions */}
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="sm"
             onClick={handleSave}
             disabled={isSaving || !isDirty}
+            className="h-8 text-xs border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 disabled:opacity-40 transition-all"
           >
-            <Save className="h-4 w-4 mr-1.5" />
+            <Save className="h-3.5 w-3.5 mr-1.5" />
             {isSaving ? "Saving..." : "Save"}
           </Button>
           <Button
             size="sm"
             onClick={() => window.print()}
+            className="btn-shimmer h-8 text-xs bg-orange-500 hover:bg-orange-400 text-white border-0 transition-colors"
           >
-            <Download className="h-4 w-4 mr-1.5" />
+            <Download className="h-3.5 w-3.5 mr-1.5" />
             Export PDF
           </Button>
         </div>
@@ -100,10 +119,12 @@ export function BuilderLayout({
 
       {/* Editor + Preview */}
       <div className="flex-1 flex overflow-hidden">
-        <div className="w-[420px] shrink-0 bg-white border-r overflow-y-auto">
+        {/* Editor sidebar */}
+        <div className="w-[430px] shrink-0 bg-white border-r border-gray-200 overflow-y-auto">
           <EditorPanel />
         </div>
-        <div className="flex-1 overflow-y-auto bg-slate-200 flex items-start justify-center p-8">
+        {/* Preview canvas */}
+        <div className="flex-1 overflow-y-auto bg-gray-100 flex items-start justify-center p-8">
           <PreviewPanel />
         </div>
       </div>

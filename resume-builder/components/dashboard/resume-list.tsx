@@ -31,14 +31,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { createClient } from "@/lib/supabase/client";
-import {
-  FileText,
-  MoreVertical,
-  Edit2,
-  Trash2,
-  Copy,
-  Clock,
-} from "lucide-react";
+import { FileText, MoreVertical, Edit2, Trash2, Copy, Clock, Plus } from "lucide-react";
 
 interface Resume {
   id: string;
@@ -111,16 +104,19 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
 
   if (resumes.length === 0) {
     return (
-      <div className="text-center py-20 bg-white rounded-xl border">
-        <FileText className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-slate-700 mb-2">
-          No resumes yet
-        </h3>
-        <p className="text-slate-500 mb-6">
-          Create your first resume to get started
+      <div className="text-center py-24 bg-gray-50 rounded-2xl border border-gray-200 border-dashed animate-fade-in fill-both">
+        <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 mx-auto mb-4">
+          <FileText className="h-8 w-8 text-gray-400" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-600 mb-2">No resumes yet</h3>
+        <p className="text-gray-400 mb-6 max-w-xs mx-auto text-sm">
+          Create your first resume to get started on your job search journey.
         </p>
         <Link href="/builder/new">
-          <Button>Create Resume</Button>
+          <Button className="bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-200 hover:-translate-y-0.5 transition-all duration-200 btn-shimmer">
+            <Plus className="h-4 w-4 mr-2" />
+            Create Resume
+          </Button>
         </Link>
       </div>
     );
@@ -129,14 +125,17 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
   return (
     <>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {resumes.map((resume) => (
+        {resumes.map((resume, index) => (
           <Card
             key={resume.id}
-            className="group hover:shadow-md transition-shadow"
+            className="group hover:shadow-xl hover:shadow-orange-100 hover:-translate-y-1 transition-all duration-300 animate-fade-in-up fill-both overflow-hidden bg-white border-gray-200 hover:border-orange-300 card-glow relative"
+            style={{ animationDelay: `${index * 75}ms` }}
           >
+            {/* Animated top border */}
+            <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-orange-300 via-rose-300 to-orange-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             <CardHeader className="pb-2">
               <div className="flex items-start justify-between">
-                <CardTitle className="text-base line-clamp-2">
+                <CardTitle className="text-base line-clamp-2 text-gray-900">
                   {resume.title}
                 </CardTitle>
                 <DropdownMenu>
@@ -144,25 +143,29 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-7 w-7 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="h-7 w-7 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity text-gray-500 hover:text-gray-900 hover:bg-gray-100"
                     >
                       <MoreVertical className="h-4 w-4" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
+                  <DropdownMenuContent align="end" className="bg-white border-gray-200">
                     <DropdownMenuItem
+                      className="text-gray-600 focus:bg-gray-100 focus:text-gray-900"
                       onClick={() => router.push(`/builder/${resume.id}`)}
                     >
                       <Edit2 className="h-4 w-4 mr-2" />
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleDuplicate(resume)}>
+                    <DropdownMenuItem
+                      className="text-gray-600 focus:bg-gray-100 focus:text-gray-900"
+                      onClick={() => handleDuplicate(resume)}
+                    >
                       <Copy className="h-4 w-4 mr-2" />
                       Duplicate
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
+                    <DropdownMenuSeparator className="bg-gray-100" />
                     <DropdownMenuItem
-                      className="text-destructive focus:text-destructive"
+                      className="text-red-400 focus:text-red-400 focus:bg-red-500/10"
                       onClick={() => setDeleteId(resume.id)}
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
@@ -173,12 +176,12 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="h-24 bg-gradient-to-br from-slate-100 to-blue-50 rounded flex items-center justify-center">
-                <FileText className="h-8 w-8 text-slate-300" />
+              <div className="h-24 bg-gradient-to-br from-orange-50 via-rose-50 to-amber-50 rounded-lg border border-orange-100 flex items-center justify-center group-hover:border-orange-200 transition-colors">
+                <FileText className="h-8 w-8 text-orange-200 group-hover:text-orange-300 group-hover:scale-110 transition-all duration-300" />
               </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start gap-1 pt-2">
-              <span className="text-xs text-slate-400 flex items-center gap-1">
+              <span className="text-xs text-gray-400 flex items-center gap-1">
                 <Clock className="h-3 w-3" />
                 Updated{" "}
                 {formatDistanceToNow(new Date(resume.updated_at), {
@@ -186,11 +189,11 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
                 })}
               </span>
               <div className="w-full flex justify-between items-center">
-                <span className="text-xs text-slate-300">
+                <span className="text-xs text-gray-300">
                   Created {format(new Date(resume.created_at), "MMM d, yyyy")}
                 </span>
                 <Link href={`/builder/${resume.id}`}>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" className="border-gray-300 text-gray-500 bg-transparent hover:border-orange-300 hover:bg-orange-50 hover:text-orange-600 transition-colors">
                     <Edit2 className="h-3.5 w-3.5 mr-1.5" />
                     Edit
                   </Button>
@@ -205,19 +208,19 @@ export function DashboardResumeList({ resumes: initialResumes }: Props) {
         open={!!deleteId}
         onOpenChange={(open) => !open && setDeleteId(null)}
       >
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-white border-gray-200">
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Resume?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-gray-900">Delete Resume?</AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-500">
               This action cannot be undone. The resume will be permanently
               deleted.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="border-gray-300 bg-transparent text-gray-500 hover:bg-gray-100 hover:text-gray-900">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-red-600 hover:bg-red-500 text-white border-0"
             >
               Delete
             </AlertDialogAction>

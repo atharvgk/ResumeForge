@@ -52,14 +52,14 @@ export function SkillsForm() {
             {skill.name}
             <button
               onClick={() => removeSkill(skill.id)}
-              className="rounded-full hover:bg-slate-300 p-0.5"
+              className="rounded-full hover:bg-gray-300 p-0.5"
             >
               <X className="h-3 w-3" />
             </button>
           </Badge>
         ))}
         {skills.length === 0 && (
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-gray-400">
             No skills added yet. Type and press Enter.
           </p>
         )}

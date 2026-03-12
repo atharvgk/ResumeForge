@@ -49,7 +49,7 @@ export function SectionReorder() {
 
   return (
     <div className="space-y-2">
-      <p className="text-xs text-slate-500 mb-3">
+      <p className="text-xs text-gray-500 mb-3">
         Drag rows to reorder sections. Click the eye to show/hide.
       </p>
       {sectionOrder.map((section: SectionOrder, idx: number) => (
@@ -61,19 +61,19 @@ export function SectionReorder() {
           onDrop={(e) => handleDrop(e, idx)}
           onDragEnd={handleDragEnd}
           className={cn(
-            "flex items-center gap-3 px-3 py-2 rounded-lg border text-sm cursor-grab active:cursor-grabbing transition-all select-none",
-            section.visible ? "bg-white" : "bg-slate-50 opacity-60",
+            "flex items-center gap-3 px-3 py-2.5 rounded-lg border text-sm cursor-grab active:cursor-grabbing transition-all select-none",
+            section.visible ? "bg-white border-gray-200 hover:border-orange-200 hover:shadow-sm" : "bg-gray-50 border-gray-200 opacity-60",
             dragIndex === idx && "opacity-40 scale-95",
             overIndex === idx &&
               dragIndex !== idx &&
-              "border-blue-400 bg-blue-50",
+              "border-orange-400 bg-orange-50",
           )}
         >
-          <GripVertical className="h-4 w-4 text-slate-400 shrink-0" />
-          <span className="flex-1 font-medium">{section.label}</span>
+          <GripVertical className="h-4 w-4 text-gray-400 shrink-0" />
+          <span className="flex-1 font-medium text-gray-700">{section.label}</span>
           <button
             onClick={() => toggleSectionVisibility(section.id)}
-            className="text-slate-400 hover:text-slate-700 transition-colors"
+            className="text-gray-400 hover:text-orange-500 transition-colors"
           >
             {section.visible ? (
               <Eye className="h-4 w-4" />

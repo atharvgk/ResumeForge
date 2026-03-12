@@ -19,7 +19,7 @@ function CertificationItem({ cert }: { cert: Certification }) {
   return (
     <div className="border rounded-lg overflow-hidden mb-3">
       <div
-        className="flex items-center justify-between px-3 py-2 bg-slate-50 cursor-pointer"
+        className="flex items-center justify-between px-3 py-2 bg-gray-50 cursor-pointer"
         onClick={() => setOpen(!open)}
       >
         <span className="text-sm font-medium truncate">

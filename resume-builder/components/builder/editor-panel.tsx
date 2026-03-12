@@ -59,14 +59,14 @@ export function EditorPanel() {
   return (
     <div className="p-4">
       <Tabs defaultValue="content">
-        <TabsList className="w-full mb-4">
-          <TabsTrigger value="content" className="flex-1">
+        <TabsList className="w-full mb-4 bg-gray-100 p-0.5 rounded-lg">
+          <TabsTrigger value="content" className="flex-1 text-xs font-medium data-[state=active]:bg-white data-[state=active]:text-orange-600 data-[state=active]:shadow-sm rounded-md transition-all">
             Content
           </TabsTrigger>
-          <TabsTrigger value="design" className="flex-1">
+          <TabsTrigger value="design" className="flex-1 text-xs font-medium data-[state=active]:bg-white data-[state=active]:text-orange-600 data-[state=active]:shadow-sm rounded-md transition-all">
             Design
           </TabsTrigger>
-          <TabsTrigger value="sections" className="flex-1">
+          <TabsTrigger value="sections" className="flex-1 text-xs font-medium data-[state=active]:bg-white data-[state=active]:text-orange-600 data-[state=active]:shadow-sm rounded-md transition-all">
             Sections
           </TabsTrigger>
         </TabsList>
@@ -78,62 +78,56 @@ export function EditorPanel() {
             onValueChange={handleValueChange}
             className="space-y-2"
           >
-            <AccordionItem value="personal" className="border rounded-lg px-3">
-              <AccordionTrigger className="text-sm font-medium">
+            <AccordionItem value="personal" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+              <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Personal Info
               </AccordionTrigger>
               <AccordionContent>
                 {mounted.has("personal") && <PersonalInfoForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem
-              value="experience"
-              className="border rounded-lg px-3"
-            >
-              <AccordionTrigger className="text-sm font-medium">
+            <AccordionItem value="experience" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+              <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Experience
               </AccordionTrigger>
               <AccordionContent>
                 {mounted.has("experience") && <ExperienceForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="education" className="border rounded-lg px-3">
-              <AccordionTrigger className="text-sm font-medium">
+            <AccordionItem value="education" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+              <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Education
               </AccordionTrigger>
               <AccordionContent>
                 {mounted.has("education") && <EducationForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="skills" className="border rounded-lg px-3">
-              <AccordionTrigger className="text-sm font-medium">
+            <AccordionItem value="skills" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+              <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Skills
               </AccordionTrigger>
               <AccordionContent>
                 {mounted.has("skills") && <SkillsForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="projects" className="border rounded-lg px-3">
-              <AccordionTrigger className="text-sm font-medium">
+            <AccordionItem value="projects" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+              <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Projects
               </AccordionTrigger>
               <AccordionContent>
                 {mounted.has("projects") && <ProjectsForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem
-              value="certifications"
-              className="border rounded-lg px-3"
-            >
-              <AccordionTrigger className="text-sm font-medium">
+            <AccordionItem value="certifications" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+              <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Certifications
               </AccordionTrigger>
               <AccordionContent>
                 {mounted.has("certifications") && <CertificationsForm />}
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="languages" className="border rounded-lg px-3">
-              <AccordionTrigger className="text-sm font-medium">
+            <AccordionItem value="languages" className="border border-gray-200 rounded-lg px-3 hover:border-orange-200 transition-colors">
+              <AccordionTrigger className="text-sm font-medium hover:text-orange-600 transition-colors">
                 Languages
               </AccordionTrigger>
               <AccordionContent>

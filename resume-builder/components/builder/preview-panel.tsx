@@ -44,15 +44,15 @@ export function PreviewPanel() {
   return (
     <div className="w-full max-w-[800px]">
       {/* Toolbar */}
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-sm text-slate-500 font-medium">
+      <div className="flex items-center justify-between mb-4 px-1">
+        <span className="text-sm text-gray-500 font-medium">
           Preview{" "}
           {pageCount > 1 && (
-            <span className="text-amber-500 ml-1">({pageCount} pages)</span>
+            <span className="text-orange-500 ml-1 font-semibold">({pageCount} pages)</span>
           )}
         </span>
-        <Button size="sm" variant="outline" onClick={() => window.print()}>
-          <Download className="h-4 w-4 mr-1.5" />
+        <Button size="sm" variant="outline" onClick={() => window.print()} className="h-8 text-xs border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-orange-300 hover:text-orange-600 transition-all">
+          <Download className="h-3.5 w-3.5 mr-1.5" />
           Download PDF
         </Button>
       </div>
@@ -83,11 +83,11 @@ export function PreviewPanel() {
             <div key={i}>
               {i > 0 && (
                 <div className="py-2 flex items-center gap-3">
-                  <div className="flex-1 h-px bg-slate-300" />
-                  <span className="text-xs text-slate-400 bg-slate-200 px-2.5 py-1 rounded-full font-medium">
+                  <div className="flex-1 h-px bg-gray-300" />
+                  <span className="text-xs text-gray-500 bg-white border border-gray-200 px-2.5 py-1 rounded-full font-medium shadow-sm">
                     Page {i + 1}
                   </span>
-                  <div className="flex-1 h-px bg-slate-300" />
+                  <div className="flex-1 h-px bg-gray-300" />
                 </div>
               )}
               {/* Clipped to this page's height; inner div slides up to show the right slice */}

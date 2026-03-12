@@ -54,7 +54,7 @@ export function TemplateSelector() {
     <div className="space-y-6">
       {/* Pro badge */}
       {isPro && (
-        <div className="flex items-center gap-1.5 text-xs font-medium text-amber-600 bg-amber-50 border border-amber-200 rounded-md px-2.5 py-1.5">
+        <div className="flex items-center gap-1.5 text-xs font-medium text-orange-600 bg-orange-50 border border-orange-200 rounded-md px-2.5 py-1.5">
           <Crown className="h-3.5 w-3.5" />
           Pro Plan Active
         </div>
@@ -62,7 +62,7 @@ export function TemplateSelector() {
 
       {/* Template Picker */}
       <div>
-        <Label className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2 block">
+        <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 block">
           Template
         </Label>
         <div className="grid grid-cols-3 gap-2">
@@ -75,15 +75,15 @@ export function TemplateSelector() {
                 className={cn(
                   "relative rounded-lg border-2 p-2 text-center text-xs transition-all",
                   template === t.id
-                    ? "border-blue-600 bg-blue-50"
+                    ? "border-orange-500 bg-orange-50"
                     : locked
-                      ? "border-slate-200 hover:border-amber-300 opacity-80"
-                      : "border-slate-200 hover:border-slate-300",
+                      ? "border-gray-200 hover:border-orange-300 opacity-80"
+                      : "border-gray-200 hover:border-gray-300",
                 )}
               >
                 {/* Badge */}
                 {t.isPaid ? (
-                  <span className="absolute top-1 right-1 text-[9px] font-bold px-1 rounded bg-amber-100 text-amber-700 leading-4">
+                  <span className="absolute top-1 right-1 text-[9px] font-bold px-1 rounded bg-orange-100 text-orange-700 leading-4">
                     PRO
                   </span>
                 ) : (
@@ -97,7 +97,7 @@ export function TemplateSelector() {
                   style={{ backgroundColor: `${t.primaryColor}20` }}
                 >
                   {locked ? (
-                    <Lock className="h-4 w-4 text-amber-500" />
+                    <Lock className="h-4 w-4 text-orange-500" />
                   ) : (
                     <div
                       className="h-1.5 w-8 rounded-full"
@@ -120,7 +120,7 @@ export function TemplateSelector() {
         <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Crown className="h-5 w-5 text-amber-500" />
+              <Crown className="h-5 w-5 text-orange-500" />
               Unlock Pro Templates
             </DialogTitle>
             <DialogDescription>
@@ -131,7 +131,7 @@ export function TemplateSelector() {
           <div className="space-y-3 py-2">
             <div className="text-center">
               <span className="text-3xl font-bold">$9.99</span>
-              <span className="text-slate-500 text-sm">/month</span>
+              <span className="text-gray-500 text-sm">/month</span>
             </div>
             <ul className="space-y-1.5 text-sm">
               {[
@@ -140,7 +140,7 @@ export function TemplateSelector() {
                 "Advanced customization",
                 "Unlimited exports",
               ].map((f) => (
-                <li key={f} className="flex items-center gap-2 text-slate-700">
+                <li key={f} className="flex items-center gap-2 text-gray-700">
                   <Check className="h-4 w-4 text-green-500 shrink-0" />
                   {f}
                 </li>
@@ -149,14 +149,14 @@ export function TemplateSelector() {
           </div>
 
           <DialogFooter className="flex-col gap-2 sm:flex-col">
-            <Button onClick={handleUpgrade} className="w-full bg-amber-500 hover:bg-amber-600 text-white">
+            <Button onClick={handleUpgrade} className="w-full bg-orange-500 hover:bg-orange-600 text-white">
               <Crown className="h-4 w-4 mr-2" />
               Upgrade to Pro (Simulated)
             </Button>
             <Button
               variant="ghost"
               size="sm"
-              className="w-full text-slate-500"
+              className="w-full text-gray-500"
               onClick={() => setUpgradeTarget(null)}
             >
               Maybe later
@@ -167,7 +167,7 @@ export function TemplateSelector() {
 
       {/* Color Presets */}
       <div>
-        <Label className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2 block">
+        <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 block">
           Color
         </Label>
         <div className="flex flex-wrap gap-2">
@@ -184,7 +184,7 @@ export function TemplateSelector() {
               className={cn(
                 "h-7 w-7 rounded-full border-2 transition-transform hover:scale-110",
                 templateSettings.primaryColor === c.primary
-                  ? "border-slate-900 scale-110"
+                  ? "border-gray-900 scale-110"
                   : "border-transparent",
               )}
               style={{ backgroundColor: c.primary }}
@@ -195,7 +195,7 @@ export function TemplateSelector() {
 
       {/* Font */}
       <div>
-        <Label className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2 block">
+        <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 block">
           Font
         </Label>
         <Select
@@ -217,7 +217,7 @@ export function TemplateSelector() {
 
       {/* Spacing */}
       <div>
-        <Label className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2 block">
+        <Label className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2 block">
           Spacing
         </Label>
         <div className="flex gap-2">
@@ -228,8 +228,8 @@ export function TemplateSelector() {
               className={cn(
                 "flex-1 py-1.5 rounded border text-xs capitalize transition-colors",
                 templateSettings.spacing === s
-                  ? "border-blue-600 bg-blue-50 text-blue-700"
-                  : "border-slate-200 hover:border-slate-300",
+                  ? "border-orange-500 bg-orange-50 text-orange-700"
+                  : "border-gray-200 hover:border-gray-300",
               )}
             >
               {s}
