@@ -65,8 +65,22 @@
 }
 
 /* ── PDF / Print styles ─────────────────────────────────────────────────── */
+
+/*
+  On screen: the print source is hidden off to the left so it doesn't affect
+  visible layout, but is still in the DOM so ResizeObserver can measure it.
+  Width is pinned to 794px (A4 at 96dpi) for accurate page-count calculation.
+*/
+#resume-preview {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 794px;
+  pointer-events: none;
+}
+
 @media print {
-  /* Hide everything — visibility:hidden lets children selectively override */
+  /* Hide everything */
   body * {
     visibility: hidden;
   }
@@ -77,20 +91,21 @@
     visibility: visible;
   }
 
-  /* Cancel wrapper's position so absolute below resolves to the page box */
+  /* Reset wrapper so #resume-preview's absolute position resolves to the page */
   #resume-preview-wrapper {
     position: static !important;
   }
 
-  /* Position at top-left and let it flow naturally across multiple pages */
+  /* Bring the print source to the page origin and let it flow across pages */
   #resume-preview {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 210mm; /* A4 width */
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 210mm !important;
     overflow: visible !important;
     box-shadow: none !important;
     border-radius: 0 !important;
+    pointer-events: auto !important;
   }
 
   @page {

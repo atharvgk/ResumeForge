@@ -1,5 +1,6 @@
 import { type ResumeData } from "@/types/resume";
 import { Mail, Phone, MapPin, Globe, Linkedin, Github } from "lucide-react";
+import { FONT_MAP, SPACING_MULTIPLIER } from "@/lib/templates";
 
 interface TemplateProps {
   data: ResumeData;
@@ -18,17 +19,20 @@ export function ModernTemplate({ data }: TemplateProps) {
     templateSettings,
   } = data;
   const primaryColor = templateSettings.primaryColor;
+  const fontFamily = FONT_MAP[templateSettings.fontFamily] ?? FONT_MAP.inter;
+  const sm = SPACING_MULTIPLIER[templateSettings.spacing] ?? 1;
+  const sidePad = Math.round(24 * sm);
 
   const visibleSections = sectionOrder
     .filter((s) => s.visible)
     .map((s) => s.id);
 
   return (
-    <div className="flex min-h-full" style={{ fontSize: 13 }}>
+    <div className="flex min-h-full" style={{ fontSize: 13, fontFamily }}>
       {/* Sidebar */}
       <div
-        className="w-64 shrink-0 text-white p-6"
-        style={{ backgroundColor: primaryColor }}
+        className="w-64 shrink-0 text-white"
+        style={{ backgroundColor: primaryColor, padding: `${sidePad}px` }}
       >
         <div className="mb-6">
           <div className="h-20 w-20 rounded-full bg-white/20 flex items-center justify-center text-2xl font-bold mb-3">
@@ -115,7 +119,7 @@ export function ModernTemplate({ data }: TemplateProps) {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6 bg-white">
+      <div className="flex-1 bg-white" style={{ padding: `${sidePad}px` }}>
         {personalInfo.summary && (
           <div className="mb-5">
             <SectionHeader title="About Me" color={primaryColor} />

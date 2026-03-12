@@ -56,6 +56,22 @@ export const FONT_OPTIONS = [
   { value: 'playfair', label: 'Playfair Display (Elegant)' },
 ];
 
+/** Maps the stored font key to a CSS font-family string */
+export const FONT_MAP: Record<string, string> = {
+  inter: 'Inter, ui-sans-serif, system-ui, sans-serif',
+  georgia: 'Georgia, "Times New Roman", serif',
+  'dm-sans': '"DM Sans", ui-sans-serif, system-ui, sans-serif',
+  lato: 'Lato, ui-sans-serif, system-ui, sans-serif',
+  playfair: '"Playfair Display", Georgia, serif',
+};
+
+/** Multiplier applied to padding/gap values for each spacing option */
+export const SPACING_MULTIPLIER: Record<string, number> = {
+  compact: 0.7,
+  normal: 1.0,
+  relaxed: 1.4,
+};
+
 export const COLOR_PRESETS = [
   { label: 'Blue', primary: '#2563eb', secondary: '#64748b' },
   { label: 'Slate', primary: '#0f172a', secondary: '#475569' },

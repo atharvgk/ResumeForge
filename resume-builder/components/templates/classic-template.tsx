@@ -1,5 +1,6 @@
 import { type ResumeData } from "@/types/resume";
 import { Mail, Phone, MapPin, Globe, Linkedin, Github } from "lucide-react";
+import { FONT_MAP, SPACING_MULTIPLIER } from "@/lib/templates";
 
 interface TemplateProps {
   data: ResumeData;
@@ -18,6 +19,8 @@ export function ClassicTemplate({ data }: TemplateProps) {
     templateSettings,
   } = data;
   const primaryColor = templateSettings.primaryColor;
+  const fontFamily = FONT_MAP[templateSettings.fontFamily] ?? FONT_MAP.inter;
+  const sm = SPACING_MULTIPLIER[templateSettings.spacing] ?? 1;
 
   const visibleSections = sectionOrder
     .filter((s) => s.visible)
@@ -25,8 +28,12 @@ export function ClassicTemplate({ data }: TemplateProps) {
 
   return (
     <div
-      className="font-sans text-slate-800"
-      style={{ padding: "40px 48px", fontSize: 13 }}
+      style={{
+        padding: `${Math.round(40 * sm)}px ${Math.round(48 * sm)}px`,
+        fontSize: 13,
+        fontFamily,
+        color: "#1e293b",
+      }}
     >
       {/* Header */}
       <div

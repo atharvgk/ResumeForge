@@ -1,5 +1,6 @@
 import { type ResumeData } from "@/types/resume";
 import { Mail, Phone, MapPin, Globe, Linkedin, Github } from "lucide-react";
+import { FONT_MAP, SPACING_MULTIPLIER } from "@/lib/templates";
 
 interface TemplateProps {
   data: ResumeData;
@@ -18,6 +19,8 @@ export function MinimalTemplate({ data }: TemplateProps) {
     templateSettings,
   } = data;
   const primaryColor = templateSettings.primaryColor;
+  const fontFamily = FONT_MAP[templateSettings.fontFamily] ?? FONT_MAP.inter;
+  const sm = SPACING_MULTIPLIER[templateSettings.spacing] ?? 1;
 
   const visibleSections = sectionOrder
     .filter((s) => s.visible)
@@ -26,9 +29,9 @@ export function MinimalTemplate({ data }: TemplateProps) {
   return (
     <div
       style={{
-        padding: "48px 56px",
+        padding: `${Math.round(48 * sm)}px ${Math.round(56 * sm)}px`,
         fontSize: 13,
-        fontFamily: "inherit",
+        fontFamily,
         color: "#1a1a1a",
       }}
     >
