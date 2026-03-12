@@ -64,18 +64,18 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 relative overflow-hidden">
       {/* grid bg */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           backgroundImage:
-            "linear-gradient(to right,rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,0.04) 1px,transparent 1px)",
+            "linear-gradient(to right,rgba(0,0,0,0.03) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,0.03) 1px,transparent 1px)",
           backgroundSize: "48px 48px",
         }}
       />
       {/* glow */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-orange-100/20 blur-3xl -z-10" />
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-orange-500/10 blur-3xl -z-10" />
 
       <div className="w-full max-w-sm relative z-10 animate-fade-in-up fill-both">
         {/* Logo */}
@@ -89,7 +89,7 @@ export default function RegisterPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-2xl shadow-gray-300">
+        <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-2xl shadow-gray-200/60">
           <div className="mb-6">
             <h1 className="text-xl font-semibold text-gray-900">
               Create your account
@@ -101,10 +101,7 @@ export default function RegisterPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-1.5">
-              <label
-                htmlFor="fullName"
-                className="text-sm font-medium text-gray-600"
-              >
+              <label htmlFor="fullName" className="text-sm font-medium text-gray-600">
                 Full Name
               </label>
               <input
@@ -115,16 +112,11 @@ export default function RegisterPage() {
                 {...register("fullName")}
               />
               {errors.fullName && (
-                <p className="text-xs text-red-400">
-                  {errors.fullName.message}
-                </p>
+                <p className="text-xs text-red-400">{errors.fullName.message}</p>
               )}
             </div>
             <div className="space-y-1.5">
-              <label
-                htmlFor="email"
-                className="text-sm font-medium text-gray-600"
-              >
+              <label htmlFor="email" className="text-sm font-medium text-gray-600">
                 Email
               </label>
               <input
@@ -139,10 +131,7 @@ export default function RegisterPage() {
               )}
             </div>
             <div className="space-y-1.5">
-              <label
-                htmlFor="password"
-                className="text-sm font-medium text-gray-600"
-              >
+              <label htmlFor="password" className="text-sm font-medium text-gray-600">
                 Password
               </label>
               <input
@@ -153,16 +142,11 @@ export default function RegisterPage() {
                 {...register("password")}
               />
               {errors.password && (
-                <p className="text-xs text-red-400">
-                  {errors.password.message}
-                </p>
+                <p className="text-xs text-red-400">{errors.password.message}</p>
               )}
             </div>
             <div className="space-y-1.5">
-              <label
-                htmlFor="confirmPassword"
-                className="text-sm font-medium text-gray-600"
-              >
+              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-600">
                 Confirm Password
               </label>
               <input
@@ -173,9 +157,7 @@ export default function RegisterPage() {
                 {...register("confirmPassword")}
               />
               {errors.confirmPassword && (
-                <p className="text-xs text-red-400">
-                  {errors.confirmPassword.message}
-                </p>
+                <p className="text-xs text-red-400">{errors.confirmPassword.message}</p>
               )}
             </div>
             <button
@@ -192,9 +174,7 @@ export default function RegisterPage() {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-2 text-gray-400 uppercase tracking-wider">
-                Or
-              </span>
+              <span className="bg-gray-50 px-2 text-gray-400 uppercase tracking-wider">Or</span>
             </div>
           </div>
 
@@ -206,11 +186,11 @@ export default function RegisterPage() {
             Sign up with Google
           </button>
 
-          <p className="text-center text-sm text-gray-400 mt-6">
+          <p className="text-center text-sm text-gray-500 mt-6">
             Already have an account?{" "}
             <Link
               href="/auth/login"
-              className="text-orange-600 hover:text-orange-600 transition-colors"
+              className="text-orange-600 hover:text-orange-500 transition-colors"
             >
               Sign in
             </Link>

@@ -51,7 +51,7 @@ export function BuilderLayout({
   return (
     <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       {/* Toolbar */}
-      <header className="bg-white border-b border-gray-200 h-14 flex items-center px-4 gap-3 shrink-0 shadow-sm">
+      <header className="bg-white border-b border-gray-200 shadow-sm h-14 flex items-center px-4 gap-3 shrink-0">
         {/* Back */}
         <Link
           href="/dashboard"
@@ -66,7 +66,7 @@ export function BuilderLayout({
 
         {/* Brand */}
         <div className="flex items-center gap-1.5 font-bold text-sm">
-          <div className="h-6 w-6 rounded-md bg-gradient-to-br from-orange-500 to-rose-500 flex items-center justify-center">
+          <div className="h-6 w-6 rounded-md bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
             <FileText className="h-3.5 w-3.5 text-white" />
           </div>
           <span className="text-gray-900">ResumeForge</span>
@@ -80,7 +80,7 @@ export function BuilderLayout({
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="max-w-xs h-8 text-sm border-gray-200 focus-visible:ring-orange-500/30 focus-visible:border-orange-400 transition-colors"
+            className="max-w-xs h-8 text-sm bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus-visible:ring-orange-500/20 focus-visible:border-orange-400 transition-colors"
           />
           {isDirty && (
             <span className="text-xs text-orange-500 font-medium animate-pulse">
@@ -101,7 +101,7 @@ export function BuilderLayout({
             size="sm"
             onClick={handleSave}
             disabled={isSaving || !isDirty}
-            className="h-8 text-xs border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 disabled:opacity-40 transition-all"
+            className="h-8 text-xs border-gray-300 text-gray-500 bg-transparent hover:bg-gray-50 hover:border-gray-400 hover:text-gray-700 disabled:opacity-30 transition-all"
           >
             <Save className="h-3.5 w-3.5 mr-1.5" />
             {isSaving ? "Saving..." : "Save"}
@@ -109,7 +109,7 @@ export function BuilderLayout({
           <Button
             size="sm"
             onClick={() => window.print()}
-            className="btn-shimmer h-8 text-xs bg-orange-500 hover:bg-orange-400 text-white border-0 transition-colors"
+            className="btn-shimmer h-8 text-xs bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-lg shadow-orange-500/30 transition-colors"
           >
             <Download className="h-3.5 w-3.5 mr-1.5" />
             Export PDF
@@ -119,11 +119,11 @@ export function BuilderLayout({
 
       {/* Editor + Preview */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Editor sidebar */}
+        {/* Editor sidebar — keep white for usability with form inputs */}
         <div className="w-[430px] shrink-0 bg-white border-r border-gray-200 overflow-y-auto">
           <EditorPanel />
         </div>
-        {/* Preview canvas */}
+        {/* Preview canvas — dark bg makes resume pop like Figma/Canva */}
         <div className="flex-1 overflow-y-auto bg-gray-100 flex items-start justify-center p-8">
           <PreviewPanel />
         </div>

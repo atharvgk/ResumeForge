@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/navbar";
 import { createClient } from "@/lib/supabase/server";
@@ -23,28 +23,27 @@ export default async function HomePage() {
   } = await supabase.auth.getUser();
 
   return (
-    <div className="min-h-screen bg-[#030712] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
       <Navbar />
 
-      {/* â”€â”€ Hero â”€â”€ */}
+      {/* Hero */}
       <section className="relative min-h-[92vh] flex items-center">
-        {/* Background layers */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(234,88,12,0.18),transparent)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(234,88,12,0.07),transparent)]" />
           <div
-            className="absolute inset-0 opacity-[0.025]"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
               backgroundImage:
-                "linear-gradient(to right,rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,1) 1px,transparent 1px)",
+                "linear-gradient(to right,rgba(0,0,0,0.5) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,0.5) 1px,transparent 1px)",
               backgroundSize: "44px 44px",
             }}
           />
           <div
-            className="absolute top-1/3 right-[10%] h-80 w-80 rounded-full bg-orange-500/8 blur-3xl"
+            className="absolute top-1/3 right-[10%] h-80 w-80 rounded-full bg-orange-400/10 blur-3xl"
             style={{ animation: "glow-pulse 4s ease-in-out infinite" }}
           />
           <div
-            className="absolute bottom-1/3 left-[10%] h-96 w-96 rounded-full bg-violet-500/8 blur-3xl"
+            className="absolute bottom-1/3 left-[10%] h-96 w-96 rounded-full bg-violet-400/8 blur-3xl"
             style={{ animation: "glow-pulse 6s ease-in-out infinite" }}
           />
         </div>
@@ -53,12 +52,12 @@ export default async function HomePage() {
           {/* Left: copy */}
           <div>
             <div className="animate-fade-in-down fill-both">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 text-orange-400 text-sm mb-8">
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-orange-200 bg-orange-50 text-orange-600 text-sm mb-8">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
                 </span>
-                AI-Powered Â· ATS-Optimized Â· Free
+                AI-Powered | ATS-Optimized | Free
                 <Sparkles className="h-3.5 w-3.5" />
               </span>
             </div>
@@ -73,7 +72,7 @@ export default async function HomePage() {
             </h1>
 
             <p
-              className="text-lg text-gray-400 mb-10 max-w-lg leading-relaxed animate-fade-in-up fill-both"
+              className="text-lg text-gray-500 mb-10 max-w-lg leading-relaxed animate-fade-in-up fill-both"
               style={{ animationDelay: "200ms" }}
             >
               Build ATS-optimized resumes with AI that writes like a recruiter.
@@ -100,7 +99,7 @@ export default async function HomePage() {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="h-12 px-8 text-base border-white/10 text-gray-300 bg-white/5 hover:bg-white/10 hover:text-white hover:border-white/20 hover:-translate-y-0.5 transition-all duration-200"
+                      className="h-12 px-8 text-base border-gray-300 text-gray-700 bg-transparent hover:bg-gray-50 hover:-translate-y-0.5 transition-all duration-200"
                     >
                       New Resume
                     </Button>
@@ -121,7 +120,7 @@ export default async function HomePage() {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="h-12 px-8 text-base border-white/10 text-gray-300 bg-white/5 hover:bg-white/10 hover:text-white hover:border-white/20 hover:-translate-y-0.5 transition-all duration-200"
+                      className="h-12 px-8 text-base border-gray-300 text-gray-700 bg-transparent hover:bg-gray-50 hover:-translate-y-0.5 transition-all duration-200"
                     >
                       Sign In
                     </Button>
@@ -142,7 +141,7 @@ export default async function HomePage() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="flex items-center gap-2 text-sm text-gray-500"
+                  className="flex items-center gap-2 text-sm text-gray-400"
                 >
                   <CheckCircle className="h-4 w-4 text-orange-500 shrink-0" />
                   {item}
@@ -153,20 +152,18 @@ export default async function HomePage() {
 
           {/* Right: App mockup */}
           <div className="relative hidden lg:flex items-center justify-center animate-fade-in fill-both">
-            {/* Outer glow */}
-            <div className="absolute inset-0 -z-10 bg-orange-500/5 rounded-3xl blur-3xl scale-110" />
+            <div className="absolute inset-0 -z-10 bg-orange-400/5 rounded-3xl blur-3xl scale-110" />
 
-            {/* Main card */}
-            <div className="relative w-full max-w-[520px] rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/60 ring-1 ring-white/5">
+            <div className="relative w-full max-w-[520px] rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-2xl shadow-gray-200/80 ring-1 ring-gray-100">
               {/* Browser chrome */}
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-white/8 bg-black/20">
+              <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 bg-gray-50">
                 <div className="flex gap-1.5">
-                  <div className="h-3 w-3 rounded-full bg-red-500/70" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-500/70" />
-                  <div className="h-3 w-3 rounded-full bg-green-500/70" />
+                  <div className="h-3 w-3 rounded-full bg-red-400/70" />
+                  <div className="h-3 w-3 rounded-full bg-yellow-400/70" />
+                  <div className="h-3 w-3 rounded-full bg-green-400/70" />
                 </div>
-                <div className="flex-1 h-6 rounded-md bg-white/5 border border-white/8 flex items-center px-3">
-                  <span className="text-[10px] text-white/25">
+                <div className="flex-1 h-6 rounded-md bg-gray-100 border border-gray-200 flex items-center px-3">
+                  <span className="text-[10px] text-gray-400">
                     resumeforge.app/builder
                   </span>
                 </div>
@@ -175,15 +172,15 @@ export default async function HomePage() {
               {/* Builder layout mockup */}
               <div className="flex" style={{ height: "360px" }}>
                 {/* Sidebar */}
-                <div className="w-[165px] border-r border-white/8 bg-black/15 p-3 shrink-0 flex flex-col">
+                <div className="w-[165px] border-r border-gray-100 bg-gray-50/80 p-3 shrink-0 flex flex-col">
                   <div className="flex gap-1 mb-3">
                     {["Content", "Design"].map((t, i) => (
                       <div
                         key={t}
                         className={`flex-1 text-center text-[9px] py-1.5 rounded-md font-medium ${
                           i === 0
-                            ? "bg-orange-500/20 text-orange-400 border border-orange-500/25"
-                            : "text-white/25"
+                            ? "bg-orange-500/20 text-orange-600 border border-orange-500/25"
+                            : "text-gray-400"
                         }`}
                       >
                         {t}
@@ -202,36 +199,35 @@ export default async function HomePage() {
                         key={name}
                         className={`text-[9px] px-2 py-1.5 rounded-md ${
                           active
-                            ? "bg-orange-500/15 text-orange-400 border border-orange-500/20"
-                            : "text-white/35"
+                            ? "bg-orange-500/15 text-orange-600 border border-orange-500/20"
+                            : "text-gray-400"
                         }`}
                       >
                         {name}
                       </div>
                     ))}
                   </div>
-                  {/* AI button hint */}
-                  <div className="mt-3 px-2 py-2.5 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                  <div className="mt-3 px-2 py-2.5 rounded-lg bg-orange-50 border border-orange-200">
                     <div className="flex items-center gap-1.5 mb-2">
-                      <Zap className="h-2.5 w-2.5 text-orange-400" />
-                      <span className="text-[8px] text-orange-400 font-semibold">
+                      <Zap className="h-2.5 w-2.5 text-orange-500" />
+                      <span className="text-[8px] text-orange-600 font-semibold">
                         AI Improve
                       </span>
                     </div>
-                    <div className="h-1 w-full bg-white/5 rounded-full">
+                    <div className="h-1 w-full bg-gray-200 rounded-full">
                       <div className="h-1 w-[65%] bg-gradient-to-r from-orange-500 to-rose-500 rounded-full" />
                     </div>
                   </div>
                 </div>
 
                 {/* Resume preview pane */}
-                <div className="flex-1 p-3 bg-[#111827]/40">
-                  <div className="bg-white rounded-xl h-full p-4 shadow-2xl overflow-hidden">
+                <div className="flex-1 p-3 bg-gray-100/60">
+                  <div className="bg-white rounded-xl h-full p-4 shadow-md overflow-hidden border border-gray-100">
                     <div className="flex justify-between items-start mb-3">
                       <div>
                         <div className="h-3.5 w-28 bg-gray-800 rounded-sm mb-1.5" />
                         <div className="h-2 w-20 bg-orange-500 rounded-sm mb-1" />
-                        <div className="h-1.5 w-32 bg-gray-300 rounded-sm" />
+                        <div className="h-1.5 w-32 bg-gray-200 rounded-sm" />
                       </div>
                     </div>
                     <div className="h-px w-full bg-orange-100 my-2.5" />
@@ -266,16 +262,16 @@ export default async function HomePage() {
             </div>
 
             {/* Floating ATS badge */}
-            <div className="absolute -top-5 -right-6 bg-[#0d0d1a] border border-white/15 rounded-2xl px-3.5 py-2.5 shadow-2xl animate-float">
+            <div className="absolute -top-5 -right-6 bg-white border border-gray-200 rounded-2xl px-3.5 py-2.5 shadow-xl shadow-gray-200/60 animate-float">
               <div className="flex items-center gap-2.5">
-                <div className="h-8 w-8 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-                  <BarChart3 className="h-4 w-4 text-emerald-400" />
+                <div className="h-8 w-8 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center">
+                  <BarChart3 className="h-4 w-4 text-emerald-500" />
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-white">
+                  <div className="text-xs font-semibold text-gray-900">
                     94% ATS Score
                   </div>
-                  <div className="text-[10px] text-white/40">
+                  <div className="text-[10px] text-gray-400">
                     Excellent match
                   </div>
                 </div>
@@ -283,16 +279,16 @@ export default async function HomePage() {
             </div>
 
             {/* Floating AI badge */}
-            <div className="absolute -bottom-5 -left-6 bg-[#0d0d1a] border border-white/15 rounded-2xl px-3.5 py-2.5 shadow-2xl">
+            <div className="absolute -bottom-5 -left-6 bg-white border border-gray-200 rounded-2xl px-3.5 py-2.5 shadow-xl shadow-gray-200/60">
               <div className="flex items-center gap-2.5">
-                <div className="h-8 w-8 rounded-xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center">
-                  <Zap className="h-4 w-4 text-orange-400" />
+                <div className="h-8 w-8 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center">
+                  <Zap className="h-4 w-4 text-orange-500" />
                 </div>
                 <div>
-                  <div className="text-xs font-semibold text-white">
+                  <div className="text-xs font-semibold text-gray-900">
                     AI Enhanced
                   </div>
-                  <div className="text-[10px] text-white/40">
+                  <div className="text-[10px] text-gray-400">
                     3 improvements applied
                   </div>
                 </div>
@@ -302,8 +298,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* â”€â”€ Stats strip â”€â”€ */}
-      <div className="border-y border-white/5 bg-white/[0.015]">
+      {/* Stats strip */}
+      <div className="border-y border-gray-100 bg-gray-50/80">
         <div className="container mx-auto px-4 py-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto text-center">
             {[
@@ -313,45 +309,44 @@ export default async function HomePage() {
               { value: "Free", label: "No Credit Card" },
             ].map((s) => (
               <div key={s.label}>
-                <div className="text-3xl font-bold bg-gradient-to-br from-orange-400 to-rose-400 bg-clip-text text-transparent mb-1">
+                <div className="text-3xl font-bold bg-gradient-to-br from-orange-500 to-rose-500 bg-clip-text text-transparent mb-1">
                   {s.value}
                 </div>
-                <div className="text-sm text-white/40">{s.label}</div>
+                <div className="text-sm text-gray-400">{s.label}</div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* â”€â”€ Features (bento grid) â”€â”€ */}
+      {/* Features */}
       <section className="container mx-auto px-4 py-24">
         <div className="text-center mb-16">
           <span className="inline-block text-xs font-bold uppercase tracking-widest text-orange-500 mb-4">
             Features
           </span>
-          <h2 className="text-4xl font-bold text-white">
+          <h2 className="text-4xl font-bold text-gray-900">
             Everything you need to land the job
           </h2>
-          <p className="text-gray-400 mt-4 max-w-xl mx-auto">
-            All the tools to build a standout, ATS-optimized resume â€” in one
-            place.
+          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
+            All the tools to build a standout, ATS-optimized resume - in one place.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
-          {/* Large AI card */}
-          <div className="group md:col-span-2 relative rounded-2xl border border-white/8 bg-white/[0.03] p-8 overflow-hidden hover:border-orange-500/30 hover:bg-white/[0.05] transition-all duration-300">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-orange-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-500/60 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-orange-500/15 border border-orange-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Brain className="h-6 w-6 text-orange-400" />
+          {/* AI card */}
+          <div className="group md:col-span-2 relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-orange-300 hover:shadow-lg hover:shadow-orange-500/8 transition-all duration-300">
+            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-orange-50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+            <div className="h-12 w-12 rounded-2xl bg-orange-50 border border-orange-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <Brain className="h-6 w-6 text-orange-500" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-3">
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">
               AI-Powered Enhancements
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed mb-5">
+            <p className="text-gray-500 text-sm leading-relaxed mb-5">
               Groq-powered AI rewrites your experience bullets, generates
-              professional summaries, and suggests ATS-relevant skills â€” in the
+              professional summaries, and suggests ATS-relevant skills - in the
               voice of someone owning their achievements. Review before applying,
               always.
             </p>
@@ -364,7 +359,7 @@ export default async function HomePage() {
               ].map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400"
+                  className="text-xs px-2.5 py-1 rounded-full bg-orange-50 border border-orange-200 text-orange-600"
                 >
                   {tag}
                 </span>
@@ -373,60 +368,60 @@ export default async function HomePage() {
           </div>
 
           {/* Templates card */}
-          <div className="group relative rounded-2xl border border-white/8 bg-white/[0.03] p-8 overflow-hidden hover:border-violet-500/30 hover:bg-white/[0.05] transition-all duration-300">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-500/60 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-violet-500/15 border border-violet-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <LayoutTemplate className="h-6 w-6 text-violet-400" />
+          <div className="group relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-violet-300 hover:shadow-lg hover:shadow-violet-500/8 transition-all duration-300">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+            <div className="h-12 w-12 rounded-2xl bg-violet-50 border border-violet-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <LayoutTemplate className="h-6 w-6 text-violet-500" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-3">
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">
               3 Premium Templates
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Classic, Modern, Minimal. Each fully customizable â€” change colors,
+            <p className="text-gray-500 text-sm leading-relaxed">
+              Classic, Modern, Minimal. Each fully customizable - change colors,
               fonts, and spacing in real time.
             </p>
           </div>
 
           {/* PDF card */}
-          <div className="group relative rounded-2xl border border-white/8 bg-white/[0.03] p-8 overflow-hidden hover:border-cyan-500/30 hover:bg-white/[0.05] transition-all duration-300">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-cyan-500/15 border border-cyan-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Download className="h-6 w-6 text-cyan-400" />
+          <div className="group relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-cyan-300 hover:shadow-lg hover:shadow-cyan-500/8 transition-all duration-300">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+            <div className="h-12 w-12 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <Download className="h-6 w-6 text-cyan-500" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-3">
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">
               Instant PDF Export
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-gray-500 text-sm leading-relaxed">
               Pixel-perfect A4 PDF with one click. Auto-saves every 3 seconds so
               you never lose progress.
             </p>
           </div>
 
           {/* ATS card */}
-          <div className="group relative rounded-2xl border border-white/8 bg-white/[0.03] p-8 overflow-hidden hover:border-emerald-500/30 hover:bg-white/[0.05] transition-all duration-300">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/60 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Target className="h-6 w-6 text-emerald-400" />
+          <div className="group relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-500/8 transition-all duration-300">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+            <div className="h-12 w-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <Target className="h-6 w-6 text-emerald-500" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-3">
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">
               ATS Score Checker
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-gray-500 text-sm leading-relaxed">
               Paste a job description and instantly see how well your resume
               matches with a detailed compatibility score.
             </p>
           </div>
 
           {/* Auto-save card */}
-          <div className="group relative rounded-2xl border border-white/8 bg-white/[0.03] p-8 overflow-hidden hover:border-rose-500/30 hover:bg-white/[0.05] transition-all duration-300">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rose-500/60 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-rose-500/15 border border-rose-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Shield className="h-6 w-6 text-rose-400" />
+          <div className="group relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/8 transition-all duration-300">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rose-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+            <div className="h-12 w-12 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <Shield className="h-6 w-6 text-rose-500" />
             </div>
-            <h3 className="text-xl font-semibold text-white mb-3">
-              Auto-save & Sync
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">
+              Auto-save &amp; Sync
             </h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
+            <p className="text-gray-500 text-sm leading-relaxed">
               Every change syncs to your account automatically. Pick up where
               you left off on any device.
             </p>
@@ -434,19 +429,19 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* â”€â”€ How it works â”€â”€ */}
-      <section className="border-y border-white/5 bg-white/[0.015] py-24">
+      {/* How it works */}
+      <section className="border-y border-gray-100 bg-gray-50/80 py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <span className="inline-block text-xs font-bold uppercase tracking-widest text-orange-500 mb-4">
               How it works
             </span>
-            <h2 className="text-4xl font-bold text-white">
-              From blank page to hired â€” in 3 steps
+            <h2 className="text-4xl font-bold text-gray-900">
+              From blank page to hired - in 3 steps
             </h2>
           </div>
           <div className="relative grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
-            <div className="hidden md:block absolute top-7 left-[17%] right-[17%] h-px bg-gradient-to-r from-orange-500/20 via-orange-500/60 to-orange-500/20" />
+            <div className="hidden md:block absolute top-7 left-[17%] right-[17%] h-px bg-gradient-to-r from-orange-200 via-orange-400 to-orange-200" />
             {[
               {
                 step: "01",
@@ -469,24 +464,24 @@ export default async function HomePage() {
                 className="text-center animate-fade-in-up fill-both"
                 style={{ animationDelay: `${i * 150}ms` }}
               >
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xl font-bold mb-6 hover:bg-orange-500 hover:text-white hover:border-orange-500 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 relative z-10">
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 border border-orange-200 text-orange-600 text-xl font-bold mb-6 hover:bg-orange-500 hover:text-white hover:border-orange-500 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 relative z-10">
                   {s.step}
                 </div>
-                <h3 className="font-semibold text-white mb-3 text-lg">
+                <h3 className="font-semibold text-gray-800 mb-3 text-lg">
                   {s.title}
                 </h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{s.desc}</p>
+                <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* â”€â”€ CTA â”€â”€ */}
-      <section className="relative overflow-hidden py-32">
+      {/* CTA */}
+      <section className="relative overflow-hidden py-32 bg-gray-900">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-900/35 via-[#030712] to-violet-900/25" />
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[800px] rounded-full bg-orange-500/5 blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-900/40 via-gray-900 to-violet-900/30" />
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[800px] rounded-full bg-orange-500/8 blur-3xl" />
           <div
             className="absolute inset-0 opacity-[0.03]"
             style={{
@@ -497,7 +492,7 @@ export default async function HomePage() {
           />
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl sm:text-6xl font-bold mb-6 animate-fade-in-up fill-both">
+          <h2 className="text-4xl sm:text-6xl font-bold mb-6 text-white animate-fade-in-up fill-both">
             Ready to build your{" "}
             <span className="gradient-text">dream resume?</span>
           </h2>
@@ -536,28 +531,28 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* â”€â”€ Footer â”€â”€ */}
-      <footer className="border-t border-white/5 py-10">
-        <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-white/30">
+      {/* Footer */}
+      <footer className="border-t border-gray-100 py-10">
+        <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-gray-400">
           <div className="flex items-center gap-2.5">
             <div className="h-7 w-7 rounded-lg bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
               <FileText className="h-4 w-4 text-white" />
             </div>
-            <span className="font-bold text-white/60 text-base">
+            <span className="font-bold text-gray-700 text-base">
               ResumeForge
             </span>
           </div>
-          <p>Â© 2026 ResumeForge. Built for job seekers.</p>
+          <p>&copy; 2026 ResumeForge. Built for job seekers.</p>
           <div className="flex items-center gap-6">
             <Link
               href="/auth/login"
-              className="hover:text-white/60 transition-colors"
+              className="hover:text-gray-600 transition-colors"
             >
               Sign In
             </Link>
             <Link
               href="/auth/register"
-              className="hover:text-white/60 transition-colors"
+              className="hover:text-gray-600 transition-colors"
             >
               Get Started
             </Link>
@@ -567,4 +562,3 @@ export default async function HomePage() {
     </div>
   );
 }
-

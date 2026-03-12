@@ -80,18 +80,18 @@ function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 relative overflow-hidden">
       {/* grid bg */}
       <div
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
           backgroundImage:
-            "linear-gradient(to right,rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,0.04) 1px,transparent 1px)",
+            "linear-gradient(to right,rgba(0,0,0,0.03) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,0.03) 1px,transparent 1px)",
           backgroundSize: "48px 48px",
         }}
       />
       {/* glow */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-orange-100/20 blur-3xl -z-10" />
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[500px] rounded-full bg-orange-500/10 blur-3xl -z-10" />
 
       <div className="w-full max-w-sm relative z-10 animate-fade-in-up fill-both">
         {/* Logo */}
@@ -105,7 +105,7 @@ function LoginForm() {
         </div>
 
         {/* Card */}
-        <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-2xl shadow-gray-300">
+        <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-2xl shadow-gray-200/60">
           <div className="mb-6">
             <h1 className="text-xl font-semibold text-gray-900">
               Welcome back
@@ -168,7 +168,7 @@ function LoginForm() {
               <div className="w-full border-t border-gray-200" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-2 text-gray-400 uppercase tracking-wider">
+              <span className="bg-gray-50 px-2 text-gray-400 uppercase tracking-wider">
                 Or
               </span>
             </div>
@@ -182,11 +182,11 @@ function LoginForm() {
             Sign in with Google
           </button>
 
-          <p className="text-center text-sm text-gray-400 mt-6">
+          <p className="text-center text-sm text-gray-500 mt-6">
             Don&apos;t have an account?{" "}
             <Link
               href="/auth/register"
-              className="text-orange-600 hover:text-orange-600 transition-colors"
+              className="text-orange-600 hover:text-orange-500 transition-colors"
             >
               Sign up
             </Link>

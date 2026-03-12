@@ -17,20 +17,20 @@ export async function Navbar() {
           <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center transition-all duration-300 group-hover:bg-orange-400 group-hover:scale-110 group-hover:rotate-6 shadow-lg shadow-orange-500/30">
             <FileText className="h-4 w-4 text-white transition-transform duration-300" />
           </div>
-          <span className="text-lg font-bold text-white drop-shadow-sm">ResumeForge</span>
+          <span className="text-lg font-bold text-gray-900">ResumeForge</span>
         </Link>
 
         <div className="flex items-center gap-2">
           {user ? (
             <>
-              <span className="text-sm text-white/60 hidden sm:block truncate max-w-[180px]">
+              <span className="text-sm text-gray-500 hidden sm:block truncate max-w-[180px]">
                 {user.email}
               </span>
               <Link href="/dashboard">
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                  className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
                 >
                   Dashboard
                 </Button>
@@ -40,7 +40,7 @@ export async function Navbar() {
                   variant="outline"
                   size="sm"
                   type="submit"
-                  className="border-white/20 text-white/70 hover:border-red-500/50 hover:bg-red-500/10 hover:text-red-400 transition-colors bg-transparent"
+                  className="border-gray-200 text-gray-600 hover:border-red-400 hover:bg-red-50 hover:text-red-500 transition-colors bg-transparent"
                 >
                   Sign Out
                 </Button>
@@ -52,7 +52,7 @@ export async function Navbar() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-white/70 hover:text-white hover:bg-white/10 transition-colors"
+                  className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
                 >
                   Sign In
                 </Button>
