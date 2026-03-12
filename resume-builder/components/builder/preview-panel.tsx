@@ -6,16 +6,12 @@ import { ModernTemplate } from "@/components/templates/modern-template";
 import { MinimalTemplate } from "@/components/templates/minimal-template";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
-import { toast } from "sonner";
 
 export function PreviewPanel() {
   const data = useResumeStore((s) => s.data);
   const title = useResumeStore((s) => s.title);
 
   const handleDownloadPDF = () => {
-    toast.info("PDF export is being prepared...", {
-      description: "Use Ctrl+P to print as PDF for now.",
-    });
     window.print();
   };
 
@@ -35,12 +31,21 @@ export function PreviewPanel() {
           Download PDF
         </Button>
       </div>
+
+      {/* Visible preview */}
       <div
         id="resume-preview"
-        className="bg-white shadow-lg rounded-sm overflow-hidden print:shadow-none print:rounded-none"
+        className="bg-white shadow-lg rounded-sm overflow-hidden"
         style={{ minHeight: "1056px" }}
       >
         <TemplateComponent data={data} />
+      </div>
+
+      {/* Print-only root — only this renders when Ctrl+P / Download PDF is triggered */}
+      <div id="resume-print-root" style={{ display: "none" }}>
+        <div id="resume-preview" style={{ minHeight: "1056px", background: "white" }}>
+          <TemplateComponent data={data} />
+        </div>
       </div>
     </div>
   );

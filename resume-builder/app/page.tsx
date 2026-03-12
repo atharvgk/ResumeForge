@@ -8,27 +8,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Navbar } from "@/components/navbar";
+import { createClient } from "@/lib/supabase/server";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="border-b">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold">ResumeForge</span>
-            <Badge variant="secondary">Beta</Badge>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link href="/auth/login">
-              <Button variant="ghost">Sign In</Button>
-            </Link>
-            <Link href="/auth/register">
-              <Button>Get Started</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Navbar />
 
       {/* Hero */}
       <section className="container mx-auto px-4 py-24 text-center">
@@ -45,14 +36,29 @@ export default function HomePage() {
           and real-time previews. Export to PDF in seconds.
         </p>
         <div className="flex items-center justify-center gap-4">
-          <Link href="/auth/register">
-            <Button size="lg">Start for Free</Button>
-          </Link>
-          <Link href="/templates">
-            <Button size="lg" variant="outline">
-              Browse Templates
-            </Button>
-          </Link>
+          {user ? (
+            <>
+              <Link href="/dashboard">
+                <Button size="lg">Go to Dashboard</Button>
+              </Link>
+              <Link href="/builder/new">
+                <Button size="lg" variant="outline">
+                  New Resume
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/auth/register">
+                <Button size="lg">Start for Free</Button>
+              </Link>
+              <Link href="/templates">
+                <Button size="lg" variant="outline">
+                  Browse Templates
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </section>
 
@@ -111,18 +117,23 @@ export default function HomePage() {
       <section className="container mx-auto px-4 py-24 text-center">
         <h2 className="text-3xl font-bold mb-4">Ready to Build Your Resume?</h2>
         <p className="text-muted-foreground mb-8">
-          Join thousands of job seekers who landed their dream job with
-          ResumeForge.
+          Join thousands of job seekers who landed their dream job with ResumeForge.
         </p>
-        <Link href="/auth/register">
-          <Button size="lg">Create Your Resume Now</Button>
-        </Link>
+        {user ? (
+          <Link href="/builder/new">
+            <Button size="lg">Create a New Resume</Button>
+          </Link>
+        ) : (
+          <Link href="/auth/register">
+            <Button size="lg">Create Your Resume Now</Button>
+          </Link>
+        )}
       </section>
 
       {/* Footer */}
       <footer className="border-t py-8">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>2024 ResumeForge. All rights reserved.</p>
+          <p>2026 ResumeForge. All rights reserved.</p>
         </div>
       </footer>
     </div>
