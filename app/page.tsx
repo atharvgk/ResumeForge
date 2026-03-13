@@ -1,6 +1,5 @@
 import Link from "next/link";
 import {
-  FileText,
   Zap,
   Target,
   Layout,
@@ -8,7 +7,10 @@ import {
   Eye,
   Shield,
   ArrowRight,
+  FileText,
 } from "lucide-react";
+import { createClient } from "@/lib/supabase/server";
+import HomeNavbar from "@/components/home/navbar";
 
 const features = [
   {
@@ -80,44 +82,38 @@ const footerPrimaryLinks = [
   { label: "Dashboard", href: "/dashboard" },
 ];
 
-const footerAccountLinks = [
-  { label: "Log In", href: "/auth/login" },
-  { label: "Create Account", href: "/auth/register" },
-  { label: "Build Resume", href: "/builder/new" },
-];
+export default async function HomePage() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-export default function HomePage() {
+  const userInfo = user
+    ? {
+        name:
+          (user.user_metadata?.full_name as string | undefined) ??
+          (user.user_metadata?.name as string | undefined) ??
+          null,
+        email: user.email ?? null,
+      }
+    : null;
+
+  const footerAccountLinks = userInfo
+    ? [
+        { label: "Dashboard", href: "/dashboard" },
+        { label: "New Resume", href: "/builder/new" },
+      ]
+    : [
+        { label: "Log In", href: "/auth/login" },
+        { label: "Create Account", href: "/auth/register" },
+        { label: "Build Resume", href: "/builder/new" },
+      ];
+
   return (
     <div className="min-h-screen bg-white">
 
       {/* ---- NAVBAR ---- */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center">
-                <FileText className="h-4 w-4 text-white" />
-              </div>
-              <span className="text-lg font-bold text-gray-900">ResumeForge</span>
-            </Link>
-            <div className="hidden md:flex items-center gap-6">
-              <Link href="/templates" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Templates</Link>
-              <Link href="#features" className="text-sm text-orange-500 font-semibold border-b-2 border-orange-500 pb-0.5">AI Features</Link>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/auth/login" className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors px-3 py-2">
-              Log In
-            </Link>
-            <Link
-              href="/auth/register"
-              className="text-sm font-semibold bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-full transition-colors shadow-lg shadow-orange-200"
-            >
-              Build My Resume
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <HomeNavbar user={userInfo} />
 
       {/* ---- HERO ---- */}
       <section className="max-w-7xl mx-auto px-6 pt-20 pb-16">
@@ -151,10 +147,10 @@ export default function HomePage() {
             {/* CTAs + social proof */}
             <div className="flex items-center gap-5 flex-wrap">
               <Link
-                href="/auth/register"
+                href={userInfo ? "/builder/new" : "/auth/register"}
                 className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-7 py-3.5 rounded-full transition-colors shadow-xl shadow-orange-200 text-sm"
               >
-                Create Resume Free <ArrowRight className="h-4 w-4" />
+                {userInfo ? "Build New Resume" : "Create Resume Free"} <ArrowRight className="h-4 w-4" />
               </Link>
               <div className="flex items-center gap-3">
                 <div className="flex -space-x-2">
@@ -411,10 +407,10 @@ export default function HomePage() {
             </p>
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Link
-                href="/auth/register"
+                href={userInfo ? "/dashboard" : "/auth/register"}
                 className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold px-8 py-4 rounded-full transition-colors text-sm shadow-xl"
               >
-                Get Started Free <ArrowRight className="h-4 w-4" />
+                {userInfo ? "Go to Dashboard" : "Get Started Free"} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/templates"
@@ -482,10 +478,10 @@ export default function HomePage() {
                 Start a new resume, customize a template, and export it whenever you need.
               </p>
               <Link
-                href="/auth/register"
+                href={userInfo ? "/builder/new" : "/auth/register"}
                 className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-5 py-3 rounded-full transition-colors shadow-lg shadow-orange-200"
               >
-                Build My Resume <ArrowRight className="h-4 w-4" />
+                {userInfo ? "New Resume" : "Build My Resume"} <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
