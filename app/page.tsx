@@ -382,8 +382,11 @@ export default async function HomePage() {
             }}
           />
           <div className="relative">
-            <h2 className="text-5xl md:text-6xl font-black text-white leading-tight line-through decoration-white/60 decoration-4">
-              Stop applying.
+            <h2 className="text-5xl md:text-6xl font-black text-white leading-tight">
+              <span className="relative inline-block">
+                Stop applying.
+                <span className="absolute inset-x-0 top-1/2 h-[5px] bg-white/90 rounded-full -translate-y-1/2 shadow-sm" />
+              </span>
             </h2>
             <h2 className="text-5xl md:text-6xl font-black italic text-white underline decoration-white/40 leading-tight mb-5">
               Start interviewing.
