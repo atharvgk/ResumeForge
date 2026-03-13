@@ -263,20 +263,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ---- COMPANY LOGOS STRIP ---- */}
-      <section className="bg-gray-50 border-y border-gray-100 py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <p className="text-center text-[10px] font-bold text-gray-400 tracking-[0.25em] uppercase mb-8">
-            Our graduates work at world-class companies
-          </p>
-          <div className="flex items-center justify-center gap-12 flex-wrap">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="h-7 w-20 bg-gray-300 rounded opacity-40" />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ---- FEATURES ---- */}
       <section id="features" className="py-24">
         <div className="max-w-7xl mx-auto px-6">
