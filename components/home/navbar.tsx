@@ -13,9 +13,10 @@ interface UserInfo {
 
 interface HomeNavbarProps {
   user: UserInfo | null;
+  showMarketingLinks?: boolean;
 }
 
-export default function HomeNavbar({ user }: HomeNavbarProps) {
+export default function HomeNavbar({ user, showMarketingLinks = true }: HomeNavbarProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -58,14 +59,16 @@ export default function HomeNavbar({ user }: HomeNavbarProps) {
             </div>
             <span className="text-lg font-bold text-gray-900">ResumeForge</span>
           </Link>
-          <div className="hidden md:flex items-center gap-6">
-            <Link href="/templates" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
-              Templates
-            </Link>
-            <Link href="#features" className="text-sm text-orange-500 font-semibold border-b-2 border-orange-500 pb-0.5">
-              AI Features
-            </Link>
-          </div>
+          {showMarketingLinks && (
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/templates" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                Templates
+              </Link>
+              <Link href="#features" className="text-sm text-orange-500 font-semibold border-b-2 border-orange-500 pb-0.5">
+                AI Features
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Right: auth area */}

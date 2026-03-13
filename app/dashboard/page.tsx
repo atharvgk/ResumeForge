@@ -34,7 +34,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900">
-      <HomeNavbar user={userInfo} />
+      <HomeNavbar user={userInfo} showMarketingLinks={false} />
 
       <div className="border-b border-gray-100 relative overflow-hidden bg-gray-50/80">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_100%_at_70%_0%,rgba(234,88,12,0.07),transparent)]" />
