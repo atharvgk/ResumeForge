@@ -382,7 +382,7 @@ export default async function HomePage() {
             }}
           />
           <div className="relative">
-            <h2 className="text-5xl md:text-6xl font-black text-white leading-tight">
+            <h2 className="text-5xl md:text-6xl font-black text-white leading-tight line-through decoration-white/60 decoration-4">
               Stop applying.
             </h2>
             <h2 className="text-5xl md:text-6xl font-black italic text-white underline decoration-white/40 leading-tight mb-5">
