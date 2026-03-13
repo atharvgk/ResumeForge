@@ -385,7 +385,7 @@ export default async function HomePage() {
             <h2 className="text-5xl md:text-6xl font-black text-white leading-tight">
               <span className="relative inline-block">
                 Stop applying.
-                <span className="absolute inset-x-0 top-[58%] h-[5px] bg-white/90 rounded-full -translate-y-1/2 shadow-sm" />
+                <span className="absolute inset-x-0 top-[58%] h-[8px] bg-red-500 rounded-full -translate-y-1/2 shadow-sm" />
               </span>
             </h2>
             <h2 className="text-5xl md:text-6xl font-black italic text-white underline decoration-white/40 leading-tight mb-5">
