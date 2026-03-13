@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { useResumeStore } from "@/store/resume-store";
 import { TEMPLATES, COLOR_PRESETS, FONT_OPTIONS } from "@/lib/templates";
@@ -73,7 +74,7 @@ export function TemplateSelector() {
                 key={t.id}
                 onClick={() => handleTemplateClick(t.id, t.isPaid)}
                 className={cn(
-                  "relative rounded-lg border-2 p-2 text-center text-xs transition-all",
+                  "relative overflow-hidden rounded-lg border-2 p-2 text-left text-xs transition-all",
                   template === t.id
                     ? "border-orange-500 bg-orange-50"
                     : locked
@@ -92,20 +93,26 @@ export function TemplateSelector() {
                   </span>
                 )}
 
-                <div
-                  className="h-12 rounded mb-1.5 flex items-center justify-center"
-                  style={{ backgroundColor: `${t.primaryColor}20` }}
-                >
-                  {locked ? (
-                    <Lock className="h-4 w-4 text-orange-500" />
-                  ) : (
-                    <div
-                      className="h-1.5 w-8 rounded-full"
-                      style={{ backgroundColor: t.primaryColor }}
-                    />
+                <div className="relative h-20 rounded mb-2 overflow-hidden border border-gray-200 bg-gray-50">
+                  <Image
+                    src={t.preview}
+                    alt={`${t.name} template preview`}
+                    fill
+                    className={cn("object-cover object-top", locked && "opacity-45")}
+                    sizes="160px"
+                  />
+                  {locked && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/35 backdrop-blur-[1px]">
+                      <div className="h-8 w-8 rounded-full bg-orange-500/90 flex items-center justify-center shadow-md">
+                        <Lock className="h-4 w-4 text-white" />
+                      </div>
+                    </div>
                   )}
                 </div>
-                {t.name}
+                <div className="font-semibold text-gray-800">{t.name}</div>
+                <div className="text-[10px] text-gray-500 mt-0.5 line-clamp-2">
+                  {t.description}
+                </div>
               </button>
             );
           })}

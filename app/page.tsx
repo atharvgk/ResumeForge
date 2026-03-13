@@ -1,564 +1,505 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Navbar } from "@/components/navbar";
-import { createClient } from "@/lib/supabase/server";
 import {
   FileText,
   Zap,
-  Download,
-  ArrowRight,
-  CheckCircle,
-  Sparkles,
-  BarChart3,
-  Shield,
-  Brain,
   Target,
-  LayoutTemplate,
+  Layout,
+  Search,
+  Eye,
+  Shield,
+  ArrowRight,
 } from "lucide-react";
 
-export default async function HomePage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+const features = [
+  {
+    icon: Zap,
+    iconBg: "bg-orange-100",
+    iconColor: "text-orange-600",
+    title: "Groq AI Engine",
+    badge: "Premium",
+    badgeColor: "bg-orange-100 text-orange-600",
+    desc: "Harness the fastest LLM on the market to instantly rewrite your weak bullet points into high-impact achievement statements.",
+  },
+  {
+    icon: Target,
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-600",
+    title: "ATS Heatmaps",
+    badge: null,
+    badgeColor: "",
+    desc: "Visual feedback on exactly where your resume might fail an automated scan, with suggested fixes in real-time.",
+  },
+  {
+    icon: Layout,
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-600",
+    title: "Precision Templates",
+    badge: null,
+    badgeColor: "",
+    desc: "Recruiter-approved layouts that focus on white space, typography, and scannability. Designed to be read in 6 seconds.",
+  },
+  {
+    icon: Search,
+    iconBg: "bg-orange-100",
+    iconColor: "text-orange-600",
+    title: "Keyword Injector",
+    badge: "New",
+    badgeColor: "bg-blue-100 text-blue-700",
+    desc: "Paste a job URL and we will automatically highlight the missing keywords in your resume that recruiters are searching for.",
+  },
+  {
+    icon: Eye,
+    iconBg: "bg-purple-100",
+    iconColor: "text-purple-600",
+    title: "Live Previews",
+    badge: null,
+    badgeColor: "",
+    desc: "No more Save as PDF to see changes. Our dual-pane editor shows your final document exactly as you type.",
+  },
+  {
+    icon: Shield,
+    iconBg: "bg-teal-100",
+    iconColor: "text-teal-600",
+    title: "Privacy First",
+    badge: null,
+    badgeColor: "",
+    desc: "Your data is encrypted and never sold. We only use your information to help you get hired, period.",
+  },
+];
 
+const whyPoints = [
+  "AI that understands industry-specific jargon",
+  "Pixel-perfect A4 and US Letter exports",
+  "Direct feedback from ex-Google recruiters",
+  "Unlimited versions for every job application",
+];
+
+const footerPrimaryLinks = [
+  { label: "Home", href: "/" },
+  { label: "Templates", href: "/templates" },
+  { label: "Dashboard", href: "/dashboard" },
+];
+
+const footerAccountLinks = [
+  { label: "Log In", href: "/auth/login" },
+  { label: "Create Account", href: "/auth/register" },
+  { label: "Build Resume", href: "/builder/new" },
+];
+
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white text-gray-900 overflow-x-hidden">
-      <Navbar />
+    <div className="min-h-screen bg-white">
 
-      {/* Hero */}
-      <section className="relative min-h-[92vh] flex items-center">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_-20%,rgba(234,88,12,0.07),transparent)]" />
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage:
-                "linear-gradient(to right,rgba(0,0,0,0.5) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,0,0,0.5) 1px,transparent 1px)",
-              backgroundSize: "44px 44px",
-            }}
-          />
-          <div
-            className="absolute top-1/3 right-[10%] h-80 w-80 rounded-full bg-orange-400/10 blur-3xl"
-            style={{ animation: "glow-pulse 4s ease-in-out infinite" }}
-          />
-          <div
-            className="absolute bottom-1/3 left-[10%] h-96 w-96 rounded-full bg-violet-400/8 blur-3xl"
-            style={{ animation: "glow-pulse 6s ease-in-out infinite" }}
-          />
+      {/* ---- NAVBAR ---- */}
+      <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
+        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-8">
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center">
+                <FileText className="h-4 w-4 text-white" />
+              </div>
+              <span className="text-lg font-bold text-gray-900">ResumeForge</span>
+            </Link>
+            <div className="hidden md:flex items-center gap-6">
+              <Link href="/templates" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Templates</Link>
+              <Link href="#features" className="text-sm text-orange-500 font-semibold border-b-2 border-orange-500 pb-0.5">AI Features</Link>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link href="/auth/login" className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors px-3 py-2">
+              Log In
+            </Link>
+            <Link
+              href="/auth/register"
+              className="text-sm font-semibold bg-orange-500 hover:bg-orange-600 text-white px-5 py-2.5 rounded-full transition-colors shadow-lg shadow-orange-200"
+            >
+              Build My Resume
+            </Link>
+          </div>
         </div>
+      </nav>
 
-        <div className="container mx-auto px-4 pt-16 pb-20 grid lg:grid-cols-2 gap-12 xl:gap-20 items-center">
-          {/* Left: copy */}
-          <div>
-            <div className="animate-fade-in-down fill-both">
-              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-orange-200 bg-orange-50 text-orange-600 text-sm mb-8">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
-                </span>
-                AI-Powered | ATS-Optimized | Free
-                <Sparkles className="h-3.5 w-3.5" />
-              </span>
+      {/* ---- HERO ---- */}
+      <section className="max-w-7xl mx-auto px-6 pt-20 pb-16">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+
+          {/* Left */}
+          <div className="space-y-8">
+            {/* Live badge */}
+            <div className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 shadow-sm">
+              <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+              <span className="text-xs font-bold text-gray-700">NEW</span>
+              <span className="text-xs text-gray-500">Groq AI integration is now live</span>
             </div>
 
-            <h1
-              className="text-5xl sm:text-6xl xl:text-7xl font-bold tracking-tight mb-6 leading-[1.07] animate-fade-in-up fill-both"
-              style={{ animationDelay: "100ms" }}
-            >
-              Resumes that
-              <br />
-              <span className="gradient-text">get you hired</span>
-            </h1>
+            {/* Headline */}
+            <div className="space-y-1">
+              <h1 className="text-6xl font-black leading-tight tracking-tight text-gray-900">
+                Resumes that
+              </h1>
+              <h1 className="text-6xl font-black leading-tight tracking-tight italic text-orange-500">
+                actually work.
+              </h1>
+            </div>
 
-            <p
-              className="text-lg text-gray-500 mb-10 max-w-lg leading-relaxed animate-fade-in-up fill-both"
-              style={{ animationDelay: "200ms" }}
-            >
-              Build ATS-optimized resumes with AI that writes like a recruiter.
-              3 professional templates, real-time preview, and one-click PDF
-              export.
+            <p className="text-lg text-gray-500 max-w-lg leading-relaxed">
+              Stop screaming into the void. Our AI analyzes job descriptions in real-time to craft{" "}
+              <span className="font-semibold text-gray-700">ATS-proof resumes</span>{" "}
+              that land 3x more interviews.
             </p>
 
-            <div
-              className="flex flex-wrap gap-4 mb-12 animate-fade-in-up fill-both"
-              style={{ animationDelay: "300ms" }}
-            >
-              {user ? (
-                <>
-                  <Link href="/dashboard">
-                    <Button
-                      size="lg"
-                      className="group h-12 px-8 text-base bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-2xl shadow-orange-500/25 hover:-translate-y-0.5 transition-all duration-200 btn-shimmer"
+            {/* CTAs + social proof */}
+            <div className="flex items-center gap-5 flex-wrap">
+              <Link
+                href="/auth/register"
+                className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-7 py-3.5 rounded-full transition-colors shadow-xl shadow-orange-200 text-sm"
+              >
+                Create Resume Free <ArrowRight className="h-4 w-4" />
+              </Link>
+              <div className="flex items-center gap-3">
+                <div className="flex -space-x-2">
+                  {["bg-blue-400", "bg-purple-400", "bg-pink-400", "bg-yellow-400"].map((c, i) => (
+                    <div
+                      key={i}
+                      className={`h-8 w-8 rounded-full ${c} border-2 border-white flex items-center justify-center text-white text-xs font-bold`}
                     >
-                      Go to Dashboard{" "}
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                  <Link href="/builder/new">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="h-12 px-8 text-base border-gray-300 text-gray-700 bg-transparent hover:bg-gray-50 hover:-translate-y-0.5 transition-all duration-200"
-                    >
-                      New Resume
-                    </Button>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link href="/auth/register">
-                    <Button
-                      size="lg"
-                      className="group h-12 px-8 text-base bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-2xl shadow-orange-500/25 hover:-translate-y-0.5 transition-all duration-200 btn-shimmer"
-                    >
-                      Start Building Free{" "}
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                  <Link href="/auth/login">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="h-12 px-8 text-base border-gray-300 text-gray-700 bg-transparent hover:bg-gray-50 hover:-translate-y-0.5 transition-all duration-200"
-                    >
-                      Sign In
-                    </Button>
-                  </Link>
-                </>
-              )}
+                      {String.fromCharCode(65 + i)}
+                    </div>
+                  ))}
+                </div>
+                <div>
+                  <div className="flex items-center gap-0.5">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <svg key={s} className="h-3.5 w-3.5 fill-orange-400" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-0.5">4.8/5 from job seekers</p>
+                </div>
+              </div>
             </div>
 
-            <div
-              className="flex flex-wrap gap-x-6 gap-y-2 animate-fade-in-up fill-both"
-              style={{ animationDelay: "400ms" }}
-            >
-              {[
-                "No credit card required",
-                "3 professional templates",
-                "ATS-friendly formats",
-                "PDF in seconds",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-2 text-sm text-gray-400"
-                >
-                  <CheckCircle className="h-4 w-4 text-orange-500 shrink-0" />
-                  {item}
-                </div>
-              ))}
+            {/* Stats */}
+            <div className="flex items-center gap-8 pt-2">
+              <div>
+                <p className="text-3xl font-black text-gray-900">94%</p>
+                <p className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mt-0.5">ATS Pass Rate</p>
+              </div>
+              <div className="w-px h-10 bg-gray-200" />
+              <div>
+                <p className="text-3xl font-black text-gray-900">2min</p>
+                <p className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mt-0.5">Avg. Build Time</p>
+              </div>
+              <div className="w-px h-10 bg-gray-200" />
+              <div>
+                <p className="text-3xl font-black text-gray-900">Free</p>
+                <p className="text-[10px] font-bold text-gray-400 tracking-widest uppercase mt-0.5">No Credit Card</p>
+              </div>
             </div>
           </div>
 
-          {/* Right: App mockup */}
-          <div className="relative hidden lg:flex items-center justify-center animate-fade-in fill-both">
-            <div className="absolute inset-0 -z-10 bg-orange-400/5 rounded-3xl blur-3xl scale-110" />
+          {/* Right - AI Editor Mockup */}
+          <div className="relative flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-md">
+              {/* ATS Score floating badge */}
+              <div className="absolute -top-5 -right-2 z-10 bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 shadow-lg">
+                <p className="text-[10px] font-bold text-orange-500 uppercase tracking-wide">ATS Score: 98</p>
+                <p className="text-sm font-black text-emerald-600">OPTIMAL / ATS!</p>
+              </div>
 
-            <div className="relative w-full max-w-[520px] rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-2xl shadow-gray-200/80 ring-1 ring-gray-100">
-              {/* Browser chrome */}
-              <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100 bg-gray-50">
-                <div className="flex gap-1.5">
-                  <div className="h-3 w-3 rounded-full bg-red-400/70" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-400/70" />
-                  <div className="h-3 w-3 rounded-full bg-green-400/70" />
+              {/* Card */}
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-2xl shadow-gray-300/40 overflow-hidden">
+                {/* macOS-style title bar */}
+                <div className="bg-gray-900 px-4 py-3 flex items-center gap-2">
+                  <div className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                  <span className="ml-2 text-xs text-gray-400 font-medium">AI EDITOR DRAFT C</span>
                 </div>
-                <div className="flex-1 h-6 rounded-md bg-gray-100 border border-gray-200 flex items-center px-3">
-                  <span className="text-[10px] text-gray-400">
-                    resumeforge.app/builder
+
+                {/* Content skeleton */}
+                <div className="p-6 space-y-3">
+                  <div className="h-3 bg-gray-900 rounded-full w-2/3" />
+                  <div className="space-y-2 pt-1">
+                    <div className="h-2.5 bg-orange-300 rounded-full w-full" />
+                    <div className="h-2.5 bg-orange-200 rounded-full w-5/6" />
+                    <div className="h-2.5 bg-orange-100 rounded-full w-4/6" />
+                  </div>
+                  <div className="space-y-2 pt-3">
+                    <div className="h-2 bg-gray-100 rounded-full w-full" />
+                    <div className="h-2 bg-gray-100 rounded-full w-11/12" />
+                    <div className="h-2 bg-gray-100 rounded-full w-4/5" />
+                    <div className="h-2 bg-gray-100 rounded-full w-3/4" />
+                  </div>
+                  <div className="space-y-2 pt-2">
+                    <div className="h-2 bg-gray-100 rounded-full w-full" />
+                    <div className="h-2 bg-gray-100 rounded-full w-2/3" />
+                  </div>
+                </div>
+
+                {/* AI Improvement Applied overlay card */}
+                <div className="mx-4 mb-5 bg-gray-50 border border-gray-200 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="h-5 w-5 rounded-md bg-orange-500 flex items-center justify-center flex-shrink-0">
+                      <Zap className="h-3 w-3 text-white" />
+                    </div>
+                    <span className="text-xs font-bold text-gray-800">AI Improvement Applied</span>
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed mb-3">
+                    Led cross-functional teams to deliver 40% increase in deployment efficiency...
+                  </p>
+                  <div className="flex gap-2">
+                    <button className="text-xs font-semibold text-gray-500 border border-gray-300 rounded-lg px-3 py-1.5 hover:bg-gray-100 transition-colors">
+                      UNDO
+                    </button>
+                    <button className="text-xs font-bold bg-orange-500 text-white rounded-lg px-3 py-1.5 hover:bg-orange-600 transition-colors">
+                      CONFIRM
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Background glow */}
+              <div className="absolute inset-0 -z-10 bg-orange-400/20 rounded-3xl blur-3xl scale-110" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---- COMPANY LOGOS STRIP ---- */}
+      <section className="bg-gray-50 border-y border-gray-100 py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <p className="text-center text-[10px] font-bold text-gray-400 tracking-[0.25em] uppercase mb-8">
+            Our graduates work at world-class companies
+          </p>
+          <div className="flex items-center justify-center gap-12 flex-wrap">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="h-7 w-20 bg-gray-300 rounded opacity-40" />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---- FEATURES ---- */}
+      <section id="features" className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <span className="inline-block text-[10px] font-bold tracking-[0.2em] text-orange-500 bg-orange-50 border border-orange-200 rounded-full px-4 py-1.5 uppercase mb-6">
+              Unfair Advantage
+            </span>
+            <h2 className="text-5xl font-black text-gray-900 leading-tight">
+              Crafted for results,
+            </h2>
+            <h2 className="text-5xl font-black italic text-orange-500 leading-tight underline decoration-orange-300 decoration-2">
+              optimized for humans.
+            </h2>
+            <p className="mt-5 text-gray-500 max-w-lg mx-auto leading-relaxed">
+              Building a resume should not feel like a chore. Our toolbox gives you everything you need to stand out in a crowded inbox.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-5">
+            {features.map((f) => (
+              <div
+                key={f.title}
+                className="bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-xl hover:shadow-gray-100/80 hover:-translate-y-0.5 transition-all duration-200"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`h-10 w-10 rounded-xl ${f.iconBg} flex items-center justify-center flex-shrink-0`}>
+                    <f.icon className={`h-5 w-5 ${f.iconColor}`} />
+                  </div>
+                  {f.badge && (
+                    <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${f.badgeColor}`}>
+                      {f.badge}
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-2">{f.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ---- DARK SECTION ---- */}
+      <section className="bg-[#0d0d1d] py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+
+            {/* Left */}
+            <div className="space-y-8">
+              <div className="space-y-2">
+                <h2 className="text-5xl font-black text-white leading-tight">Why settle for a</h2>
+                <h2 className="text-5xl font-black text-orange-400 leading-tight">generic template?</h2>
+              </div>
+              <ul className="space-y-4">
+                {whyPoints.map((point) => (
+                  <li key={point} className="flex items-center gap-3">
+                    <span className="h-2.5 w-2.5 rounded-full bg-orange-500 flex-shrink-0" />
+                    <span className="text-gray-300 text-base">{point}</span>
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/templates"
+                className="inline-flex items-center gap-2 border border-white/30 text-white hover:bg-white/10 font-semibold px-6 py-3 rounded-full transition-colors text-sm"
+              >
+                View Our Templates
+              </Link>
+            </div>
+
+            {/* Right - Health Check Card */}
+            <div className="flex lg:justify-end">
+              <div className="bg-[#16162a] border border-white/10 rounded-2xl p-7 w-full max-w-sm">
+                <div className="flex items-center justify-between mb-7">
+                  <h3 className="text-white font-bold text-base">Resume Health Check</h3>
+                  <span className="text-[10px] font-bold text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 rounded-full px-3 py-1 tracking-widest uppercase">
+                    Excellent
                   </span>
                 </div>
-              </div>
-
-              {/* Builder layout mockup */}
-              <div className="flex" style={{ height: "360px" }}>
-                {/* Sidebar */}
-                <div className="w-[165px] border-r border-gray-100 bg-gray-50/80 p-3 shrink-0 flex flex-col">
-                  <div className="flex gap-1 mb-3">
-                    {["Content", "Design"].map((t, i) => (
+                {[
+                  { label: "Readability", value: 90 },
+                  { label: "Keyword Density", value: 85 },
+                  { label: "Impact Score", value: 95 },
+                ].map((metric) => (
+                  <div key={metric.label} className="mb-5 last:mb-0">
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-gray-400">{metric.label}</span>
+                      <span className="text-sm font-bold text-white">{metric.value}%</span>
+                    </div>
+                    <div className="h-2 bg-white/10 rounded-full overflow-hidden">
                       <div
-                        key={t}
-                        className={`flex-1 text-center text-[9px] py-1.5 rounded-md font-medium ${
-                          i === 0
-                            ? "bg-orange-500/20 text-orange-600 border border-orange-500/25"
-                            : "text-gray-400"
-                        }`}
-                      >
-                        {t}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="space-y-0.5 flex-1">
-                    {[
-                      { name: "Personal Info", active: false },
-                      { name: "Experience", active: true },
-                      { name: "Education", active: false },
-                      { name: "Skills", active: false },
-                      { name: "Projects", active: false },
-                    ].map(({ name, active }) => (
-                      <div
-                        key={name}
-                        className={`text-[9px] px-2 py-1.5 rounded-md ${
-                          active
-                            ? "bg-orange-500/15 text-orange-600 border border-orange-500/20"
-                            : "text-gray-400"
-                        }`}
-                      >
-                        {name}
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-3 px-2 py-2.5 rounded-lg bg-orange-50 border border-orange-200">
-                    <div className="flex items-center gap-1.5 mb-2">
-                      <Zap className="h-2.5 w-2.5 text-orange-500" />
-                      <span className="text-[8px] text-orange-600 font-semibold">
-                        AI Improve
-                      </span>
-                    </div>
-                    <div className="h-1 w-full bg-gray-200 rounded-full">
-                      <div className="h-1 w-[65%] bg-gradient-to-r from-orange-500 to-rose-500 rounded-full" />
+                        className="h-full bg-orange-500 rounded-full transition-all"
+                        style={{ width: `${metric.value}%` }}
+                      />
                     </div>
                   </div>
-                </div>
-
-                {/* Resume preview pane */}
-                <div className="flex-1 p-3 bg-gray-100/60">
-                  <div className="bg-white rounded-xl h-full p-4 shadow-md overflow-hidden border border-gray-100">
-                    <div className="flex justify-between items-start mb-3">
-                      <div>
-                        <div className="h-3.5 w-28 bg-gray-800 rounded-sm mb-1.5" />
-                        <div className="h-2 w-20 bg-orange-500 rounded-sm mb-1" />
-                        <div className="h-1.5 w-32 bg-gray-200 rounded-sm" />
-                      </div>
-                    </div>
-                    <div className="h-px w-full bg-orange-100 my-2.5" />
-                    <div className="h-2 w-16 bg-gray-700 rounded mb-2" />
-                    <div className="space-y-1 mb-3">
-                      <div className="h-1.5 w-full bg-gray-100 rounded" />
-                      <div className="h-1.5 w-5/6 bg-gray-100 rounded" />
-                    </div>
-                    <div className="h-2 w-20 bg-gray-700 rounded mb-2" />
-                    <div className="flex justify-between mb-1.5">
-                      <div className="h-1.5 w-24 bg-gray-700 rounded" />
-                      <div className="h-1.5 w-14 bg-gray-200 rounded" />
-                    </div>
-                    <div className="space-y-1 mb-3 pl-2 border-l-2 border-orange-200">
-                      <div className="h-1.5 w-full bg-gray-100 rounded" />
-                      <div className="h-1.5 w-4/5 bg-gray-100 rounded" />
-                      <div className="h-1.5 w-3/4 bg-gray-100 rounded" />
-                    </div>
-                    <div className="h-2 w-12 bg-gray-700 rounded mb-2" />
-                    <div className="flex flex-wrap gap-1">
-                      {[40, 32, 36, 28, 44, 30].map((w, i) => (
-                        <div
-                          key={i}
-                          className="h-4 rounded-full bg-orange-50 border border-orange-200"
-                          style={{ width: `${w}px` }}
-                        />
-                      ))}
-                    </div>
-                  </div>
+                ))}
+                <div className="mt-7 space-y-2">
+                  <div className="h-2 bg-white/5 rounded-full w-full" />
+                  <div className="h-2 bg-white/5 rounded-full w-3/4" />
                 </div>
               </div>
             </div>
 
-            {/* Floating ATS badge */}
-            <div className="absolute -top-5 -right-6 bg-white border border-gray-200 rounded-2xl px-3.5 py-2.5 shadow-xl shadow-gray-200/60 animate-float">
-              <div className="flex items-center gap-2.5">
-                <div className="h-8 w-8 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center">
-                  <BarChart3 className="h-4 w-4 text-emerald-500" />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-gray-900">
-                    94% ATS Score
-                  </div>
-                  <div className="text-[10px] text-gray-400">
-                    Excellent match
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Floating AI badge */}
-            <div className="absolute -bottom-5 -left-6 bg-white border border-gray-200 rounded-2xl px-3.5 py-2.5 shadow-xl shadow-gray-200/60">
-              <div className="flex items-center gap-2.5">
-                <div className="h-8 w-8 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-center">
-                  <Zap className="h-4 w-4 text-orange-500" />
-                </div>
-                <div>
-                  <div className="text-xs font-semibold text-gray-900">
-                    AI Enhanced
-                  </div>
-                  <div className="text-[10px] text-gray-400">
-                    3 improvements applied
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats strip */}
-      <div className="border-y border-gray-100 bg-gray-50/80">
-        <div className="container mx-auto px-4 py-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto text-center">
-            {[
-              { value: "3", label: "Pro Templates" },
-              { value: "100%", label: "ATS Compatible" },
-              { value: "AI", label: "Groq Powered" },
-              { value: "Free", label: "No Credit Card" },
-            ].map((s) => (
-              <div key={s.label}>
-                <div className="text-3xl font-bold bg-gradient-to-br from-orange-500 to-rose-500 bg-clip-text text-transparent mb-1">
-                  {s.value}
-                </div>
-                <div className="text-sm text-gray-400">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Features */}
-      <section className="container mx-auto px-4 py-24">
-        <div className="text-center mb-16">
-          <span className="inline-block text-xs font-bold uppercase tracking-widest text-orange-500 mb-4">
-            Features
-          </span>
-          <h2 className="text-4xl font-bold text-gray-900">
-            Everything you need to land the job
-          </h2>
-          <p className="text-gray-500 mt-4 max-w-xl mx-auto">
-            All the tools to build a standout, ATS-optimized resume - in one place.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
-          {/* AI card */}
-          <div className="group md:col-span-2 relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-orange-300 hover:shadow-lg hover:shadow-orange-500/8 transition-all duration-300">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-br from-orange-50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-orange-50 border border-orange-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Brain className="h-6 w-6 text-orange-500" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
-              AI-Powered Enhancements
-            </h3>
-            <p className="text-gray-500 text-sm leading-relaxed mb-5">
-              Groq-powered AI rewrites your experience bullets, generates
-              professional summaries, and suggests ATS-relevant skills - in the
-              voice of someone owning their achievements. Review before applying,
-              always.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Improve bullets",
-                "Generate summary",
-                "Suggest skills",
-                "ATS optimize",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-2.5 py-1 rounded-full bg-orange-50 border border-orange-200 text-orange-600"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Templates card */}
-          <div className="group relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-violet-300 hover:shadow-lg hover:shadow-violet-500/8 transition-all duration-300">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-violet-50 border border-violet-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <LayoutTemplate className="h-6 w-6 text-violet-500" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
-              3 Premium Templates
-            </h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Classic, Modern, Minimal. Each fully customizable - change colors,
-              fonts, and spacing in real time.
-            </p>
-          </div>
-
-          {/* PDF card */}
-          <div className="group relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-cyan-300 hover:shadow-lg hover:shadow-cyan-500/8 transition-all duration-300">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Download className="h-6 w-6 text-cyan-500" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
-              Instant PDF Export
-            </h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Pixel-perfect A4 PDF with one click. Auto-saves every 3 seconds so
-              you never lose progress.
-            </p>
-          </div>
-
-          {/* ATS card */}
-          <div className="group relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-emerald-300 hover:shadow-lg hover:shadow-emerald-500/8 transition-all duration-300">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Target className="h-6 w-6 text-emerald-500" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
-              ATS Score Checker
-            </h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Paste a job description and instantly see how well your resume
-              matches with a detailed compatibility score.
-            </p>
-          </div>
-
-          {/* Auto-save card */}
-          <div className="group relative rounded-2xl border border-gray-200 bg-white p-8 overflow-hidden hover:border-rose-300 hover:shadow-lg hover:shadow-rose-500/8 transition-all duration-300">
-            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-rose-400 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-            <div className="h-12 w-12 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-              <Shield className="h-6 w-6 text-rose-500" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3">
-              Auto-save &amp; Sync
-            </h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              Every change syncs to your account automatically. Pick up where
-              you left off on any device.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section className="border-y border-gray-100 bg-gray-50/80 py-24">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest text-orange-500 mb-4">
-              How it works
-            </span>
-            <h2 className="text-4xl font-bold text-gray-900">
-              From blank page to hired - in 3 steps
-            </h2>
-          </div>
-          <div className="relative grid grid-cols-1 md:grid-cols-3 gap-10 max-w-4xl mx-auto">
-            <div className="hidden md:block absolute top-7 left-[17%] right-[17%] h-px bg-gradient-to-r from-orange-200 via-orange-400 to-orange-200" />
-            {[
-              {
-                step: "01",
-                title: "Fill in your details",
-                desc: "Add experience, skills, and education using the intuitive form editor with real-time preview.",
-              },
-              {
-                step: "02",
-                title: "Let AI enhance it",
-                desc: "Hit the AI buttons to improve bullet points, generate your summary, and optimize for ATS keywords.",
-              },
-              {
-                step: "03",
-                title: "Export & apply",
-                desc: "Download a pixel-perfect PDF and start applying with confidence.",
-              },
-            ].map((s, i) => (
-              <div
-                key={s.step}
-                className="text-center animate-fade-in-up fill-both"
-                style={{ animationDelay: `${i * 150}ms` }}
-              >
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-50 border border-orange-200 text-orange-600 text-xl font-bold mb-6 hover:bg-orange-500 hover:text-white hover:border-orange-500 hover:scale-110 hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300 relative z-10">
-                  {s.step}
-                </div>
-                <h3 className="font-semibold text-gray-800 mb-3 text-lg">
-                  {s.title}
-                </h3>
-                <p className="text-gray-500 text-sm leading-relaxed">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="relative overflow-hidden py-32 bg-gray-900">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-900/40 via-gray-900 to-violet-900/30" />
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[800px] rounded-full bg-orange-500/8 blur-3xl" />
+      {/* ---- ORANGE CTA SECTION ---- */}
+      <section className="py-16 px-6">
+        <div className="max-w-4xl mx-auto bg-orange-500 rounded-3xl py-20 px-8 text-center relative overflow-hidden">
           <div
-            className="absolute inset-0 opacity-[0.03]"
+            className="absolute inset-0 opacity-[0.08]"
             style={{
               backgroundImage:
                 "radial-gradient(circle, white 1px, transparent 1px)",
               backgroundSize: "32px 32px",
             }}
           />
-        </div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <h2 className="text-4xl sm:text-6xl font-bold mb-6 text-white animate-fade-in-up fill-both">
-            Ready to build your{" "}
-            <span className="gradient-text">dream resume?</span>
-          </h2>
-          <p
-            className="text-gray-400 mb-12 max-w-xl mx-auto text-lg animate-fade-in-up fill-both"
-            style={{ animationDelay: "100ms" }}
-          >
-            Free to use. No credit card required. Start in under 2 minutes.
-          </p>
-          <div
-            className="animate-fade-in-up fill-both"
-            style={{ animationDelay: "200ms" }}
-          >
-            {user ? (
-              <Link href="/builder/new">
-                <Button
-                  size="lg"
-                  className="group h-14 px-12 text-lg bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-2xl shadow-orange-500/30 hover:-translate-y-1 transition-all duration-200 btn-shimmer"
-                >
-                  Create a New Resume{" "}
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+          <div className="relative">
+            <h2 className="text-5xl md:text-6xl font-black text-white leading-tight">
+              Stop applying.
+            </h2>
+            <h2 className="text-5xl md:text-6xl font-black italic text-white underline decoration-white/40 leading-tight mb-5">
+              Start interviewing.
+            </h2>
+            <p className="text-white/80 text-base mb-10 max-w-md mx-auto leading-relaxed">
+              Join 12,402+ job seekers who landed roles at Google, Meta, and OpenAI this month.
+            </p>
+            <div className="flex items-center justify-center gap-4 flex-wrap">
+              <Link
+                href="/auth/register"
+                className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-800 text-white font-bold px-8 py-4 rounded-full transition-colors text-sm shadow-xl"
+              >
+                Get Started Free <ArrowRight className="h-4 w-4" />
               </Link>
-            ) : (
-              <Link href="/auth/register">
-                <Button
-                  size="lg"
-                  className="group h-14 px-12 text-lg bg-orange-500 hover:bg-orange-400 text-white border-0 shadow-2xl shadow-orange-500/30 hover:-translate-y-1 transition-all duration-200 btn-shimmer"
-                >
-                  Start for Free{" "}
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
+              <Link
+                href="/templates"
+                className="inline-flex items-center gap-2 border-2 border-white/50 hover:border-white text-white hover:bg-white/10 font-bold px-8 py-4 rounded-full transition-colors text-sm"
+              >
+                View Templates
               </Link>
-            )}
+            </div>
+            <p className="mt-6 text-white/50 text-[10px] font-bold tracking-[0.2em] uppercase">
+              No credit card required &bull; Instant download &bull; 100% Free
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-100 py-10">
-        <div className="container mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-gray-400">
-          <div className="flex items-center gap-2.5">
-            <div className="h-7 w-7 rounded-lg bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/20">
-              <FileText className="h-4 w-4 text-white" />
+      {/* ---- FOOTER ---- */}
+      <footer className="border-t border-gray-100 pt-16 pb-8">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid gap-10 md:grid-cols-[1.5fr_1fr_1fr_1.2fr] mb-12">
+
+            {/* Brand column */}
+            <div>
+              <Link href="/" className="flex items-center gap-2 mb-4">
+                <div className="h-8 w-8 rounded-lg bg-orange-500 flex items-center justify-center">
+                  <FileText className="h-4 w-4 text-white" />
+                </div>
+                <span className="text-base font-bold text-gray-900">ResumeForge</span>
+              </Link>
+              <p className="text-sm text-gray-500 leading-relaxed mb-5">
+                The world&#39;s most sophisticated AI-powered resume builder. We&#39;re on a mission to help everyone land their dream job through better storytelling and data.
+              </p>
+              <p className="text-xs font-semibold text-orange-500 uppercase tracking-[0.2em]">
+                AI-powered resume building for real applications
+              </p>
             </div>
-            <span className="font-bold text-gray-700 text-base">
-              ResumeForge
-            </span>
+
+            {/* Navigation */}
+            <div>
+              <h4 className="text-[10px] font-bold text-gray-800 uppercase tracking-widest mb-4">Navigation</h4>
+              <ul className="space-y-3">
+                {footerPrimaryLinks.map((item) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{item.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Account */}
+            <div>
+              <h4 className="text-[10px] font-bold text-gray-800 uppercase tracking-widest mb-4">Account</h4>
+              <ul className="space-y-3">
+                {footerAccountLinks.map((item) => (
+                  <li key={item.label}>
+                    <Link href={item.href} className="text-sm text-gray-500 hover:text-gray-900 transition-colors">{item.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* CTA */}
+            <div>
+              <h4 className="text-[10px] font-bold text-gray-800 uppercase tracking-widest mb-4">Get Started</h4>
+              <p className="text-sm text-gray-500 leading-relaxed mb-4">
+                Start a new resume, customize a template, and export it whenever you need.
+              </p>
+              <Link
+                href="/auth/register"
+                className="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-5 py-3 rounded-full transition-colors shadow-lg shadow-orange-200"
+              >
+                Build My Resume <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+
           </div>
-          <p>&copy; 2026 ResumeForge. Built for job seekers.</p>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/auth/login"
-              className="hover:text-gray-600 transition-colors"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/auth/register"
-              className="hover:text-gray-600 transition-colors"
-            >
-              Get Started
-            </Link>
+
+          {/* Bottom bar */}
+          <div className="border-t border-gray-100 pt-6 flex flex-col md:flex-row items-center justify-between gap-3">
+            <p className="text-xs text-gray-400">&#169; 2024 ResumeForge Inc. All rights reserved.</p>
+            <p className="text-xs text-gray-400">Built with Next.js, Supabase, and Groq AI.</p>
           </div>
+
         </div>
       </footer>
+
     </div>
   );
 }
